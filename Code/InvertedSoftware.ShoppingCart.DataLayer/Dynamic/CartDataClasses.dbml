@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="InvertedSoftwareCart" Class="CartDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=GAL;Initial Catalog=InvertedSoftwareCart;Integrated Security=True" SettingsObjectName="InvertedSoftware.ShoppingCart.DataLayer.Properties.Settings" SettingsPropertyName="InvertedSoftwareCartConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Category" Member="Categories">
+    <Type Name="Category">
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ParentCategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CategoryName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Category_FeaturedProduct" Member="FeaturedProducts" ThisKey="CategoryID" OtherKey="CategoryID" Type="FeaturedProduct" />
+      <Association Name="Category_ProductCategory" Member="ProductCategories" ThisKey="CategoryID" OtherKey="CategoryID" Type="ProductCategory" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tax" Member="Taxes">
+    <Type Name="Tax">
+      <Column Name="TaxID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TaxName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Fixed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StateID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProvinceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Country_Tax" Member="Country" ThisKey="CountryID" OtherKey="CountryID" Type="Country" IsForeignKey="true" />
+      <Association Name="Province_Tax" Member="Province" ThisKey="ProvinceID" OtherKey="ProvinceID" Type="Province" IsForeignKey="true" />
+      <Association Name="State_Tax" Member="State" ThisKey="StateID" OtherKey="StateID" Type="State" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Country" Member="Countries">
+    <Type Name="Country">
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CountryName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryCode" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Country_Tax" Member="Taxes" ThisKey="CountryID" OtherKey="CountryID" Type="Tax" />
+      <Association Name="Country_Customer" Member="Customers" ThisKey="CountryID" OtherKey="CountryID" Type="Customer" />
+      <Association Name="Country_Order" Member="Orders" ThisKey="CountryID" OtherKey="CountryID" Type="Order" />
+      <Association Name="Country_Shipping" Member="Shippings" ThisKey="CountryID" OtherKey="CountryID" Type="Shipping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Customer" Member="Customers">
+    <Type Name="Customer">
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MemberID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Company" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="StateID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProvinceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Zipcode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DayPhone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="EveningPhone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CellPhone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Fax" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateUpdated" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Country_Customer" Member="Country" ThisKey="CountryID" OtherKey="CountryID" Type="Country" IsForeignKey="true" />
+      <Association Name="Province_Customer" Member="Province" ThisKey="ProvinceID" OtherKey="ProvinceID" Type="Province" IsForeignKey="true" />
+      <Association Name="State_Customer" Member="State" ThisKey="StateID" OtherKey="StateID" Type="State" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CustomField" Member="CustomFields">
+    <Type Name="CustomField">
+      <Column Name="CustomFieldID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CustomFieldName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CustomFieldTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="CustomField_OrderProductCustomField" Member="OrderProductCustomFields" ThisKey="CustomFieldID" OtherKey="CustomFieldID" Type="OrderProductCustomField" />
+      <Association Name="CustomFieldType_CustomField" Member="CustomFieldType" ThisKey="CustomFieldTypeID" OtherKey="CustomFieldTypeID" Type="CustomFieldType" IsForeignKey="true" />
+      <Association Name="Product_CustomField" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CustomFieldType" Member="CustomFieldTypes">
+    <Type Name="CustomFieldType">
+      <Column Name="CustomFieldTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomFieldTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="CustomFieldType_CustomField" Member="CustomFields" ThisKey="CustomFieldTypeID" OtherKey="CustomFieldTypeID" Type="CustomField" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeaturedProduct" Member="FeaturedProducts">
+    <Type Name="FeaturedProduct">
+      <Column Name="FeaturedProductID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Category_FeaturedProduct" Member="Category" ThisKey="CategoryID" OtherKey="CategoryID" Type="Category" IsForeignKey="true" />
+      <Association Name="Product_FeaturedProduct" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Image" Member="Images">
+    <Type Name="Image">
+      <Column Name="ImageID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ParentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SortOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ImageName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="ImageURL" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Product_Image" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[Order]" Member="Orders">
+    <Type Name="Order">
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OrderNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="OrderDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="OrderStatusID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ShippingProviderID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ShippingNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="StateID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProvinceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Zipcode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Comments" Type="System.String" DbType="VarChar(400)" CanBeNull="true" />
+      <Column Name="DatePlaced" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateShipped" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Total" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Shipping" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Tax" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Order_OrderProduct" Member="OrderProducts" ThisKey="OrderID" OtherKey="OrderID" Type="OrderProduct" />
+      <Association Name="Country_Order" Member="Country" ThisKey="CountryID" OtherKey="CountryID" Type="Country" IsForeignKey="true" />
+      <Association Name="OrderStatus_Order" Member="OrderStatus" ThisKey="OrderStatusID" OtherKey="OrderStatusID" Type="OrderStatus" IsForeignKey="true" />
+      <Association Name="Province_Order" Member="Province" ThisKey="ProvinceID" OtherKey="ProvinceID" Type="Province" IsForeignKey="true" />
+      <Association Name="ShippingProvider_Order" Member="ShippingProvider" ThisKey="ShippingProviderID" OtherKey="ShippingProviderID" Type="ShippingProvider" IsForeignKey="true" />
+      <Association Name="State_Order" Member="State" ThisKey="StateID" OtherKey="StateID" Type="State" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrderProduct" Member="OrderProducts">
+    <Type Name="OrderProduct">
+      <Column Name="OrderProductID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PricePerUnit" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Discount" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Shipping" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="OrderDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="OrderProduct_OrderProductCustomField" Member="OrderProductCustomFields" ThisKey="OrderProductID" OtherKey="OrderProductID" Type="OrderProductCustomField" />
+      <Association Name="OrderProduct_OrderProductOption" Member="OrderProductOptions" ThisKey="OrderProductID" OtherKey="OrderProductID" Type="OrderProductOption" />
+      <Association Name="Order_OrderProduct" Member="Order" ThisKey="OrderID" OtherKey="OrderID" Type="Order" IsForeignKey="true" />
+      <Association Name="Product_OrderProduct" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrderProductCustomField" Member="OrderProductCustomFields">
+    <Type Name="OrderProductCustomField">
+      <Column Name="OrderProductCustomFieldID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrderProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomFieldID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrderProductCustomFieldValue" Type="System.String" DbType="VarChar(400)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="CustomField_OrderProductCustomField" Member="CustomField" ThisKey="CustomFieldID" OtherKey="CustomFieldID" Type="CustomField" IsForeignKey="true" />
+      <Association Name="OrderProduct_OrderProductCustomField" Member="OrderProduct" ThisKey="OrderProductID" OtherKey="OrderProductID" Type="OrderProduct" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrderProductOption" Member="OrderProductOptions">
+    <Type Name="OrderProductOption">
+      <Column Name="OrderProductOptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrderProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductOptionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="OrderProduct_OrderProductOption" Member="OrderProduct" ThisKey="OrderProductID" OtherKey="OrderProductID" Type="OrderProduct" IsForeignKey="true" />
+      <Association Name="ProductOption_OrderProductOption" Member="ProductOption" ThisKey="ProductOptionID" OtherKey="ProductOptionID" Type="ProductOption" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrderStatus" Member="OrderStatus">
+    <Type Name="OrderStatus">
+      <Column Name="OrderStatusID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrderStatusName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="OrderStatus_Order" Member="Orders" ThisKey="OrderStatusID" OtherKey="OrderStatusID" Type="Order" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Product" Member="Products">
+    <Type Name="Product">
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CatalogNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="price" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Product_CustomField" Member="CustomFields" ThisKey="ProductID" OtherKey="ProductID" Type="CustomField" />
+      <Association Name="Product_FeaturedProduct" Member="FeaturedProducts" ThisKey="ProductID" OtherKey="ProductID" Type="FeaturedProduct" />
+      <Association Name="Product_Image" Member="Images" ThisKey="ProductID" OtherKey="ProductID" Type="Image" />
+      <Association Name="Product_OrderProduct" Member="OrderProducts" ThisKey="ProductID" OtherKey="ProductID" Type="OrderProduct" />
+      <Association Name="Product_ProductCategory" Member="ProductCategories" ThisKey="ProductID" OtherKey="ProductID" Type="ProductCategory" />
+      <Association Name="Product_ProductOption" Member="ProductOptions" ThisKey="ProductID" OtherKey="ProductID" Type="ProductOption" />
+      <Association Name="Product_RelatedProduct" Member="RelatedProducts" ThisKey="ProductID" OtherKey="ProductOneID" Type="RelatedProduct" />
+      <Association Name="Product_RelatedProduct1" Member="RelatedProducts1" ThisKey="ProductID" OtherKey="ProductTwoID" Type="RelatedProduct" />
+      <Association Name="Product_Shipping" Member="Shippings" ThisKey="ProductID" OtherKey="ProductID" Type="Shipping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductCategory" Member="ProductCategories">
+    <Type Name="ProductCategory">
+      <Column Name="ProductCategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Category_ProductCategory" Member="Category" ThisKey="CategoryID" OtherKey="CategoryID" Type="Category" IsForeignKey="true" />
+      <Association Name="Product_ProductCategory" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductOption" Member="ProductOptions">
+    <Type Name="ProductOption">
+      <Column Name="ProductOptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductOptionName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductOptionGroup" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriceChange" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="ProductOption_OrderProductOption" Member="OrderProductOptions" ThisKey="ProductOptionID" OtherKey="ProductOptionID" Type="OrderProductOption" />
+      <Association Name="Product_ProductOption" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Province" Member="Provinces">
+    <Type Name="Province">
+      <Column Name="ProvinceID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProvinceName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ProvinceCode" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.String" DbType="Char(10) NOT NULL" CanBeNull="false" />
+      <Association Name="Province_Tax" Member="Taxes" ThisKey="ProvinceID" OtherKey="ProvinceID" Type="Tax" />
+      <Association Name="Province_Customer" Member="Customers" ThisKey="ProvinceID" OtherKey="ProvinceID" Type="Customer" />
+      <Association Name="Province_Order" Member="Orders" ThisKey="ProvinceID" OtherKey="ProvinceID" Type="Order" />
+      <Association Name="Province_Shipping" Member="Shippings" ThisKey="ProvinceID" OtherKey="ProvinceID" Type="Shipping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RelatedProduct" Member="RelatedProducts">
+    <Type Name="RelatedProduct">
+      <Column Name="RelatedProductID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductOneID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTwoID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Product_RelatedProduct" Member="Product" ThisKey="ProductOneID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+      <Association Name="Product_RelatedProduct1" Member="Product1" ThisKey="ProductTwoID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Shipping" Member="Shippings">
+    <Type Name="Shipping">
+      <Column Name="ShippingID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StateID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProvinceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingProviderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Rate" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Country_Shipping" Member="Country" ThisKey="CountryID" OtherKey="CountryID" Type="Country" IsForeignKey="true" />
+      <Association Name="Product_Shipping" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+      <Association Name="Province_Shipping" Member="Province" ThisKey="ProvinceID" OtherKey="ProvinceID" Type="Province" IsForeignKey="true" />
+      <Association Name="ShippingProvider_Shipping" Member="ShippingProvider" ThisKey="ShippingProviderID" OtherKey="ShippingProviderID" Type="ShippingProvider" IsForeignKey="true" />
+      <Association Name="State_Shipping" Member="State" ThisKey="StateID" OtherKey="StateID" Type="State" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ShippingProvider" Member="ShippingProviders">
+    <Type Name="ShippingProvider">
+      <Column Name="ShippingProviderID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ShippingProviderName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingCost" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="ShippingProvider_Order" Member="Orders" ThisKey="ShippingProviderID" OtherKey="ShippingProviderID" Type="Order" />
+      <Association Name="ShippingProvider_Shipping" Member="Shippings" ThisKey="ShippingProviderID" OtherKey="ShippingProviderID" Type="Shipping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.State" Member="States">
+    <Type Name="State">
+      <Column Name="StateID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StateName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StateCode" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="State_Tax" Member="Taxes" ThisKey="StateID" OtherKey="StateID" Type="Tax" />
+      <Association Name="State_Customer" Member="Customers" ThisKey="StateID" OtherKey="StateID" Type="Customer" />
+      <Association Name="State_Order" Member="Orders" ThisKey="StateID" OtherKey="StateID" Type="Order" />
+      <Association Name="State_Shipping" Member="Shippings" ThisKey="StateID" OtherKey="StateID" Type="Shipping" />
+    </Type>
+  </Table>
+</Database>

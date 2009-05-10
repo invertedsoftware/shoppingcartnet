@@ -1,0 +1,689 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="InvertedSoftwareCartModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2000" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="InvertedSoftwareCartModelStoreContainer">
+          <EntitySet Name="Category" EntityType="InvertedSoftwareCartModel.Store.Category" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CustomField" EntityType="InvertedSoftwareCartModel.Store.CustomField" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CustomFieldType" EntityType="InvertedSoftwareCartModel.Store.CustomFieldType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FeaturedProduct" EntityType="InvertedSoftwareCartModel.Store.FeaturedProduct" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Image" EntityType="InvertedSoftwareCartModel.Store.Image" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Product" EntityType="InvertedSoftwareCartModel.Store.Product" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ProductCategory" EntityType="InvertedSoftwareCartModel.Store.ProductCategory" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ProductOption" EntityType="InvertedSoftwareCartModel.Store.ProductOption" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RelatedProduct" EntityType="InvertedSoftwareCartModel.Store.RelatedProduct" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_CustomField_CustomFieldType" Association="InvertedSoftwareCartModel.Store.FK_CustomField_CustomFieldType">
+            <End Role="CustomFieldType" EntitySet="CustomFieldType" />
+            <End Role="CustomField" EntitySet="CustomField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomField_Product" Association="InvertedSoftwareCartModel.Store.FK_CustomField_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="CustomField" EntitySet="CustomField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FeaturedProduct_Category" Association="InvertedSoftwareCartModel.Store.FK_FeaturedProduct_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="FeaturedProduct" EntitySet="FeaturedProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FeaturedProduct_Product" Association="InvertedSoftwareCartModel.Store.FK_FeaturedProduct_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="FeaturedProduct" EntitySet="FeaturedProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Image_Product" Association="InvertedSoftwareCartModel.Store.FK_Image_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Image" EntitySet="Image" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductCategory_Category" Association="InvertedSoftwareCartModel.Store.FK_ProductCategory_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductCategory_Product" Association="InvertedSoftwareCartModel.Store.FK_ProductCategory_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductOption_Product" Association="InvertedSoftwareCartModel.Store.FK_ProductOption_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductOption" EntitySet="ProductOption" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelatedProduct_Product" Association="InvertedSoftwareCartModel.Store.FK_RelatedProduct_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="RelatedProduct" EntitySet="RelatedProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelatedProduct_Product1" Association="InvertedSoftwareCartModel.Store.FK_RelatedProduct_Product1">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="RelatedProduct" EntitySet="RelatedProduct" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ParentCategoryID" Type="int" />
+          <Property Name="CategoryName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomField">
+          <Key>
+            <PropertyRef Name="CustomFieldID" />
+          </Key>
+          <Property Name="CustomFieldID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="CustomFieldName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CustomFieldTypeID" Type="int" Nullable="false" />
+          <Property Name="IsRequired" Type="bit" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomFieldType">
+          <Key>
+            <PropertyRef Name="CustomFieldTypeID" />
+          </Key>
+          <Property Name="CustomFieldTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CustomFieldTypeName" Type="varchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FeaturedProduct">
+          <Key>
+            <PropertyRef Name="FeaturedProductID" />
+          </Key>
+          <Property Name="FeaturedProductID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="ImageID" />
+          </Key>
+          <Property Name="ImageID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="SortOrder" Type="int" />
+          <Property Name="ImageName" Type="varchar" MaxLength="200" />
+          <Property Name="ImageURL" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="varchar" MaxLength="50" />
+          <Property Name="CatalogNumber" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="text" />
+          <Property Name="price" Type="money" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductCategory">
+          <Key>
+            <PropertyRef Name="ProductCategoryID" />
+          </Key>
+          <Property Name="ProductCategoryID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductOption">
+          <Key>
+            <PropertyRef Name="ProductOptionID" />
+          </Key>
+          <Property Name="ProductOptionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ProductOptionName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ProductOptionGroup" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="PriceChange" Type="money" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelatedProduct">
+          <Key>
+            <PropertyRef Name="RelatedProductID" />
+          </Key>
+          <Property Name="RelatedProductID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ProductOneID" Type="int" Nullable="false" />
+          <Property Name="ProductTwoID" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <Association Name="FK_CustomField_CustomFieldType">
+          <End Role="CustomFieldType" Type="InvertedSoftwareCartModel.Store.CustomFieldType" Multiplicity="1" />
+          <End Role="CustomField" Type="InvertedSoftwareCartModel.Store.CustomField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomFieldType">
+              <PropertyRef Name="CustomFieldTypeID" />
+            </Principal>
+            <Dependent Role="CustomField">
+              <PropertyRef Name="CustomFieldTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomField_Product">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Store.Product" Multiplicity="0..1" />
+          <End Role="CustomField" Type="InvertedSoftwareCartModel.Store.CustomField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="CustomField">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FeaturedProduct_Category">
+          <End Role="Category" Type="InvertedSoftwareCartModel.Store.Category" Multiplicity="0..1" />
+          <End Role="FeaturedProduct" Type="InvertedSoftwareCartModel.Store.FeaturedProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="FeaturedProduct">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FeaturedProduct_Product">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Store.Product" Multiplicity="1" />
+          <End Role="FeaturedProduct" Type="InvertedSoftwareCartModel.Store.FeaturedProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="FeaturedProduct">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Image_Product">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Store.Product" Multiplicity="1" />
+          <End Role="Image" Type="InvertedSoftwareCartModel.Store.Image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Image">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductCategory_Category">
+          <End Role="Category" Type="InvertedSoftwareCartModel.Store.Category" Multiplicity="1" />
+          <End Role="ProductCategory" Type="InvertedSoftwareCartModel.Store.ProductCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="ProductCategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductCategory_Product">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Store.Product" Multiplicity="1" />
+          <End Role="ProductCategory" Type="InvertedSoftwareCartModel.Store.ProductCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductCategory">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductOption_Product">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Store.Product" Multiplicity="1" />
+          <End Role="ProductOption" Type="InvertedSoftwareCartModel.Store.ProductOption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductOption">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelatedProduct_Product">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Store.Product" Multiplicity="1" />
+          <End Role="RelatedProduct" Type="InvertedSoftwareCartModel.Store.RelatedProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="RelatedProduct">
+              <PropertyRef Name="ProductOneID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelatedProduct_Product1">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Store.Product" Multiplicity="1" />
+          <End Role="RelatedProduct" Type="InvertedSoftwareCartModel.Store.RelatedProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="RelatedProduct">
+              <PropertyRef Name="ProductTwoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InvertedSoftwareCartModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="Entities">
+          <EntitySet Name="Category" EntityType="InvertedSoftwareCartModel.Category" />
+          <EntitySet Name="FeaturedProduct" EntityType="InvertedSoftwareCartModel.FeaturedProduct" />
+          <EntitySet Name="Image" EntityType="InvertedSoftwareCartModel.Image" />
+          <EntitySet Name="Product" EntityType="InvertedSoftwareCartModel.Product" />
+          <EntitySet Name="ProductCategory" EntityType="InvertedSoftwareCartModel.ProductCategory" />
+          <EntitySet Name="RelatedProduct" EntityType="InvertedSoftwareCartModel.RelatedProduct" />
+          <AssociationSet Name="FK_FeaturedProduct_Category" Association="InvertedSoftwareCartModel.FK_FeaturedProduct_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="FeaturedProduct" EntitySet="FeaturedProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductCategory_Category" Association="InvertedSoftwareCartModel.FK_ProductCategory_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FeaturedProduct_Product" Association="InvertedSoftwareCartModel.FK_FeaturedProduct_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="FeaturedProduct" EntitySet="FeaturedProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Image_Product" Association="InvertedSoftwareCartModel.FK_Image_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Image" EntitySet="Image" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductCategory_Product" Association="InvertedSoftwareCartModel.FK_ProductCategory_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelatedProduct_Product" Association="InvertedSoftwareCartModel.FK_RelatedProduct_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="RelatedProduct" EntitySet="RelatedProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelatedProduct_Product1" Association="InvertedSoftwareCartModel.FK_RelatedProduct_Product1">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="RelatedProduct" EntitySet="RelatedProduct" />
+          </AssociationSet>
+          <EntitySet Name="ProductOption" EntityType="InvertedSoftwareCartModel.ProductOption" />
+          <AssociationSet Name="FK_ProductOption_Product" Association="InvertedSoftwareCartModel.FK_ProductOption_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductOption" EntitySet="ProductOption" /></AssociationSet>
+          <EntitySet Name="CustomField" EntityType="InvertedSoftwareCartModel.CustomField" />
+          <EntitySet Name="CustomFieldType" EntityType="InvertedSoftwareCartModel.CustomFieldType" />
+          <AssociationSet Name="FK_CustomField_CustomFieldType" Association="InvertedSoftwareCartModel.FK_CustomField_CustomFieldType">
+            <End Role="CustomFieldType" EntitySet="CustomFieldType" />
+            <End Role="CustomField" EntitySet="CustomField" /></AssociationSet>
+          <AssociationSet Name="FK_CustomField_Product" Association="InvertedSoftwareCartModel.FK_CustomField_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="CustomField" EntitySet="CustomField" /></AssociationSet></EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <Property Name="ParentCategoryID" Type="Int32" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FeaturedProduct" Relationship="InvertedSoftwareCartModel.FK_FeaturedProduct_Category" FromRole="Category" ToRole="FeaturedProduct" />
+          <NavigationProperty Name="ProductCategory" Relationship="InvertedSoftwareCartModel.FK_ProductCategory_Category" FromRole="Category" ToRole="ProductCategory" />
+        </EntityType>
+        <EntityType Name="FeaturedProduct">
+          <Key>
+            <PropertyRef Name="FeaturedProductID" />
+          </Key>
+          <Property Name="FeaturedProductID" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="InvertedSoftwareCartModel.FK_FeaturedProduct_Category" FromRole="FeaturedProduct" ToRole="Category" />
+          <NavigationProperty Name="Product" Relationship="InvertedSoftwareCartModel.FK_FeaturedProduct_Product" FromRole="FeaturedProduct" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="ImageID" />
+          </Key>
+          <Property Name="ImageID" Type="Int32" Nullable="false" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="SortOrder" Type="Int32" />
+          <Property Name="ImageName" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="ImageURL" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="InvertedSoftwareCartModel.FK_Image_Product" FromRole="Image" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CatalogNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FeaturedProduct" Relationship="InvertedSoftwareCartModel.FK_FeaturedProduct_Product" FromRole="Product" ToRole="FeaturedProduct" />
+          <NavigationProperty Name="Image" Relationship="InvertedSoftwareCartModel.FK_Image_Product" FromRole="Product" ToRole="Image" />
+          <NavigationProperty Name="ProductCategory" Relationship="InvertedSoftwareCartModel.FK_ProductCategory_Product" FromRole="Product" ToRole="ProductCategory" />
+          <NavigationProperty Name="RelatedProduct" Relationship="InvertedSoftwareCartModel.FK_RelatedProduct_Product" FromRole="Product" ToRole="RelatedProduct" />
+          <NavigationProperty Name="RelatedProduct1" Relationship="InvertedSoftwareCartModel.FK_RelatedProduct_Product1" FromRole="Product" ToRole="RelatedProduct" />
+          <NavigationProperty Name="ProductOption" Relationship="InvertedSoftwareCartModel.FK_ProductOption_Product" FromRole="Product" ToRole="ProductOption" />
+          <NavigationProperty Name="CustomField" Relationship="InvertedSoftwareCartModel.FK_CustomField_Product" FromRole="Product" ToRole="CustomField" /></EntityType>
+        <EntityType Name="ProductCategory">
+          <Key>
+            <PropertyRef Name="ProductCategoryID" />
+          </Key>
+          <Property Name="ProductCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="InvertedSoftwareCartModel.FK_ProductCategory_Category" FromRole="ProductCategory" ToRole="Category" />
+          <NavigationProperty Name="Product" Relationship="InvertedSoftwareCartModel.FK_ProductCategory_Product" FromRole="ProductCategory" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="RelatedProduct">
+          <Key>
+            <PropertyRef Name="RelatedProductID" />
+          </Key>
+          <Property Name="RelatedProductID" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Product" Relationship="InvertedSoftwareCartModel.FK_RelatedProduct_Product" FromRole="RelatedProduct" ToRole="Product" />
+          <NavigationProperty Name="Product1" Relationship="InvertedSoftwareCartModel.FK_RelatedProduct_Product1" FromRole="RelatedProduct" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_FeaturedProduct_Category">
+          <End Role="Category" Type="InvertedSoftwareCartModel.Category" Multiplicity="0..1" />
+          <End Role="FeaturedProduct" Type="InvertedSoftwareCartModel.FeaturedProduct" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_ProductCategory_Category">
+          <End Role="Category" Type="InvertedSoftwareCartModel.Category" Multiplicity="1" />
+          <End Role="ProductCategory" Type="InvertedSoftwareCartModel.ProductCategory" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_FeaturedProduct_Product">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Product" Multiplicity="1" />
+          <End Role="FeaturedProduct" Type="InvertedSoftwareCartModel.FeaturedProduct" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Image_Product">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Product" Multiplicity="1" />
+          <End Role="Image" Type="InvertedSoftwareCartModel.Image" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_ProductCategory_Product">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Product" Multiplicity="1" />
+          <End Role="ProductCategory" Type="InvertedSoftwareCartModel.ProductCategory" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_RelatedProduct_Product">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Product" Multiplicity="1" />
+          <End Role="RelatedProduct" Type="InvertedSoftwareCartModel.RelatedProduct" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_RelatedProduct_Product1">
+          <End Role="Product" Type="InvertedSoftwareCartModel.Product" Multiplicity="1" />
+          <End Role="RelatedProduct" Type="InvertedSoftwareCartModel.RelatedProduct" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ProductOption">
+          <Key>
+            <PropertyRef Name="ProductOptionID" /></Key>
+          <Property Name="ProductOptionID" Type="Int32" Nullable="false" />
+          <Property Name="ProductOptionName" Type="String" Nullable="false" />
+          <Property Name="ProductOptionGroup" Type="String" Nullable="false" />
+          <Property Name="PriceChange" Type="Decimal" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="InvertedSoftwareCartModel.FK_ProductOption_Product" FromRole="ProductOption" ToRole="Product" /></EntityType>
+        <Association Name="FK_ProductOption_Product">
+          <End Type="InvertedSoftwareCartModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="InvertedSoftwareCartModel.ProductOption" Role="ProductOption" Multiplicity="*" /></Association>
+        <EntityType Name="CustomField">
+          <Key>
+            <PropertyRef Name="CustomFieldID" /></Key>
+          <Property Name="CustomFieldID" Type="Int32" Nullable="false" />
+          <Property Name="CustomFieldName" Type="String" Nullable="false" />
+          <Property Name="IsRequired" Type="Boolean" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CustomFieldType" Relationship="InvertedSoftwareCartModel.FK_CustomField_CustomFieldType" FromRole="CustomField" ToRole="CustomFieldType" />
+          <NavigationProperty Name="Product" Relationship="InvertedSoftwareCartModel.FK_CustomField_Product" FromRole="CustomField" ToRole="Product" /></EntityType>
+        <EntityType Name="CustomFieldType">
+          <Key>
+            <PropertyRef Name="CustomFieldTypeID" /></Key>
+          <Property Name="CustomFieldTypeID" Type="Int32" Nullable="false" />
+          <Property Name="CustomFieldTypeName" Type="String" Nullable="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CustomField" Relationship="InvertedSoftwareCartModel.FK_CustomField_CustomFieldType" FromRole="CustomFieldType" ToRole="CustomField" /></EntityType>
+        <Association Name="FK_CustomField_CustomFieldType">
+          <End Type="InvertedSoftwareCartModel.CustomFieldType" Role="CustomFieldType" Multiplicity="1" />
+          <End Type="InvertedSoftwareCartModel.CustomField" Role="CustomField" Multiplicity="*" /></Association>
+        <Association Name="FK_CustomField_Product">
+          <End Type="InvertedSoftwareCartModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="InvertedSoftwareCartModel.CustomField" Role="CustomField" Multiplicity="*" /></Association></Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="InvertedSoftwareCartModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="IsTypeOf(InvertedSoftwareCartModel.Category)">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="ParentCategoryID" ColumnName="ParentCategoryID" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FeaturedProduct">
+            <EntityTypeMapping TypeName="IsTypeOf(InvertedSoftwareCartModel.FeaturedProduct)">
+              <MappingFragment StoreEntitySet="FeaturedProduct">
+                <ScalarProperty Name="FeaturedProductID" ColumnName="FeaturedProductID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Image">
+            <EntityTypeMapping TypeName="IsTypeOf(InvertedSoftwareCartModel.Image)">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+                <ScalarProperty Name="ImageURL" ColumnName="ImageURL" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="IsTypeOf(InvertedSoftwareCartModel.Product)">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="CatalogNumber" ColumnName="CatalogNumber" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductCategory">
+            <EntityTypeMapping TypeName="IsTypeOf(InvertedSoftwareCartModel.ProductCategory)">
+              <MappingFragment StoreEntitySet="ProductCategory">
+                <ScalarProperty Name="ProductCategoryID" ColumnName="ProductCategoryID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelatedProduct">
+            <EntityTypeMapping TypeName="IsTypeOf(InvertedSoftwareCartModel.RelatedProduct)">
+              <MappingFragment StoreEntitySet="RelatedProduct">
+                <ScalarProperty Name="RelatedProductID" ColumnName="RelatedProductID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_FeaturedProduct_Category" TypeName="InvertedSoftwareCartModel.FK_FeaturedProduct_Category" StoreEntitySet="FeaturedProduct">
+            <EndProperty Name="Category">
+              <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+            </EndProperty>
+            <EndProperty Name="FeaturedProduct">
+              <ScalarProperty Name="FeaturedProductID" ColumnName="FeaturedProductID" />
+            </EndProperty>
+            <Condition ColumnName="CategoryID" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_ProductCategory_Category" TypeName="InvertedSoftwareCartModel.FK_ProductCategory_Category" StoreEntitySet="ProductCategory">
+            <EndProperty Name="Category">
+              <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+            </EndProperty>
+            <EndProperty Name="ProductCategory">
+              <ScalarProperty Name="ProductCategoryID" ColumnName="ProductCategoryID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_FeaturedProduct_Product" TypeName="InvertedSoftwareCartModel.FK_FeaturedProduct_Product" StoreEntitySet="FeaturedProduct">
+            <EndProperty Name="Product">
+              <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+            </EndProperty>
+            <EndProperty Name="FeaturedProduct">
+              <ScalarProperty Name="FeaturedProductID" ColumnName="FeaturedProductID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Image_Product" TypeName="InvertedSoftwareCartModel.FK_Image_Product" StoreEntitySet="Image">
+            <EndProperty Name="Product">
+              <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+            </EndProperty>
+            <EndProperty Name="Image">
+              <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_ProductCategory_Product" TypeName="InvertedSoftwareCartModel.FK_ProductCategory_Product" StoreEntitySet="ProductCategory">
+            <EndProperty Name="Product">
+              <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+            </EndProperty>
+            <EndProperty Name="ProductCategory">
+              <ScalarProperty Name="ProductCategoryID" ColumnName="ProductCategoryID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_RelatedProduct_Product" TypeName="InvertedSoftwareCartModel.FK_RelatedProduct_Product" StoreEntitySet="RelatedProduct">
+            <EndProperty Name="Product">
+              <ScalarProperty Name="ProductID" ColumnName="ProductOneID" />
+            </EndProperty>
+            <EndProperty Name="RelatedProduct">
+              <ScalarProperty Name="RelatedProductID" ColumnName="RelatedProductID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_RelatedProduct_Product1" TypeName="InvertedSoftwareCartModel.FK_RelatedProduct_Product1" StoreEntitySet="RelatedProduct">
+            <EndProperty Name="Product">
+              <ScalarProperty Name="ProductID" ColumnName="ProductTwoID" />
+            </EndProperty>
+            <EndProperty Name="RelatedProduct">
+              <ScalarProperty Name="RelatedProductID" ColumnName="RelatedProductID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ProductOption">
+            <EntityTypeMapping TypeName="IsTypeOf(InvertedSoftwareCartModel.ProductOption)">
+              <MappingFragment StoreEntitySet="ProductOption">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PriceChange" ColumnName="PriceChange" />
+                <ScalarProperty Name="ProductOptionGroup" ColumnName="ProductOptionGroup" />
+                <ScalarProperty Name="ProductOptionName" ColumnName="ProductOptionName" />
+                <ScalarProperty Name="ProductOptionID" ColumnName="ProductOptionID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="FK_ProductOption_Product" TypeName="InvertedSoftwareCartModel.FK_ProductOption_Product" StoreEntitySet="ProductOption">
+            <EndProperty Name="ProductOption">
+              <ScalarProperty Name="ProductOptionID" ColumnName="ProductOptionID" /></EndProperty>
+            <EndProperty Name="Product">
+              <ScalarProperty Name="ProductID" ColumnName="ProductID" /></EndProperty></AssociationSetMapping>
+          <EntitySetMapping Name="CustomField">
+            <EntityTypeMapping TypeName="IsTypeOf(InvertedSoftwareCartModel.CustomField)">
+              <MappingFragment StoreEntitySet="CustomField">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsRequired" ColumnName="IsRequired" />
+                <ScalarProperty Name="CustomFieldName" ColumnName="CustomFieldName" />
+                <ScalarProperty Name="CustomFieldID" ColumnName="CustomFieldID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CustomFieldType">
+            <EntityTypeMapping TypeName="IsTypeOf(InvertedSoftwareCartModel.CustomFieldType)">
+              <MappingFragment StoreEntitySet="CustomFieldType">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CustomFieldTypeName" ColumnName="CustomFieldTypeName" />
+                <ScalarProperty Name="CustomFieldTypeID" ColumnName="CustomFieldTypeID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="FK_CustomField_CustomFieldType" TypeName="InvertedSoftwareCartModel.FK_CustomField_CustomFieldType" StoreEntitySet="CustomField">
+            <EndProperty Name="CustomField">
+              <ScalarProperty Name="CustomFieldID" ColumnName="CustomFieldID" /></EndProperty>
+            <EndProperty Name="CustomFieldType">
+              <ScalarProperty Name="CustomFieldTypeID" ColumnName="CustomFieldTypeID" /></EndProperty></AssociationSetMapping>
+          <AssociationSetMapping Name="FK_CustomField_Product" TypeName="InvertedSoftwareCartModel.FK_CustomField_Product" StoreEntitySet="CustomField">
+            <EndProperty Name="CustomField">
+              <ScalarProperty Name="CustomFieldID" ColumnName="CustomFieldID" /></EndProperty>
+            <EndProperty Name="Product">
+              <ScalarProperty Name="ProductID" ColumnName="ProductID" /></EndProperty>
+            <Condition ColumnName="ProductID" IsNull="false" /></AssociationSetMapping></EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="CartModel">
+        <EntityTypeShape EntityType="InvertedSoftwareCartModel.Category" Width="1.5" PointX="0.75" PointY="0.875" Height="1.9436327856779097" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvertedSoftwareCartModel.FeaturedProduct" Width="1.5" PointX="3" PointY="5.125" Height="1.6099088333050418" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvertedSoftwareCartModel.Image" Width="1.5" PointX="3" PointY="10.75" Height="2.110494761864345" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvertedSoftwareCartModel.Product" Width="1.5" PointX="0.75" PointY="4.5" Height="2.7779426666100822" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvertedSoftwareCartModel.ProductCategory" Width="1.5" PointX="3" PointY="2.125" Height="1.6099088333050409" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvertedSoftwareCartModel.RelatedProduct" Width="1.5" PointX="3" PointY="8.375" Height="1.6099088333050418" IsExpanded="true" />
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_FeaturedProduct_Category" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="1.8468163928389547" />
+          <ConnectorPoint PointX="2.625" PointY="1.8468163928389547" />
+          <ConnectorPoint PointX="2.625" PointY="6.1899902161268248" />
+          <ConnectorPoint PointX="3" PointY="6.1899902161268248" />
+          </AssociationConnector>
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_ProductCategory_Category" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.4718163928389547" />
+          <ConnectorPoint PointX="2.5416666666666665" PointY="2.4718163928389543" />
+          <ConnectorPoint PointX="2.7083333333333335" PointY="2.4718163928389547" />
+          <ConnectorPoint PointX="3" PointY="2.4718163928389547" /></AssociationConnector>
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_FeaturedProduct_Product" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="5.5949951080634124" />
+          <ConnectorPoint PointX="2.5416666666666665" PointY="5.5949951080634115" />
+          <ConnectorPoint PointX="2.7708333333333335" PointY="5.5949951080634124" />
+          <ConnectorPoint PointX="3" PointY="5.5949951080634124" /></AssociationConnector>
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_Image_Product" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.4492184375" PointY="7.6116666189829507" />
+          <ConnectorPoint PointX="1.4492184375" PointY="11.805247380932173" />
+          <ConnectorPoint PointX="1.9654993229166669" PointY="11.805247380932173" />
+          <ConnectorPoint PointX="2.1321659895833336" PointY="11.805247380932173" />
+          <ConnectorPoint PointX="3" PointY="11.805247380932173" /></AssociationConnector>
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_ProductCategory_Product" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="6.9008279175548886" />
+          <ConnectorPoint PointX="2.6875" PointY="6.9008279175548886" />
+          <ConnectorPoint PointX="2.6875" PointY="3.1346146130719976" />
+          <ConnectorPoint PointX="3" PointY="3.1346146130719976" /></AssociationConnector>
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_RelatedProduct_Product" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.7851603125" PointY="7.6116666189829507" />
+          <ConnectorPoint PointX="1.7851603125" PointY="9.4645895377416309" />
+          <ConnectorPoint PointX="1.9654993229166669" PointY="9.4645895377416309" />
+          <ConnectorPoint PointX="2.1321659895833336" PointY="9.4645895377416309" />
+          <ConnectorPoint PointX="3" PointY="9.4645895377416309" /></AssociationConnector>
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_RelatedProduct_Product1" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.06835671875" PointY="7.6116666189829507" />
+          <ConnectorPoint PointX="1.06835671875" PointY="8.8885422688708147" />
+          <ConnectorPoint PointX="1.3658851041666666" PointY="8.8885422688708147" />
+          <ConnectorPoint PointX="1.5325517708333332" PointY="8.8885422688708147" />
+          <ConnectorPoint PointX="1.7018269791666667" PointY="8.8885422688708147" />
+          <ConnectorPoint PointX="1.8684936458333332" PointY="8.8885422688708147" />
+          <ConnectorPoint PointX="1.9654993229166669" PointY="8.8885422688708147" />
+          <ConnectorPoint PointX="2.1321659895833336" PointY="8.8885422688708147" />
+          <ConnectorPoint PointX="3" PointY="8.8885422688708147" /></AssociationConnector>
+        <EntityTypeShape EntityType="InvertedSoftwareCartModel.ProductOption" Width="1.5" PointX="3" PointY="14" Height="1.9436327856779094" />
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_ProductOption_Product" >
+          <ConnectorPoint PointX="2.04883265625" PointY="7.6116666189829507" />
+          <ConnectorPoint PointX="2.04883265625" PointY="14.971816392838955" />
+          <ConnectorPoint PointX="3" PointY="14.971816392838955" /></AssociationConnector>
+        <EntityTypeShape EntityType="InvertedSoftwareCartModel.CustomField" Width="1.5" PointX="7.75" PointY="6.625" Height="1.9436327856779094" />
+        <EntityTypeShape EntityType="InvertedSoftwareCartModel.CustomFieldType" Width="1.5" PointX="5.5" PointY="0.75" Height="1.6099088333050413" />
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_CustomField_CustomFieldType" >
+          <ConnectorPoint PointX="6.25" PointY="2.3599088333050413" />
+          <ConnectorPoint PointX="6.25" PointY="7.5968163928389547" />
+          <ConnectorPoint PointX="7.75" PointY="7.5968163928389547" /></AssociationConnector>
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_CustomField_Product" >
+          <ConnectorPoint PointX="2.25" PointY="7.2488221551969216" />
+          <ConnectorPoint PointX="6.166666666666667" PointY="7.2488221551969207" />
+          <ConnectorPoint PointX="6.333333333333333" PointY="7.2488221551969216" />
+          <ConnectorPoint PointX="7.75" PointY="7.2488221551969216" /></AssociationConnector></Diagram></edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

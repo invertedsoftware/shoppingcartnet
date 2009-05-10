@@ -1,0 +1,63 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<%@ Register src="UserControls/MenuControl.ascx" tagname="MenuControl" tagprefix="uc1" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="template">
+    <form id="form1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+            </asp:ScriptManager>
+   <table cellpadding="3" cellspacing="3" border="0" width="100%">
+   <tr>
+    <td colspan="2" align="center"><h1><span class="allcaps"><%= ConfigurationManager.AppSettings["StoreName"] %></span></h1></td>
+   </tr>
+   <tr>
+    <td colspan="2" align="right">
+                <asp:LoginView id="LoginView1" runat="server">
+                    <AnonymousTemplate>
+                        <a href="Login.aspx">Login</a>
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        Hello
+                        <asp:LoginName id="LoginName1" runat="Server"></asp:LoginName>.<br />
+                        <asp:LoginStatus ID="LoginStatus1" runat="server" />
+                    </LoggedInTemplate>
+                    <RoleGroups>
+                        <asp:RoleGroup Roles="Admin">
+                            <ContentTemplate>
+                                <asp:LoginName id="LoginName2" runat="Server"></asp:LoginName>, you
+                                are logged in as an Admin..<br />
+                        <asp:LoginStatus ID="LoginStatus1" runat="server" />
+                            </ContentTemplate>
+                        </asp:RoleGroup>
+                        <asp:RoleGroup Roles="SuperAdmin">
+                            <ContentTemplate>
+                                <asp:LoginName id="LoginName3" runat="Server"></asp:LoginName>, you
+                                are logged in as a Super Admin..<br />
+                        <asp:LoginStatus ID="LoginStatus1" runat="server" />
+                            </ContentTemplate>
+                        </asp:RoleGroup>
+                    </RoleGroups>
+                </asp:LoginView>
+</td>
+   </tr>
+   <tr>
+        <td style="width:0%" valign="top">
+            <uc1:MenuControl ID="MenuControl1" runat="server" />
+        </td>
+        <td><asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+            
+            </asp:ContentPlaceHolder></td>
+   </tr>
+   </table>
+    </form>
+    <center>Open Source E Commerce Software<br /><a href="http://shoppingcartnet.codeplex.com/" target="_blank">Shopping Cart .NET</a></center>
+</body>
+</html>

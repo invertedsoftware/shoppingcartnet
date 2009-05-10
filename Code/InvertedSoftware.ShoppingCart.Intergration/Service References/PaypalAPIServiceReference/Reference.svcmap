@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="eaa1c5d0-15af-4124-8ee6-29c593920bec" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://www.sandbox.paypal.com/wsdl/PayPalSvc.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PayPalSvc.wsdl" MetadataType="Wsdl" ID="f80cef78-dba4-45e3-9d28-de6b73cf7988" SourceId="1" SourceUrl="https://www.sandbox.paypal.com/wsdl/PayPalSvc.wsdl" />
+    <MetadataFile FileName="CoreComponentTypes.xsd" MetadataType="Schema" ID="362fb03b-20a1-41bd-baeb-d0692c97b38a" SourceId="1" SourceUrl="https://www.sandbox.paypal.com/wsdl/CoreComponentTypes.xsd" />
+    <MetadataFile FileName="eBLBaseComponents.xsd" MetadataType="Schema" ID="38b1e025-8bab-403d-993a-18bae83797c2" SourceId="1" SourceUrl="https://www.sandbox.paypal.com/wsdl/eBLBaseComponents.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

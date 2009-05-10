@@ -1,0 +1,86 @@
+﻿New Order was placed
+
+<table cellpadding="2" cellspacing="3" border="0">
+<tr>
+	<td><b>Customer Info</b></td>
+</tr>
+<tr>
+	<td>Company: <@Company@></td>
+</tr>
+<tr>
+	<td>Name: <@FirstName@> <@LastName@></td>
+</tr>
+<tr>
+	<td>Address: <@Address@></td>
+</tr>
+<tr>
+	<td>City: <@City@></td>
+</tr>
+<tr>
+	<td>State/Province: <@State@><@Province@></td>
+</tr>
+<tr>
+	<td>Country: <@Country@></td>
+</tr>
+<tr>
+	<td>Zipcode: <@Zipcode@></td>
+</tr>
+<tr>
+	<td>Day Phone: <@DayPhone@></td>
+</tr>
+<tr>
+	<td>Evening Phone: <@EveningPhone@></td>
+</tr>
+<tr>
+	<td>Cell Phone: <@CellPhone@></td>
+</tr>
+<tr>
+	<td>Fax: <@Fax@></td>
+</tr>
+<tr>
+	<td>Email: <@Email@></td>
+</tr>
+<tr>
+	<td><b>Shipping Info</b></td>
+</tr>
+<tr>
+	<td>Address: <@ShippingAddress@></td>
+</tr>
+<tr>
+	<td>City: <@ShippingCity@></td>
+</tr>
+<tr>
+	<td>State/Province: <@ShippingState@><@ShippingProvince@></td>
+</tr>
+<tr>
+	<td>Country: <@ShippingCountry@></td>
+</tr>
+<tr>
+	<td>Zipcode: <@ShippingZipcode@></td>
+</tr>
+<tr>
+	<td>Comments: <@Comments@></td>
+</tr>
+<tr>
+	<td><b>Order Info</b></td>
+</tr>
+<tr>
+    <td>Ship using: <@ShippingProvider@></td>
+</tr>
+<tr>
+    <td>Shipping Cost: <@Shipping@></td>
+</tr>
+<tr>
+    <td>Tax: <@Tax@></td>
+</tr>
+<tr>
+    <td>Total: <@Total@></td>
+</tr>
+<tr>
+	<td><b>Items</b></td>
+</tr>
+<@Cart@>
+</table>
+
+
+

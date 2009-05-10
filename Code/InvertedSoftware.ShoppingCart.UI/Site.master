@@ -1,0 +1,50 @@
+﻿<%@ Master Language="C#" CodeFile="Site.master.cs" Inherits="Site" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Admin Area</title>
+</head>
+<body class="template">
+    <h1><span class="allcaps">Inverted Software Shopping Cart</span></h1>
+    <div class="back">
+        <a runat="server" href="Admin"><img alt="Back Main Admin page" runat="server" src="Admin/DynamicData/Content/Images/back.gif" />Back to Admin home</a>
+        
+    </div>
+    <div class="template">
+    <asp:LoginView id="LoginView1" runat="server">
+                    <AnonymousTemplate>
+                        <a href="Login.aspx">Login</a>
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        Hello
+                        <asp:LoginName id="LoginName1" runat="Server"></asp:LoginName>.
+                    </LoggedInTemplate>
+                    <RoleGroups>
+                        <asp:RoleGroup Roles="Admin">
+                            <ContentTemplate>
+                                <asp:LoginName id="LoginName2" runat="Server"></asp:LoginName>, you
+                                are logged in as an Admin.
+                            </ContentTemplate>
+                        </asp:RoleGroup>
+                        <asp:RoleGroup Roles="SuperAdmin">
+                            <ContentTemplate>
+                                <asp:LoginName id="LoginName2" runat="Server"></asp:LoginName>, you
+                                are logged in as a Super Admin.
+                            </ContentTemplate>
+                        </asp:RoleGroup>
+                    </RoleGroups>
+                </asp:LoginView>
+    </div>
+
+    <form id="form1" runat="server">
+    <div>
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"/>
+        
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>

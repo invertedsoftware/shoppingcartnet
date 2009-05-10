@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertedSoftware.ShoppingCart.DataLayer", "InvertedSoftware.ShoppingCart.DataLayer\InvertedSoftware.ShoppingCart.DataLayer.csproj", "{4647520E-D34E-4E3F-B816-BB3DDF332310}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertedSoftware.ShoppingCart.BusinessLayer", "InvertedSoftware.ShoppingCart.BusinessLayer\InvertedSoftware.ShoppingCart.BusinessLayer.csproj", "{FF6200FC-BB04-44C2-B83D-5A52283403D7}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "InvertedSoftware.ShoppingCart.UI", "InvertedSoftware.ShoppingCart.UI\", "{EB568776-AE3D-4009-BE13-0BA96954166C}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFramework = "3.5"
+		ProjectReferences = "{4647520E-D34E-4E3F-B816-BB3DDF332310}|InvertedSoftware.ShoppingCart.DataLayer.dll;{FF6200FC-BB04-44C2-B83D-5A52283403D7}|InvertedSoftware.ShoppingCart.BusinessLayer.dll;{9945724C-5050-4CC2-9DCF-E26FF493F3B1}|InvertedSoftware.ShoppingCart.Common.dll;{5BACE06A-A7CF-4145-AF92-685DE4EB3B48}|InvertedSoftware.ShoppingCart.Intergration.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/InvertedSoftware.ShoppingCart.UI"
+		Debug.AspNetCompiler.PhysicalPath = "InvertedSoftware.ShoppingCart.UI\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\InvertedSoftware.ShoppingCart.UI\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/InvertedSoftware.ShoppingCart.UI"
+		Release.AspNetCompiler.PhysicalPath = "InvertedSoftware.ShoppingCart.UI\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\InvertedSoftware.ShoppingCart.UI\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "3675"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertedSoftware.ShoppingCart.Common", "InvertedSoftware.ShoppingCart.Common\InvertedSoftware.ShoppingCart.Common.csproj", "{9945724C-5050-4CC2-9DCF-E26FF493F3B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertedSoftware.ShoppingCart.Intergration", "InvertedSoftware.ShoppingCart.Intergration\InvertedSoftware.ShoppingCart.Intergration.csproj", "{5BACE06A-A7CF-4145-AF92-685DE4EB3B48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4647520E-D34E-4E3F-B816-BB3DDF332310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4647520E-D34E-4E3F-B816-BB3DDF332310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4647520E-D34E-4E3F-B816-BB3DDF332310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4647520E-D34E-4E3F-B816-BB3DDF332310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF6200FC-BB04-44C2-B83D-5A52283403D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF6200FC-BB04-44C2-B83D-5A52283403D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF6200FC-BB04-44C2-B83D-5A52283403D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF6200FC-BB04-44C2-B83D-5A52283403D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB568776-AE3D-4009-BE13-0BA96954166C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB568776-AE3D-4009-BE13-0BA96954166C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB568776-AE3D-4009-BE13-0BA96954166C}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB568776-AE3D-4009-BE13-0BA96954166C}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{9945724C-5050-4CC2-9DCF-E26FF493F3B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9945724C-5050-4CC2-9DCF-E26FF493F3B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9945724C-5050-4CC2-9DCF-E26FF493F3B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9945724C-5050-4CC2-9DCF-E26FF493F3B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BACE06A-A7CF-4145-AF92-685DE4EB3B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BACE06A-A7CF-4145-AF92-685DE4EB3B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BACE06A-A7CF-4145-AF92-685DE4EB3B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BACE06A-A7CF-4145-AF92-685DE4EB3B48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

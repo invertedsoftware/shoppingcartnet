@@ -1,0 +1,7 @@
+﻿Hello <@FirstName@>,
+This email is to confirm a new order has been placed by you.
+Your order number is <@OrderNumber@>
+You can log on and check your order's status at: <@StoreURL@>/MyAccount
+
+Thank you
+<@StoreName@> Sales Team.

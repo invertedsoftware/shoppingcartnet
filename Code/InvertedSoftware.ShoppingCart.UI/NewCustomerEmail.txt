@@ -1,0 +1,9 @@
+﻿Hello <@FirstName@>,
+Welcome to <@StoreName@>. You can log on and check orders here: <@StoreURL@>/MyAccount
+
+Your user name is <@Email@> and your password is <@Password@>
+
+You can change your password at any time.
+
+Thank you
+<@StoreName@> Sales Team.

@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="TagsControl.ascx.cs" Inherits="UserControls_TagsControl" %>
+<%@ OutputCache Duration="30" VaryByParam="none" %>
 <asp:Repeater ID="TagsRepeater" runat="server" 
-    DataSourceID="TagsObjectDataSource">
+    DataSourceID="TagsObjectDataSource" onprerender="TagsRepeater_PreRender">
     <HeaderTemplate>
          <table cellpadding="2" cellspacing="3" border="0" width="200px" class="gridview">
         <tr>

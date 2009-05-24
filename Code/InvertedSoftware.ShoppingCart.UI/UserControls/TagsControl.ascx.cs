@@ -11,4 +11,9 @@ public partial class UserControls_TagsControl : System.Web.UI.UserControl
     {
 
     }
+    protected void TagsRepeater_PreRender(object sender, EventArgs e)
+    {
+        if (TagsRepeater.Items.Count == 0)
+            TagsRepeater.Visible = false;
+    }
 }

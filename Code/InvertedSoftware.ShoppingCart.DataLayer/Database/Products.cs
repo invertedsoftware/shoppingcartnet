@@ -133,6 +133,97 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return productList;
         }
 
+        public List<Product> SearchProducts(string keyword, int pageIndex, int maximumRows)
+        {
+            List<Product> productList = new List<Product>();
+
+            SqlParameter[] paramArray = new SqlParameter[4];
+
+            SqlParameter PageIndexSqlParameter = new SqlParameter("@PageIndex", SqlDbType.Int);
+            PageIndexSqlParameter.Value = pageIndex;
+            paramArray[0] = PageIndexSqlParameter;
+
+            SqlParameter PageSizeSqlParameter = new SqlParameter("@PageSize", SqlDbType.Int);
+            PageSizeSqlParameter.Value = maximumRows;
+            paramArray[1] = PageSizeSqlParameter;
+
+            SqlParameter KeywordSqlParameter = new SqlParameter("@Keyword", SqlDbType.VarChar, 200);
+            KeywordSqlParameter.Value = keyword;
+            paramArray[2] = KeywordSqlParameter;
+
+            SqlParameter TotalRecordsSqlParameter = new SqlParameter("@TotalRecords", SqlDbType.Int);
+            TotalRecordsSqlParameter.Direction = ParameterDirection.ReturnValue;
+            paramArray[3] = TotalRecordsSqlParameter;
+
+            SqlCommand cmd = new SqlCommand();
+            using (SqlConnection conn = new SqlConnection(SqlHelper.mainConnectionString))
+            {
+
+                try
+                {
+                    SqlHelper.PrepareCommand(cmd, conn, null, CommandType.StoredProcedure, "SearchProducts", paramArray);
+                    SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                    while (rdr.Read())
+                        productList.Add((Product)ObjectHelper.GetAs(rdr, typeof(Product)));
+                    rdr.Close();
+                    ProductCount = Convert.ToInt32(TotalRecordsSqlParameter.Value);
+                    cmd.Parameters.Clear();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Error getting Products", e);
+                }
+            }
+
+            return productList;
+        }
+
+        public List<Product> GetProductsByTags(string tagName, int pageIndex, int maximumRows)
+        {
+            List<Product> productList = new List<Product>();
+
+            SqlParameter[] paramArray = new SqlParameter[4];
+
+            SqlParameter PageIndexSqlParameter = new SqlParameter("@PageIndex", SqlDbType.Int);
+            PageIndexSqlParameter.Value = pageIndex;
+            paramArray[0] = PageIndexSqlParameter;
+
+            SqlParameter PageSizeSqlParameter = new SqlParameter("@PageSize", SqlDbType.Int);
+            PageSizeSqlParameter.Value = maximumRows;
+            paramArray[1] = PageSizeSqlParameter;
+
+            SqlParameter TagNameSqlParameter = new SqlParameter("@TagName", SqlDbType.VarChar, 200);
+            TagNameSqlParameter.Value = tagName;
+            paramArray[2] = TagNameSqlParameter;
+
+            SqlParameter TotalRecordsSqlParameter = new SqlParameter("@TotalRecords", SqlDbType.Int);
+            TotalRecordsSqlParameter.Direction = ParameterDirection.ReturnValue;
+            paramArray[3] = TotalRecordsSqlParameter;
+
+            SqlCommand cmd = new SqlCommand();
+            using (SqlConnection conn = new SqlConnection(SqlHelper.mainConnectionString))
+            {
+                try
+                {
+                    SqlHelper.PrepareCommand(cmd, conn, null, CommandType.StoredProcedure, "GetProductsByTag", paramArray);
+                    SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                    while (rdr.Read())
+                        productList.Add((Product)ObjectHelper.GetAs(rdr, typeof(Product)));
+                    rdr.Close();
+                    ProductCount = Convert.ToInt32(TotalRecordsSqlParameter.Value);
+                    cmd.Parameters.Clear();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Error getting Products", e);
+                }
+            }
+
+            return productList;
+        }
+
         public List<ProductOption> GetProductOptions(int productID)
         {
             List<ProductOption> productOptions = new List<ProductOption>();

@@ -49,5 +49,24 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
 
             return categoryCollection;
         }
+
+        public List<string> GetTags()
+        {
+            List<string> tags = new List<string>();
+           
+            try
+            {
+                using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetTags"))
+                {
+                    while (rdr.Read())
+                        tags.Add(Convert.ToString(rdr["TagName"]));
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error getting tags", e);
+            }
+            return tags;
+        }
     }
 }

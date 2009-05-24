@@ -46,6 +46,10 @@
                         </asp:RoleGroup>
                     </RoleGroups>
                 </asp:LoginView>
+                <br /><br />
+                <asp:TextBox ID="SearchTextBox" AutoPostBack="true" 
+                    onclick="javascript:this.value='';" runat="server" Text="Search" 
+                    ontextchanged="SearchTextBox_TextChanged"></asp:TextBox>
 </td>
    </tr>
    <tr>

@@ -4,6 +4,8 @@
 
 <%@ Register src="UserControls/FeaturedProductsControl.ascx" tagname="FeaturedProductsControl" tagprefix="uc2" %>
 
+<%@ Register src="UserControls/TagsControl.ascx" tagname="TagsControl" tagprefix="uc3" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -37,7 +39,8 @@
 <tr>
     <td align="center" style="width:100%"><uc1:ProductsGridControl ID="ProductsGrid" runat="server" /></td>
     <td>
-        <uc2:FeaturedProductsControl ID="FeaturedProductsControl1" runat="server" />
+        <uc2:FeaturedProductsControl ID="FeaturedProductsControl1" runat="server" /><br />
+        <uc3:TagsControl ID="TagsControl1" runat="server" />
     </td>
 </tr>
 <tr>

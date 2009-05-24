@@ -12,5 +12,9 @@ public partial class MasterPage : System.Web.UI.MasterPage
         
     }
 
-    
+
+    protected void SearchTextBox_TextChanged(object sender, EventArgs e)
+    {
+        Response.Redirect("Search.aspx?Keyword=" + HttpUtility.UrlEncode(SearchTextBox.Text));
+    }
 }

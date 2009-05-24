@@ -6,6 +6,8 @@
 
 <%@ Register src="UserControls/CustomFieldsControl.ascx" tagname="CustomFieldsControl" tagprefix="uc3" %>
 
+<%@ Register src="UserControls/TagsControl.ascx" tagname="TagsControl" tagprefix="uc4" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -117,7 +119,8 @@
 
 </table></td>
     <td>
-        <uc1:RelatedProductsControl ID="RelatedProductsControl1" runat="server" />
+        <uc1:RelatedProductsControl ID="RelatedProductsControl1" runat="server" /><br />
+        <uc4:TagsControl ID="TagsControl1" runat="server" />
     </td>
 </tr>
 </table>

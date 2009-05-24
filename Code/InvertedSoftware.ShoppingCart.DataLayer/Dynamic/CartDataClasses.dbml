@@ -201,6 +201,7 @@
       <Association Name="Product_RelatedProduct" Member="RelatedProducts" ThisKey="ProductID" OtherKey="ProductOneID" Type="RelatedProduct" />
       <Association Name="Product_RelatedProduct1" Member="RelatedProducts1" ThisKey="ProductID" OtherKey="ProductTwoID" Type="RelatedProduct" />
       <Association Name="Product_Shipping" Member="Shippings" ThisKey="ProductID" OtherKey="ProductID" Type="Shipping" />
+      <Association Name="Product_ProductTag" Member="ProductTags" ThisKey="ProductID" OtherKey="ProductID" Type="ProductTag" />
     </Type>
   </Table>
   <Table Name="dbo.ProductCategory" Member="ProductCategories">
@@ -284,6 +285,24 @@
       <Association Name="State_Customer" Member="Customers" ThisKey="StateID" OtherKey="StateID" Type="Customer" />
       <Association Name="State_Order" Member="Orders" ThisKey="StateID" OtherKey="StateID" Type="Order" />
       <Association Name="State_Shipping" Member="Shippings" ThisKey="StateID" OtherKey="StateID" Type="Shipping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductTag" Member="ProductTags">
+    <Type Name="ProductTag">
+      <Column Name="ProductTagID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TagID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Product_ProductTag" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+      <Association Name="Tag_ProductTag" Member="Tag" ThisKey="TagID" OtherKey="TagID" Type="Tag" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tag" Member="Tags">
+    <Type Name="Tag">
+      <Column Name="TagID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TagName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Tag_ProductTag" Member="ProductTags" ThisKey="TagID" OtherKey="TagID" Type="ProductTag" />
     </Type>
   </Table>
 </Database>

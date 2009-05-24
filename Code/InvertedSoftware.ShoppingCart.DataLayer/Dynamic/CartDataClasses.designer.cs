@@ -93,6 +93,12 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
     partial void InsertState(State instance);
     partial void UpdateState(State instance);
     partial void DeleteState(State instance);
+    partial void InsertProductTag(ProductTag instance);
+    partial void UpdateProductTag(ProductTag instance);
+    partial void DeleteProductTag(ProductTag instance);
+    partial void InsertTag(Tag instance);
+    partial void UpdateTag(Tag instance);
+    partial void DeleteTag(Tag instance);
     #endregion
 		
 		public CartDataClassesDataContext(string connection) : 
@@ -284,6 +290,22 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 			get
 			{
 				return this.GetTable<State>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProductTag> ProductTags
+		{
+			get
+			{
+				return this.GetTable<ProductTag>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Tag> Tags
+		{
+			get
+			{
+				return this.GetTable<Tag>();
 			}
 		}
 	}
@@ -4384,6 +4406,8 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		
 		private EntitySet<Shipping> _Shippings;
 		
+		private EntitySet<ProductTag> _ProductTags;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -4413,6 +4437,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 			this._RelatedProducts = new EntitySet<RelatedProduct>(new Action<RelatedProduct>(this.attach_RelatedProducts), new Action<RelatedProduct>(this.detach_RelatedProducts));
 			this._RelatedProducts1 = new EntitySet<RelatedProduct>(new Action<RelatedProduct>(this.attach_RelatedProducts1), new Action<RelatedProduct>(this.detach_RelatedProducts1));
 			this._Shippings = new EntitySet<Shipping>(new Action<Shipping>(this.attach_Shippings), new Action<Shipping>(this.detach_Shippings));
+			this._ProductTags = new EntitySet<ProductTag>(new Action<ProductTag>(this.attach_ProductTags), new Action<ProductTag>(this.detach_ProductTags));
 			OnCreated();
 		}
 		
@@ -4653,6 +4678,19 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 			}
 		}
 		
+		[Association(Name="Product_ProductTag", Storage="_ProductTags", ThisKey="ProductID", OtherKey="ProductID")]
+		public EntitySet<ProductTag> ProductTags
+		{
+			get
+			{
+				return this._ProductTags;
+			}
+			set
+			{
+				this._ProductTags.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -4776,6 +4814,18 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		}
 		
 		private void detach_Shippings(Shipping entity)
+		{
+			this.SendPropertyChanging();
+			entity.Product = null;
+		}
+		
+		private void attach_ProductTags(ProductTag entity)
+		{
+			this.SendPropertyChanging();
+			entity.Product = this;
+		}
+		
+		private void detach_ProductTags(ProductTag entity)
 		{
 			this.SendPropertyChanging();
 			entity.Product = null;
@@ -6579,6 +6629,360 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		{
 			this.SendPropertyChanging();
 			entity.State = null;
+		}
+	}
+	
+	[Table(Name="dbo.ProductTag")]
+	public partial class ProductTag : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ProductTagID;
+		
+		private int _ProductID;
+		
+		private int _TagID;
+		
+		private bool _Active;
+		
+		private EntityRef<Product> _Product;
+		
+		private EntityRef<Tag> _Tag;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnProductTagIDChanging(int value);
+    partial void OnProductTagIDChanged();
+    partial void OnProductIDChanging(int value);
+    partial void OnProductIDChanged();
+    partial void OnTagIDChanging(int value);
+    partial void OnTagIDChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public ProductTag()
+		{
+			this._Product = default(EntityRef<Product>);
+			this._Tag = default(EntityRef<Tag>);
+			OnCreated();
+		}
+		
+		[Column(Storage="_ProductTagID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ProductTagID
+		{
+			get
+			{
+				return this._ProductTagID;
+			}
+			set
+			{
+				if ((this._ProductTagID != value))
+				{
+					this.OnProductTagIDChanging(value);
+					this.SendPropertyChanging();
+					this._ProductTagID = value;
+					this.SendPropertyChanged("ProductTagID");
+					this.OnProductTagIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ProductID", DbType="Int NOT NULL")]
+		public int ProductID
+		{
+			get
+			{
+				return this._ProductID;
+			}
+			set
+			{
+				if ((this._ProductID != value))
+				{
+					if (this._Product.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProductIDChanging(value);
+					this.SendPropertyChanging();
+					this._ProductID = value;
+					this.SendPropertyChanged("ProductID");
+					this.OnProductIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_TagID", DbType="Int NOT NULL")]
+		public int TagID
+		{
+			get
+			{
+				return this._TagID;
+			}
+			set
+			{
+				if ((this._TagID != value))
+				{
+					if (this._Tag.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTagIDChanging(value);
+					this.SendPropertyChanging();
+					this._TagID = value;
+					this.SendPropertyChanged("TagID");
+					this.OnTagIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Product_ProductTag", Storage="_Product", ThisKey="ProductID", OtherKey="ProductID", IsForeignKey=true)]
+		public Product Product
+		{
+			get
+			{
+				return this._Product.Entity;
+			}
+			set
+			{
+				Product previousValue = this._Product.Entity;
+				if (((previousValue != value) 
+							|| (this._Product.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Product.Entity = null;
+						previousValue.ProductTags.Remove(this);
+					}
+					this._Product.Entity = value;
+					if ((value != null))
+					{
+						value.ProductTags.Add(this);
+						this._ProductID = value.ProductID;
+					}
+					else
+					{
+						this._ProductID = default(int);
+					}
+					this.SendPropertyChanged("Product");
+				}
+			}
+		}
+		
+		[Association(Name="Tag_ProductTag", Storage="_Tag", ThisKey="TagID", OtherKey="TagID", IsForeignKey=true)]
+		public Tag Tag
+		{
+			get
+			{
+				return this._Tag.Entity;
+			}
+			set
+			{
+				Tag previousValue = this._Tag.Entity;
+				if (((previousValue != value) 
+							|| (this._Tag.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Tag.Entity = null;
+						previousValue.ProductTags.Remove(this);
+					}
+					this._Tag.Entity = value;
+					if ((value != null))
+					{
+						value.ProductTags.Add(this);
+						this._TagID = value.TagID;
+					}
+					else
+					{
+						this._TagID = default(int);
+					}
+					this.SendPropertyChanged("Tag");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[Table(Name="dbo.Tag")]
+	public partial class Tag : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TagID;
+		
+		private string _TagName;
+		
+		private System.Nullable<bool> _Active;
+		
+		private EntitySet<ProductTag> _ProductTags;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTagIDChanging(int value);
+    partial void OnTagIDChanged();
+    partial void OnTagNameChanging(string value);
+    partial void OnTagNameChanged();
+    partial void OnActiveChanging(System.Nullable<bool> value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public Tag()
+		{
+			this._ProductTags = new EntitySet<ProductTag>(new Action<ProductTag>(this.attach_ProductTags), new Action<ProductTag>(this.detach_ProductTags));
+			OnCreated();
+		}
+		
+		[Column(Storage="_TagID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TagID
+		{
+			get
+			{
+				return this._TagID;
+			}
+			set
+			{
+				if ((this._TagID != value))
+				{
+					this.OnTagIDChanging(value);
+					this.SendPropertyChanging();
+					this._TagID = value;
+					this.SendPropertyChanged("TagID");
+					this.OnTagIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_TagName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string TagName
+		{
+			get
+			{
+				return this._TagName;
+			}
+			set
+			{
+				if ((this._TagName != value))
+				{
+					this.OnTagNameChanging(value);
+					this.SendPropertyChanging();
+					this._TagName = value;
+					this.SendPropertyChanged("TagName");
+					this.OnTagNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Active", DbType="Bit")]
+		public System.Nullable<bool> Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Tag_ProductTag", Storage="_ProductTags", ThisKey="TagID", OtherKey="TagID")]
+		public EntitySet<ProductTag> ProductTags
+		{
+			get
+			{
+				return this._ProductTags;
+			}
+			set
+			{
+				this._ProductTags.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ProductTags(ProductTag entity)
+		{
+			this.SendPropertyChanging();
+			entity.Tag = this;
+		}
+		
+		private void detach_ProductTags(ProductTag entity)
+		{
+			this.SendPropertyChanging();
+			entity.Tag = null;
 		}
 	}
 }

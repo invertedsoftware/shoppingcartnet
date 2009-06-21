@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
+using System.Web.Profile;
 using System.Web.Security;
 using System.Web.UI;
 
@@ -52,15 +54,32 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer.Controls
             return customer;
         }
 
+        public string GetLoggedUserID()
+        {
+            MembershipUser currentUser = Membership.GetUser();
+            if (currentUser != null)
+                return currentUser.ProviderUserKey.ToString();
+            return string.Empty;
+        }
+
         private DataLayer.DataObjects.Cart cart = null;
 
         public DataLayer.DataObjects.Cart Cart
         {
             get
-            {
+            {   // If there is a saved cart, show it
+                if (HttpContext.Current.Profile["ShoppingCart"] != null &&
+                    ((DataLayer.DataObjects.Cart)HttpContext.Current.Profile["ShoppingCart"]).CartItems.Count > 0)
+                {
+                    cart = (DataLayer.DataObjects.Cart)HttpContext.Current.Profile["ShoppingCart"];
+                    Session["ShoppingCart"] = cart;
+                    return cart;
+                }
+
                 if (Session["ShoppingCart"] == null)
                     Session["ShoppingCart"] = new DataLayer.DataObjects.Cart();
                 cart = (DataLayer.DataObjects.Cart)Session["ShoppingCart"];
+
                 return cart;
             }
             set

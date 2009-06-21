@@ -13,7 +13,7 @@
         <td><asp:Literal ID="MessageLiteral" runat="server"></asp:Literal></td>
     </tr>
     <tr>
-        <td>
+        <td align="center">
             <asp:Repeater ID="CartRepeater" runat="server" 
                 onitemcommand="CartRepeater_ItemCommand">
                 <HeaderTemplate>
@@ -65,7 +65,26 @@
         </tr>
        </table>
        <br />
-       <uc1:GoogleCheckoutControl ID="GoogleCheckoutControl1" runat="server" />
+       <uc1:GoogleCheckoutControl ID="GoogleCheckoutControl1" runat="server" /><br /><br />
+       <table cellpadding="2" cellspacing="3" border="0" class="gridview">
+       <tr>
+        <td colspan="3"><b>More:</b></td>
+       </tr>
+       <tr>
+        <td align="left" colspan="2">Saving your cart will enable you to continue your purchase at a later date from the current computer or if you log into your account, from any computer.</td>
+        <td><asp:Button ID="SaveButton" ValidationGroup="Save" runat="server" Text="Save My Cart" 
+                onclick="SaveButton_Click" /></td>
+       </tr>
+       <tr>
+        <td align="left">Email your cart to yourself or friends. Please separate Multiple Recipients using ,</td>
+        <td><asp:TextBox ID="EmailTextBox" MaxLength="200" ValidationGroup="Email" runat="server"></asp:TextBox><asp:RequiredFieldValidator
+                ID="EmailRequiredFieldValidator" ValidationGroup="Email" ControlToValidate="EmailTextBox" runat="server" ErrorMessage="Required"></asp:RequiredFieldValidator></td>
+        <td>
+            <asp:Button ID="EmailButton" runat="server" ValidationGroup="Email" Text="Email My Cart" 
+                onclick="EmailButton_Click" /></td>
+       </tr>
+       </table>
+            <br />
        </td>
     </tr>
     </table>

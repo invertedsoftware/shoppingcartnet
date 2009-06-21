@@ -59,15 +59,25 @@ public partial class Product : BasePage
         }
     }
 
-
-
     protected void AddButton_Click(object sender, EventArgs e)
     {
         if (!Page.IsValid)
             return;
+        DeleteSavedCart();
         CartManager manager = new CartManager(this.Cart);
         manager.Add(new CartItem() { CatalogNumber = CartProduct.CatalogNumber, PricePerUnit = CartProduct.price, ProductID = CartProduct.ProductID, ProductName = CartProduct.ProductName, Quantity = Convert.ToInt32(QtyTextBox.Text), ProductOptions = ProductOptionsControl1.SelectedOptions, CustomFields = CustomFieldsControl1.CustomFields });
         this.Cart = manager.ShoppingCart;
         Response.Redirect("ShoppingCart.aspx");
     }
+
+    public void DeleteSavedCart()
+    {
+        if (HttpContext.Current.Profile["ShoppingCart"] != null)
+        {
+            Profile.ShoppingCart = null;
+            Profile.Save();
+        }
+    }
+
+
 }

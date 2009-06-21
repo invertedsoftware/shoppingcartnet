@@ -129,5 +129,18 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
                 emailBody,
                 true);
         }
+
+        public static void EmailCart(string cartLink, string emails)
+        {
+            List<System.Net.Mail.MailAddress> toEmails = new List<System.Net.Mail.MailAddress>();
+            toEmails = emails.Split(',').Select(a => new System.Net.Mail.MailAddress(a.Trim())).ToList();
+
+            Email.SendSimpleEmail(ConfigurationManager.AppSettings["StoreName"],
+                ConfigurationManager.AppSettings["SalesTeamEmail"],
+                toEmails,
+                "Your shopping cart",
+                "Your shopping cart has been emailed to you. to view it please click the link <a href='" + cartLink + "'>" + cartLink + "</a> or copy and past it into your browser",
+                true);
+        }
     }
 }

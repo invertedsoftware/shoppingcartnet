@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Profile;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -17,6 +18,9 @@ public partial class ShoppingCart : BasePage
     {
         if (!Page.IsPostBack)
         {
+            if (!string.IsNullOrEmpty(Request.QueryString["CartID"]))
+                LoadCart(Request.QueryString["CartID"]);
+
             BindCart();
             GoogleCheckoutControl1.Visible = Convert.ToBoolean(ConfigurationManager.AppSettings["GoogleCheckoutEnabled"]);
         }
@@ -47,6 +51,7 @@ public partial class ShoppingCart : BasePage
     {
         CartManager manager = new CartManager(this.Cart);
         manager.Remove(e.Item.ItemIndex);
+        DeleteSavedCart();
         this.Cart = manager.ShoppingCart;
         BindCart();
 
@@ -62,6 +67,7 @@ public partial class ShoppingCart : BasePage
             else
                 manager.Remove(item.ItemIndex);
         }
+        DeleteSavedCart();
         this.Cart = manager.ShoppingCart;
         BindCart();
     }
@@ -90,5 +96,44 @@ public partial class ShoppingCart : BasePage
         foreach (CustomField field in item.CustomFields)
             sb.Append("<br>" + field.CustomFieldName + ": " + field.CustomFieldValue);
         return sb.ToString();
+    }
+
+    protected void SaveButton_Click(object sender, EventArgs e)
+    {
+        Profile.ShoppingCart = Cart;
+        Profile.Save();
+        MessageLiteral.Text = "Your cart has been saved";
+    }
+
+    public void DeleteSavedCart()
+    {
+        if (HttpContext.Current.Profile["ShoppingCart"] != null)
+        {
+            Profile.ShoppingCart = null;
+            Profile.Save();
+        }
+    }
+
+    protected void EmailButton_Click(object sender, EventArgs e)
+    {
+        if (!Page.IsValid)
+            return;
+        SaveButton_Click(sender, e);
+        string cartID = GetLoggedUserID();
+        if (string.IsNullOrEmpty(cartID))
+            cartID = Request.AnonymousID;
+        
+        string cartLink = ConfigurationManager.AppSettings["StoreURL"] + "/ShoppingCart.aspx?CartID=" + cartID;
+
+        EmailManager.EmailCart(cartLink, EmailTextBox.Text);
+        MessageLiteral.Text = "Your cart has been emailed";
+    }
+
+    public void LoadCart(string cartID)
+    {
+        ProfileCommon savedProfile = Profile.GetProfile(cartID);
+        if (savedProfile != null)
+            Cart = savedProfile.ShoppingCart;
+
     }
 }

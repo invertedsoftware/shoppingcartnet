@@ -54,6 +54,7 @@ public partial class UserControls_ProductsGridControl : System.Web.UI.UserContro
     {
         if (e.CommandName == "AddToCart")
         {
+            DeleteSavedCart();
             HiddenField ProductIDHiddenField = (HiddenField)((RepeaterItem)e.Item).FindControl("ProductIDHiddenField");
             int productID = 0;
             if (!int.TryParse(ProductIDHiddenField.Value, out productID))
@@ -87,4 +88,13 @@ public partial class UserControls_ProductsGridControl : System.Web.UI.UserContro
         }
     }
     #endregion
+
+    public void DeleteSavedCart()
+    {
+        if (HttpContext.Current.Profile["ShoppingCart"] != null)
+        {
+            Profile.ShoppingCart = null;
+            Profile.Save();
+        }
+    }
 }

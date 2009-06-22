@@ -62,6 +62,14 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer.Controls
             return string.Empty;
         }
 
+        public string GetLoggedUserName()
+        {
+            MembershipUser currentUser = Membership.GetUser();
+            if (currentUser != null)
+                return currentUser.UserName;
+            return string.Empty;
+        }
+
         private DataLayer.DataObjects.Cart cart = null;
 
         public DataLayer.DataObjects.Cart Cart

@@ -119,7 +119,7 @@ public partial class ShoppingCart : BasePage
         if (!Page.IsValid)
             return;
         SaveButton_Click(sender, e);
-        string cartID = GetLoggedUserID();
+        string cartID = GetLoggedUserName();
         if (string.IsNullOrEmpty(cartID))
             cartID = Request.AnonymousID;
         

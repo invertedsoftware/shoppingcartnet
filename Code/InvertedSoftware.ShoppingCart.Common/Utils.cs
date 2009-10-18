@@ -9,10 +9,27 @@ using InvertedSoftware.ShoppingCart.Common.Security;
 
 namespace InvertedSoftware.ShoppingCart.Common
 {
+    public enum Month
+    {
+        January = 1,
+        February = 2,
+        March = 3,
+        April = 4,
+        May = 5,
+        June = 6,
+        July = 7,
+        August = 8,
+        September = 9,
+        October = 10,
+        November = 11,
+        December = 12
+    }
+
     public static class Utils
     {
         public static readonly string ENCODING_SALT = ConfigurationManager.AppSettings["ENCODING_SALT"];
         public static readonly string ENCODING_VECTOR = ConfigurationManager.AppSettings["ENCODING_VECTOR"];
+        public static bool IS_CONFIGURED = false;
 
         public static string GetEncodedString(string textToEncode)
         {

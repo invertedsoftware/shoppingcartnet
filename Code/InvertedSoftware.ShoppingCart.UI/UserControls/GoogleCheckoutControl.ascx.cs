@@ -42,7 +42,10 @@ public partial class UserControls_GoogleCheckoutControl : System.Web.UI.UserCont
             googleCart.shoppingcart.items[i].unitprice = new Money() { Value = cart.CartItems.ElementAt(i).PricePerUnit, currency = "USD" };
             googleCart.shoppingcart.items[i].itemname = cart.CartItems.ElementAt(i).ProductName;
             foreach (ProductOption option in cart.CartItems.ElementAt(i).ProductOptions)
+            {
                 googleCart.shoppingcart.items[i].itemname += " " + option.ProductOptionName;
+                googleCart.shoppingcart.items[i].unitprice.Value += option.PriceChange;
+            }
             foreach (CustomField field in cart.CartItems.ElementAt(i).CustomFields)
                 googleCart.shoppingcart.items[i].itemname += " " + field.CustomFieldName + ": " + field.CustomFieldValue;
             googleCart.shoppingcart.items[i].itemdescription = cart.CartItems.ElementAt(i).ProductName;

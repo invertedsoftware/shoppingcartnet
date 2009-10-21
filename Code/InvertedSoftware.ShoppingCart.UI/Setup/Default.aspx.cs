@@ -14,7 +14,7 @@ public partial class Setup_Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!Page.IsPostBack && Roles.RoleExists("SuperAdmin"))
+        if (ConfigurationManager.AppSettings["SetupRan"] == "true")
         {
             Utils.IS_CONFIGURED = true;
             Response.Redirect("../Default.aspx");
@@ -36,6 +36,14 @@ public partial class Setup_Default : System.Web.UI.Page
 
     protected void ContinueButton_Click(object sender, EventArgs e)
     {
+        Configuration configuration = WebConfigurationManager.OpenWebConfiguration("~");
+        AppSettingsSection appSettings = (AppSettingsSection)configuration.GetSection("appSettings");
+
+        if (appSettings != null)
+        {
+            appSettings.Settings["SetupRan"].Value = "true";
+            configuration.Save();
+        }
         Response.Redirect("../admin");
     }
     protected void CreateUserWizard1_NextButtonClick(object sender, WizardNavigationEventArgs e)

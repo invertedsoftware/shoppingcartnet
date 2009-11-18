@@ -26,7 +26,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                 {
                     while (reader.Read())
                     {
-                        order = (Order)ObjectHelper.GetAs(reader, typeof(Order));
+                        order = ObjectHelper.GetAs<Order>(reader);
                         order.OrderItems = GetOrderItems(orderID);
                     }
                 }
@@ -49,12 +49,11 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetOrderProducts", OrderIDSqlParameter))
                 {
-                    while (reader.Read())
+                    orderItems = ObjectHelper.GetAsList<OrderItem>(reader);
+                    foreach (OrderItem orderItem in orderItems)
                     {
-                        OrderItem orderItem = (OrderItem)ObjectHelper.GetAs(reader, typeof(OrderItem));
                         orderItem.OptionList = GetOrderItemOptionList(orderItem.OrderProductID);
                         orderItem.OrderProductCustomFieldList = GetOrderItemCustomFields(orderItem.OrderProductID);
-                        orderItems.Add(orderItem);
                     }
                 }
             }
@@ -76,8 +75,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetOrderProductOptions", OrderProductIDSqlParameter))
                 {
-                    while (reader.Read())
-                        orderProductOptions.Add((OrderProductOption)ObjectHelper.GetAs(reader, typeof(OrderProductOption)));
+                    orderProductOptions = ObjectHelper.GetAsList<OrderProductOption>(reader);
                 }
             }
             catch (Exception e)
@@ -98,8 +96,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetOrderProductCustomFields", OrderProductIDSqlParameter))
                 {
-                    while (reader.Read())
-                        orderProductCustomFields.Add((OrderProductCustomField)ObjectHelper.GetAs(reader, typeof(OrderProductCustomField)));
+                    orderProductCustomFields = ObjectHelper.GetAsList<OrderProductCustomField>(reader);
                 }
             }
             catch (Exception e)
@@ -210,8 +207,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetTaxes", paramArray))
                 {
-                    while (reader.Read())
-                        taxes.Add((Tax)ObjectHelper.GetAs(reader, typeof(Tax)));
+                    taxes = ObjectHelper.GetAsList<Tax>(reader);
                 }
             }
             catch (Exception e)
@@ -262,11 +258,10 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                 try
                 {
                     SqlHelper.PrepareCommand(cmd, conn, null, CommandType.StoredProcedure, "GetOrders", paramArray);
-                    SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                    while (rdr.Read())
-                        orderList.Add((OrderDisplay)ObjectHelper.GetAs(rdr, typeof(OrderDisplay)));
-                    rdr.Close();
+                    using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        orderList = ObjectHelper.GetAsList<OrderDisplay>(rdr);
+                    }
                     OrderCount = Convert.ToInt32(TotalRecordsSqlParameter.Value);
                     cmd.Parameters.Clear();
                 }

@@ -25,7 +25,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetCustomer", CustomerIDSqlParameter))
                 {
                     while (reader.Read())
-                        customer = (Customer)ObjectHelper.GetAs(reader, typeof(Customer));
+                        customer = ObjectHelper.GetAs<Customer>(reader);
                 }
             }
             catch (Exception e)
@@ -47,7 +47,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetCustomer", MemberIDSqlParameter))
                 {
                     while (reader.Read())
-                        customer = (Customer)ObjectHelper.GetAs(reader, typeof(Customer));
+                        customer = ObjectHelper.GetAs<Customer>(reader);
                 }
             }
             catch (Exception e)
@@ -147,15 +147,13 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             SqlCommand cmd = new SqlCommand();
             using (SqlConnection conn = new SqlConnection(SqlHelper.mainConnectionString))
             {
-
                 try
                 {
                     SqlHelper.PrepareCommand(cmd, conn, null, CommandType.StoredProcedure, "GetCustomers", paramArray);
-                    SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                    while (rdr.Read())
-                        customerList.Add((Customer)ObjectHelper.GetAs(rdr, typeof(Customer)));
-                    rdr.Close();
+                    using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        customerList = ObjectHelper.GetAsList<Customer>(rdr);
+                    }
                     CustomerCount = Convert.ToInt32(TotalRecordsSqlParameter.Value);
                     cmd.Parameters.Clear();
                 }

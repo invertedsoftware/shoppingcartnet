@@ -31,8 +31,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Cache
             if (LookupDataCollection == null)
             {
                 // Item not found in cache - retrieve it and insert it into the cache
-                LookupTables lookup = new LookupTables();
-                LookupDataCollection = lookup.GetLookupTable(LookupData, true);
+                LookupDataCollection = LookupTables.GetLookupTable(LookupData, true);
                 AddCacheItem(Enum.GetName(typeof(LookupDataEnum), LookupData), LookupDataCollection);
             }
 
@@ -46,8 +45,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Cache
             if (categoryCollection == null)
             {
                 // Item not found in cache - retrieve it and insert it into the cache
-                Categories categories = new Categories();
-                categoryCollection = categories.GetCategories(parentCategoryID, true);
+                categoryCollection = Categories.GetCategories(parentCategoryID, true);
                 AddCacheItem("categories-parent" + parentCategoryID, categoryCollection);
             }
 

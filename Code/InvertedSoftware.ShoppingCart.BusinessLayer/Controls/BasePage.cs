@@ -22,8 +22,7 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer.Controls
             MembershipUser currentUser = Membership.GetUser();
             if (currentUser != null)
             {
-                Customers customers = new Customers();
-                customerID = customers.GetCustomerID(new Guid(currentUser.ProviderUserKey.ToString()));
+                customerID = Customers.GetCustomerID(new Guid(currentUser.ProviderUserKey.ToString()));
             }
 
             return customerID;
@@ -35,8 +34,7 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer.Controls
             MembershipUser currentUser = Membership.GetUser(userName);
             if (currentUser != null)
             {
-                Customers customers = new Customers();
-                customerID = customers.GetCustomerID(new Guid(currentUser.ProviderUserKey.ToString()));
+                customerID = Customers.GetCustomerID(new Guid(currentUser.ProviderUserKey.ToString()));
             }
 
             return customerID;
@@ -48,8 +46,7 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer.Controls
             MembershipUser currentUser = Membership.GetUser();
             if (currentUser != null)
             {
-                Customers customers = new Customers();
-                customer = customers.GetCustomer(new Guid(currentUser.ProviderUserKey.ToString()));
+                customer = Customers.GetCustomer(new Guid(currentUser.ProviderUserKey.ToString()));
             }
             return customer;
         }

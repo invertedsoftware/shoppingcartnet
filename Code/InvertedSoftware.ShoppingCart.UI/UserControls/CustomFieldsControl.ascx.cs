@@ -35,8 +35,7 @@ public partial class UserControls_CustomFieldsControl : System.Web.UI.UserContro
         set
         {
             productID = value;
-            Products products = new Products();
-            customFields = products.GetCustomFields(productID);
+            customFields = Products.GetCustomFields(productID);
             BindCustomFields();
         }
     }

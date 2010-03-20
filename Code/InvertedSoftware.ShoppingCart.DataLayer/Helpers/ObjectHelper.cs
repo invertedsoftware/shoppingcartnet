@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
+using InvertedSoftware.ShoppingCart.DataLayer.DataAttributes;
+
 namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
 {
     internal class ObjectHelper
@@ -21,7 +23,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         /// <returns>PropertyInfo[] for this type</returns>
         public static PropertyInfo[] GetCachedProperties<T>()
         {
-            PropertyInfo[] props = new PropertyInfo[0];
+            PropertyInfo[] props;
             if (propertiesCacheLock.TryEnterUpgradeableReadLock(100))
             {
                 try
@@ -60,10 +62,25 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         /// <param name="reader">The Reader</param>
         /// <param name="objectToReturnType">The type of object to return</param>
         /// <returns>Object</returns>
+        [Obsolete("Use LoadAs<T>(SqlDataReader reader, T objectToLoad)", false)]
         public static T GetAs<T>(SqlDataReader reader)
         {
             // Create a new Object
             T newObjectToReturn = Activator.CreateInstance<T>();
+            LoadAs<T>(reader, newObjectToReturn);
+            return newObjectToReturn;
+        }
+
+        /// <summary>
+        /// Load the current row in a DataReader into an object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="reader"></param>
+        /// <param name="objectToLoad"></param>
+        public static void LoadAs<T>(SqlDataReader reader, T objectToLoad)
+        {
+            if(objectToLoad == null)
+                objectToLoad = Activator.CreateInstance<T>();
             // Get all the properties in our Object
             PropertyInfo[] props = GetCachedProperties<T>();
             // For each property get the data from the reader to the object
@@ -71,9 +88,32 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
             for (int i = 0; i < props.Length; i++)
             {
                 if (columnList.Contains(props[i].Name) && reader[props[i].Name] != DBNull.Value)
-                    typeof(T).InvokeMember(props[i].Name, BindingFlags.SetProperty, null, newObjectToReturn, new Object[] { reader[props[i].Name] });
+                    typeof(T).InvokeMember(props[i].Name, BindingFlags.SetProperty, null, objectToLoad, new Object[] { reader[props[i].Name] });
             }
-            return newObjectToReturn;
+        }
+
+        /// <summary>
+        /// Load the current row in a DataReader into an object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="reader"></param>
+        /// <param name="objectToLoad"></param>
+        /// <param name="props"></param>
+        /// <param name="columnList"></param>
+        public static void LoadAs<T>(SqlDataReader reader, T objectToLoad, PropertyInfo[] props, List<string> columnList)
+        {
+            if (objectToLoad == null)
+                objectToLoad = Activator.CreateInstance<T>();
+            if (props == null)
+                props = GetCachedProperties<T>();
+            if (columnList == null)
+                columnList = GetColumnList(reader);
+
+            for (int i = 0; i < props.Length; i++)
+            {
+                if (columnList.Contains(props[i].Name) && reader[props[i].Name] != DBNull.Value)
+                    typeof(T).InvokeMember(props[i].Name, BindingFlags.SetProperty, null, objectToLoad, new Object[] { reader[props[i].Name] });
+            }
         }
 
         /// <summary>
@@ -82,6 +122,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="reader">The reader</param>
         /// <returns></returns>
+        [Obsolete("Use LoadAs<T>(SqlDataReader reader, T objectToLoad, PropertyInfo[] props, List<string> columnList)", false)]
         public static List<T> GetAsList<T>(SqlDataReader reader)
         {
             List<T> objetList = new List<T>();
@@ -125,6 +166,33 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
 
             return paramArray;
         }
+
+        public static SqlParameter[] GetSQLParametersFromPublicProperties(object dataObject, CrudFieldType usedFor)
+        {
+            Type type = dataObject.GetType();
+            PropertyInfo[] props = type.GetProperties();
+            List<SqlParameter> paramList = new List<SqlParameter>();
+            for (int i = 0; i < props.Length; i++)
+            {
+                if (props[i].PropertyType.IsValueType || props[i].PropertyType.Name == "String")
+                {
+                    object fieldValue = type.InvokeMember(props[i].Name, BindingFlags.GetProperty, null, dataObject, null);
+                    CrudField usedForAttr = Attribute.GetCustomAttribute(props[i], typeof(CrudField)) as CrudField;
+                    if (usedForAttr != null && (usedForAttr.UsedFor & usedFor) == usedForAttr.UsedFor)
+                    {
+                        SqlParameter sqlParameter = new SqlParameter("@" + props[i].Name, fieldValue);
+                        paramList.Add(sqlParameter);
+                    }
+                    else if (usedForAttr == null)
+                    {
+                        SqlParameter sqlParameter = new SqlParameter("@" + props[i].Name, fieldValue);
+                        paramList.Add(sqlParameter);
+                    }
+                }
+            }
+            return paramList.ToArray();
+        }
+
 
         /// <summary>
         /// Get a list of column names from the reader

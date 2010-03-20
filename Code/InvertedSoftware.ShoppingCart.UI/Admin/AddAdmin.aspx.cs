@@ -30,8 +30,6 @@ public partial class Admin_AddAdmin : System.Web.UI.Page
             DateUpdated = DateTime.Now,
             Active = true
         };
-
-        Customers customers = new Customers();
-        customer.CustomerID = customers.AddCustomer(customer);
+        customer.CustomerID = Customers.AddCustomer(customer);
     }
 }

@@ -34,8 +34,7 @@ public partial class UserControls_ProductOptionsControl : System.Web.UI.UserCont
         set
         {
             productID = value;
-            Products products = new Products();
-            productOptions = products.GetProductOptions(productID);
+            productOptions = Products.GetProductOptions(productID);
             if (!Page.IsPostBack)
                 BindGroups();
         }

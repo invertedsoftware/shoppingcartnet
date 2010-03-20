@@ -33,6 +33,10 @@
             runat="server" ControlToValidate="CardNumberTextBox" Display="Dynamic" 
             ErrorMessage="Invalid Card Number" 
             ValidationExpression="^((4\d{3})|(5[1-5]\d{2})|(6011))-?\d{4}-?\d{4}-?\d{4}|3[4,7][\d\s-]{13}$">*</asp:RegularExpressionValidator>
+        <asp:CustomValidator ID="CardNumberCustomValidator" Display="Dynamic" runat="server" 
+            ErrorMessage="Invalid Card Number." 
+            ControlToValidate="CardNumberTextBox" onservervalidate="CardNumberCustomValidator_ServerValidate" 
+            >*</asp:CustomValidator>
     </td>
 </tr>
 <tr>

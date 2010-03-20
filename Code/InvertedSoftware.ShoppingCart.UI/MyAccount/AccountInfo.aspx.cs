@@ -29,8 +29,7 @@ public partial class MyAccount_AccountInfo : BasePage
     {
         try
         {
-            Customers customers = new Customers();
-            Customer = customers.GetCustomer(GetLoggedCustomerID());
+            Customer = Customers.GetCustomer(GetLoggedCustomerID());
             if (Customer == null)
             {
                 MessageLabel.Text = "This member is not a customer.";
@@ -61,8 +60,7 @@ public partial class MyAccount_AccountInfo : BasePage
     {
         try
         {
-            Customers customers = new Customers();
-            Customer = customers.GetCustomer(GetLoggedCustomerID());
+            Customer = Customers.GetCustomer(GetLoggedCustomerID());
             Customer.Company = ComapnyTextBox.Text;
             Customer.FirstName = FirstNameTextBox.Text;
             Customer.LastName = LastNameTextBox.Text;
@@ -76,7 +74,7 @@ public partial class MyAccount_AccountInfo : BasePage
             Customer.EveningPhone = EveningPhoneTextBox.Text;
             Customer.CellPhone = CellPhoneTextBox.Text;
             Customer.Fax = FaxTextBox.Text;
-            customers.UpdateCustomer(Customer);
+            Customers.UpdateCustomer(Customer);
             MessageLabel.Text = "Account Updated";
         }
         catch (Exception e)

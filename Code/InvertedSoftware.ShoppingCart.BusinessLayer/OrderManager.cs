@@ -16,8 +16,7 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
         public static decimal GetTaxes(int countryID, int? stateID, int? provinceID, decimal cartSubtotal)
         {
             decimal taxes = 0;
-            Orders orders = new Orders();
-            List<Tax> taxesList = orders.GetTaxes(countryID, stateID, provinceID);
+            List<Tax> taxesList = Orders.GetTaxes(countryID, stateID, provinceID);
             decimal fixedAmount = taxesList.Where(a=> a.Fixed).Sum(a => a.Amount);
             decimal percentAmount = taxesList.Where(a => !a.Fixed).Sum(a => a.Amount) * cartSubtotal/100;
             taxes = fixedAmount + percentAmount;

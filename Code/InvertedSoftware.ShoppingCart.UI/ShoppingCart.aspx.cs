@@ -125,8 +125,15 @@ public partial class ShoppingCart : BasePage
         
         string cartLink = ConfigurationManager.AppSettings["StoreURL"] + "/ShoppingCart.aspx?CartID=" + cartID;
 
-        EmailManager.EmailCart(cartLink, EmailTextBox.Text);
-        MessageLiteral.Text = "Your cart has been emailed";
+        try
+        {
+            EmailManager.EmailCart(cartLink, EmailTextBox.Text);
+            MessageLiteral.Text = "Your cart has been emailed";
+        }
+        catch (Exception ex)
+        {
+            MessageLiteral.Text = ex.Message;
+        }
     }
 
     public void LoadCart(string cartID)

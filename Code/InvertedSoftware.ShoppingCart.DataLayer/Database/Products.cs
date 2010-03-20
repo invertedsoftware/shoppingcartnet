@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 using InvertedSoftware.ShoppingCart.DataLayer.Helpers;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
@@ -13,9 +14,9 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
     public class Products
     {
         #region Select
-        public Product GetProduct(int productID)
+        public static Product GetProduct(int productID)
         {
-            Product product = null;
+            Product product = new Product();
 
             SqlParameter ProductIDSqlParameter = new SqlParameter("@productID", SqlDbType.Int);
             ProductIDSqlParameter.Value = productID;
@@ -25,7 +26,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetProduct", ProductIDSqlParameter))
                 {
                     while (reader.Read())
-                        product = ObjectHelper.GetAs<Product>(reader);
+                        ObjectHelper.LoadAs<Product>(reader, product);
                 }
             }
             catch (Exception e)
@@ -35,9 +36,9 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return product;
         }
 
-        public Product GetProduct(string productName)
+        public static Product GetProduct(string productName)
         {
-            Product product = null;
+            Product product = new Product();
 
             SqlParameter ProductNameSqlParameter = new SqlParameter("@ProductName", SqlDbType.VarChar, 50);
             ProductNameSqlParameter.Value = productName;
@@ -47,7 +48,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetProduct", ProductNameSqlParameter))
                 {
                     while (reader.Read())
-                        product = ObjectHelper.GetAs<Product>(reader);
+                        ObjectHelper.LoadAs<Product>(reader, product);
                 }
             }
             catch (Exception e)
@@ -57,7 +58,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return product;
         }
 
-        public List<string> GetProductImages(int productID, bool isThumnails)
+        public static List<string> GetProductImages(int productID, bool isThumnails)
         {
             List<string> productImages = new List<string>();
             SqlParameter[] paramArray = new SqlParameter[2];
@@ -118,7 +119,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                     SqlHelper.PrepareCommand(cmd, conn, null, CommandType.StoredProcedure, "GetProducts", paramArray);
                     using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                     {
-                        productList = ObjectHelper.GetAsList<Product>(rdr);
+                        PropertyInfo[] props = ObjectHelper.GetCachedProperties<Product>();
+                        List<string> columnList = ObjectHelper.GetColumnList(rdr);
+                        Product product;
+                        while (rdr.Read())
+                        {
+                            product = new Product();
+                            ObjectHelper.LoadAs<Product>(rdr, product, props, columnList);
+                            productList.Add(product);
+                        }
                     }
                     ProductCount = Convert.ToInt32(TotalRecordsSqlParameter.Value);
                     cmd.Parameters.Clear();
@@ -163,7 +172,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                     SqlHelper.PrepareCommand(cmd, conn, null, CommandType.StoredProcedure, "SearchProducts", paramArray);
                     using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                     {
-                        productList = ObjectHelper.GetAsList<Product>(rdr);
+                        PropertyInfo[] props = ObjectHelper.GetCachedProperties<Product>();
+                        List<string> columnList = ObjectHelper.GetColumnList(rdr);
+                        Product product;
+                        while (rdr.Read())
+                        {
+                            product = new Product();
+                            ObjectHelper.LoadAs<Product>(rdr, product, props, columnList);
+                            productList.Add(product);
+                        }
                     }
                     ProductCount = Convert.ToInt32(TotalRecordsSqlParameter.Value);
                     cmd.Parameters.Clear();
@@ -207,7 +224,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                     SqlHelper.PrepareCommand(cmd, conn, null, CommandType.StoredProcedure, "GetProductsByTag", paramArray);
                     using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                     {
-                        productList = ObjectHelper.GetAsList<Product>(rdr);
+                        PropertyInfo[] props = ObjectHelper.GetCachedProperties<Product>();
+                        List<string> columnList = ObjectHelper.GetColumnList(rdr);
+                        Product product;
+                        while (rdr.Read())
+                        {
+                            product = new Product();
+                            ObjectHelper.LoadAs<Product>(rdr, product, props, columnList);
+                            productList.Add(product);
+                        }
                     }
                     ProductCount = Convert.ToInt32(TotalRecordsSqlParameter.Value);
                     cmd.Parameters.Clear();
@@ -221,7 +246,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return productList;
         }
 
-        public List<ProductOption> GetProductOptions(int productID)
+        public static List<ProductOption> GetProductOptions(int productID)
         {
             List<ProductOption> productOptions = new List<ProductOption>();
 
@@ -232,7 +257,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetProductOptions", ProductIDSqlParameter))
                 {
-                    productOptions = ObjectHelper.GetAsList<ProductOption>(reader);
+                    PropertyInfo[] props = ObjectHelper.GetCachedProperties<ProductOption>();
+                    List<string> columnList = ObjectHelper.GetColumnList(reader);
+                    ProductOption productOption;
+                    while (reader.Read())
+                    {
+                        productOption = new ProductOption();
+                        ObjectHelper.LoadAs<ProductOption>(reader, productOption, props, columnList);
+                        productOptions.Add(productOption);
+                    }
                 }
             }
             catch (Exception e)
@@ -242,7 +275,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return productOptions;
         }
 
-        public List<CustomField> GetCustomFields(int productID)
+        public static List<CustomField> GetCustomFields(int productID)
         {
             List<CustomField> customFields = new List<CustomField>();
 
@@ -253,7 +286,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetCustomFields", ProductIDSqlParameter))
                 {
-                    customFields = ObjectHelper.GetAsList<CustomField>(reader);
+                    PropertyInfo[] props = ObjectHelper.GetCachedProperties<CustomField>();
+                    List<string> columnList = ObjectHelper.GetColumnList(reader);
+                    CustomField customField;
+                    while (reader.Read())
+                    {
+                        customField = new CustomField();
+                        ObjectHelper.LoadAs<CustomField>(reader, customField, props, columnList);
+                        customFields.Add(customField);
+                    }
                 }
             }
             catch (Exception e)
@@ -263,7 +304,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return customFields;
         }
 
-        public bool IsProductOptionsExist(int productID)
+        public static bool IsProductOptionsExist(int productID)
         {
             bool optionsExist = false;
             try
@@ -279,7 +320,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return optionsExist;
         }
 
-        public List<FeaturedProduct> GetFeaturedProducts(int? categoryID)
+        public static List<FeaturedProduct> GetFeaturedProducts(int? categoryID)
         {
             List<FeaturedProduct> products = new List<FeaturedProduct>();
 
@@ -293,7 +334,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetFeaturedProducts", CategoryIDSqlParameter))
                 {
-                    products = ObjectHelper.GetAsList<FeaturedProduct>(reader);
+                    PropertyInfo[] props = ObjectHelper.GetCachedProperties<FeaturedProduct>();
+                    List<string> columnList = ObjectHelper.GetColumnList(reader);
+                    FeaturedProduct featuredProduct;
+                    while (reader.Read())
+                    {
+                        featuredProduct = new FeaturedProduct();
+                        ObjectHelper.LoadAs<FeaturedProduct>(reader, featuredProduct, props, columnList);
+                        products.Add(featuredProduct);
+                    }
                 }
             }
             catch (Exception e)
@@ -303,7 +352,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return products;
         }
 
-        public List<RelatedProduct> GetRelatedProducts(int productID)
+        public static List<RelatedProduct> GetRelatedProducts(int productID)
         {
             List<RelatedProduct> products = new List<RelatedProduct>();
 
@@ -314,7 +363,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetRelatedProducts", ProductIDSqlParameter))
                 {
-                    products = ObjectHelper.GetAsList<RelatedProduct>(reader);
+                    PropertyInfo[] props = ObjectHelper.GetCachedProperties<RelatedProduct>();
+                    List<string> columnList = ObjectHelper.GetColumnList(reader);
+                    RelatedProduct relatedProduct;
+                    while (reader.Read())
+                    {
+                        relatedProduct = new RelatedProduct();
+                        ObjectHelper.LoadAs<RelatedProduct>(reader, relatedProduct, props, columnList);
+                        products.Add(relatedProduct);
+                    }
                 }
             }
             catch (Exception e)
@@ -326,14 +383,11 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         #endregion
 
         #region Insert
-        public int AddProduct(Product product)
+        public static int AddProduct(Product product)
         {
             try
             {
-                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(product);
-                paramArray[0] = null;
-                paramArray[3] = null;
-                paramArray[4] = null;
+                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(product, InvertedSoftware.ShoppingCart.DataLayer.DataAttributes.CrudFieldType.Create);
                 product.ProductID = (int)SqlHelper.ExecuteScalar(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "AddProduct", paramArray);
             }
             catch (Exception e)
@@ -349,9 +403,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         {
             try
             {
-                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(product);
-                paramArray[3] = null;
-                paramArray[4] = null;
+                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(product, InvertedSoftware.ShoppingCart.DataLayer.DataAttributes.CrudFieldType.Update);
                 SqlHelper.ExecuteNonQuery(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "UpdateProduct", paramArray);
             }
             catch (Exception e)

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using InvertedSoftware.ShoppingCart.DataLayer.DataAttributes;
+
 namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
 {
     public class Customer
     {
+        [CrudField(UsedFor = CrudFieldType.Delete | CrudFieldType.Read | CrudFieldType.Update)]
         public int CustomerID { get; set; }
         public Guid MemberID { get; set; }
         public string Company { get; set; }

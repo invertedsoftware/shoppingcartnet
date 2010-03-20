@@ -17,15 +17,14 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
         partial void OnEmailChanging(string value)
         {
             //Looks like a dynamic data bug. This is firing twice
-            Customers customers = new Customers();
-            string customerEmail = customers.GetCustomerEmail(Convert.ToInt32(HttpContext.Current.Request.QueryString["CustomerID"]));
+            string customerEmail = Customers.GetCustomerEmail(Convert.ToInt32(HttpContext.Current.Request.QueryString["CustomerID"]));
             if (customerEmail == value)
                 return;
             if (!Regex.IsMatch(value,
                      @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"))
                 throw new ValidationException("Email is not on in the correct format");
-            
-            if (customers.IsEmailExists(value))
+
+            if (Customers.IsEmailExists(value))
                 throw new ValidationException("Email is already in use");
 
             // Since we cannot change the user name the user will still have to log in using the old email.
@@ -48,8 +47,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
         partial void OnActiveChanging(bool value)
         {
             //Also update the membership table
-            Customers customers = new Customers();
-            Guid memberID = customers.GetCustomerMemberID(Convert.ToInt32(HttpContext.Current.Request.QueryString["CustomerID"]));
+            Guid memberID = Customers.GetCustomerMemberID(Convert.ToInt32(HttpContext.Current.Request.QueryString["CustomerID"]));
 
             MembershipUser user = Membership.GetUser(memberID);
             user.IsApproved = value;

@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 using InvertedSoftware.ShoppingCart.DataLayer.Helpers;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
@@ -13,9 +14,9 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
     public class Customers
     {
         #region Select
-        public Customer GetCustomer(int customerID)
+        public static Customer GetCustomer(int customerID)
         {
-            Customer customer = null;
+            Customer customer = new Customer();
 
             SqlParameter CustomerIDSqlParameter = new SqlParameter("@CustomerID", SqlDbType.Int);
             CustomerIDSqlParameter.Value = customerID;
@@ -25,7 +26,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetCustomer", CustomerIDSqlParameter))
                 {
                     while (reader.Read())
-                        customer = ObjectHelper.GetAs<Customer>(reader);
+                        ObjectHelper.LoadAs<Customer>(reader, customer);
                 }
             }
             catch (Exception e)
@@ -35,9 +36,9 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return customer;
         }
 
-        public Customer GetCustomer(Guid MemberID)
+        public static Customer GetCustomer(Guid MemberID)
         {
-            Customer customer = null;
+            Customer customer = new Customer();
 
             SqlParameter MemberIDSqlParameter = new SqlParameter("@MemberID", SqlDbType.UniqueIdentifier);
             MemberIDSqlParameter.Value = MemberID;
@@ -47,7 +48,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetCustomer", MemberIDSqlParameter))
                 {
                     while (reader.Read())
-                        customer = ObjectHelper.GetAs<Customer>(reader);
+                        ObjectHelper.LoadAs<Customer>(reader, customer);
                 }
             }
             catch (Exception e)
@@ -57,7 +58,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return customer;
         }
 
-        public string GetCustomerEmail(int customerID)
+        public static string GetCustomerEmail(int customerID)
         {
             string email = string.Empty;
 
@@ -75,7 +76,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return email;
         }
 
-        public int GetCustomerID(Guid MemberID)
+        public static int GetCustomerID(Guid MemberID)
         {
             int customerID = -1;
             try
@@ -91,7 +92,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return customerID;
         }
 
-        public Guid GetCustomerMemberID(int customerID)
+        public static Guid GetCustomerMemberID(int customerID)
         {
             Guid memberID;
             try
@@ -108,7 +109,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return memberID;
         }
 
-        public bool IsEmailExists(string email)
+        public static bool IsEmailExists(string email)
         {
             bool emailExists = false;
             try
@@ -152,7 +153,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                     SqlHelper.PrepareCommand(cmd, conn, null, CommandType.StoredProcedure, "GetCustomers", paramArray);
                     using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                     {
-                        customerList = ObjectHelper.GetAsList<Customer>(rdr);
+                        PropertyInfo[] props = ObjectHelper.GetCachedProperties<Customer>();
+                        List<string> columnList = ObjectHelper.GetColumnList(rdr);
+                        Customer customer;
+                        while (rdr.Read())
+                        {
+                            customer = new Customer();
+                            ObjectHelper.LoadAs<Customer>(rdr, customer, props, columnList);
+                            customerList.Add(customer);
+                        }
                     }
                     CustomerCount = Convert.ToInt32(TotalRecordsSqlParameter.Value);
                     cmd.Parameters.Clear();
@@ -168,12 +177,11 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         #endregion
 
         #region Insert
-        public int AddCustomer(Customer customer)
+        public static int AddCustomer(Customer customer)
         {
             try
             {
                 SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(customer);
-                paramArray[0] = null;
                 customer.CustomerID = Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "AddCustomer", paramArray));
             }
             catch (Exception e)
@@ -185,7 +193,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         #endregion
 
         #region Update
-        public void UpdateCustomer(Customer customer)
+        public static void UpdateCustomer(Customer customer)
         {
             try
             {

@@ -17,14 +17,12 @@ public partial class Receipt : System.Web.UI.Page
         OrderID = WebUtility.GetDecodedIntFromQueryString("OrderID");
         if (CustomerID > -1 && OrderID > -1)
         {
-            Orders orders = new Orders();
-            Order = orders.GetOrder(OrderID);
+            Order = Orders.GetOrder(OrderID);
             if (Order.CustomerID != CustomerID)
                 Response.Redirect("Default.aspx");
             else
             {
-                Customers customers = new Customers();
-                Customer = customers.GetCustomer(CustomerID);
+                Customer = Customers.GetCustomer(CustomerID);
             }
         }
     }

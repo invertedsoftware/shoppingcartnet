@@ -12,7 +12,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
 {
     public class Categories
     {
-        public ListItemCollection GetCategories(int? parentCategoryID, bool active)
+        public static ListItemCollection GetCategories(int? parentCategoryID, bool active)
         {
             ListItemCollection categoryCollection = new ListItemCollection();
             SqlParameter[] paramArray = new SqlParameter[2];
@@ -50,7 +50,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return categoryCollection;
         }
 
-        public List<string> GetTags()
+        public static List<string> GetTags()
         {
             List<string> tags = new List<string>();
            

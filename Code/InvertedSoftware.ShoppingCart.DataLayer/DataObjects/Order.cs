@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using InvertedSoftware.ShoppingCart.DataLayer.DataAttributes;
+
 namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
 {
     public enum OrderStatusEnum
@@ -15,6 +17,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
 
     public class Order
     {
+        [CrudField(UsedFor=CrudFieldType.Delete|CrudFieldType.Read|CrudFieldType.Update)]
         public int OrderID { get; set; }
         public int CustomerID { get; set; }
         public string OrderNumber { get; set; }

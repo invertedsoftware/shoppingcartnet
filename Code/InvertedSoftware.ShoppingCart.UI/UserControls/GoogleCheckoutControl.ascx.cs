@@ -65,7 +65,6 @@ public partial class UserControls_GoogleCheckoutControl : System.Web.UI.UserCont
     private MerchantCheckoutFlowSupportShippingmethods GetGoogleShippingMethods()
     {
         CacheManager cache = new CacheManager();
-        Orders orders = new Orders();
         ListItemCollection shippingCollection = cache.GetCachedLookupTable(LookupDataEnum.GetShippingPoviders);
   
         MerchantCheckoutFlowSupportShippingmethods shipping = new MerchantCheckoutFlowSupportShippingmethods();
@@ -77,7 +76,7 @@ public partial class UserControls_GoogleCheckoutControl : System.Web.UI.UserCont
                 continue;
             FlatRateShipping rate = new FlatRateShipping();
             rate.name = item.Text;
-            rate.price = new FlatRateShippingPrice() { currency = "USD", Value = orders.GetShippingCosts(Convert.ToInt32(item.Value)) };
+            rate.price = new FlatRateShippingPrice() { currency = "USD", Value = Orders.GetShippingCosts(Convert.ToInt32(item.Value)) };
             shipping.Items[currentItem] = rate;
             currentItem++;
         }

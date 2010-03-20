@@ -80,8 +80,7 @@ public partial class UserControls_ProductsGridControl : System.Web.UI.UserContro
         HiddenField ProductIDHiddenField = e.Item.FindControl("ProductIDHiddenField") as HiddenField;
         if (AddButton == null || ProductIDHiddenField == null)
             return;
-        Products products = new Products();
-        if (products.IsProductOptionsExist(Convert.ToInt32(ProductIDHiddenField.Value)))
+        if (Products.IsProductOptionsExist(Convert.ToInt32(ProductIDHiddenField.Value)))
         {
             AddButton.Text = "Customize";
             AddButton.CommandName = "Customize";

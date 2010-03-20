@@ -4,18 +4,20 @@ using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 using InvertedSoftware.ShoppingCart.DataLayer.Helpers;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
+using InvertedSoftware.ShoppingCart.DataLayer.DataAttributes;
 
 namespace InvertedSoftware.ShoppingCart.DataLayer.Database
 {
     public class Orders
     {
         #region Select
-        public Order GetOrder(int orderID)
+        public static Order GetOrder(int orderID)
         {
-            Order order = null;
+            Order order = new Order();
 
             SqlParameter OrderIDSqlParameter = new SqlParameter("@OrderID", SqlDbType.Int);
             OrderIDSqlParameter.Value = orderID;
@@ -26,7 +28,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                 {
                     while (reader.Read())
                     {
-                        order = ObjectHelper.GetAs<Order>(reader);
+                        ObjectHelper.LoadAs<Order>(reader, order);
                         order.OrderItems = GetOrderItems(orderID);
                     }
                 }
@@ -38,7 +40,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return order;
         }
 
-        public List<OrderItem> GetOrderItems(int orderID)
+        public static List<OrderItem> GetOrderItems(int orderID)
         {
             List<OrderItem> orderItems = new List<OrderItem>();
 
@@ -49,11 +51,16 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetOrderProducts", OrderIDSqlParameter))
                 {
-                    orderItems = ObjectHelper.GetAsList<OrderItem>(reader);
-                    foreach (OrderItem orderItem in orderItems)
+                    PropertyInfo[] props = ObjectHelper.GetCachedProperties<OrderItem>();
+                    List<string> columnList = ObjectHelper.GetColumnList(reader);
+                    OrderItem orderItem;
+                    while (reader.Read())
                     {
+                        orderItem = new OrderItem();
+                        ObjectHelper.LoadAs<OrderItem>(reader, orderItem, props, columnList);
                         orderItem.OptionList = GetOrderItemOptionList(orderItem.OrderProductID);
                         orderItem.OrderProductCustomFieldList = GetOrderItemCustomFields(orderItem.OrderProductID);
+                        orderItems.Add(orderItem);
                     }
                 }
             }
@@ -64,7 +71,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return orderItems;
         }
 
-        public List<OrderProductOption> GetOrderItemOptionList(int orderProductID)
+        public static List<OrderProductOption> GetOrderItemOptionList(int orderProductID)
         {
             List<OrderProductOption> orderProductOptions = new List<OrderProductOption>();
 
@@ -75,7 +82,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetOrderProductOptions", OrderProductIDSqlParameter))
                 {
-                    orderProductOptions = ObjectHelper.GetAsList<OrderProductOption>(reader);
+                    PropertyInfo[] props = ObjectHelper.GetCachedProperties<OrderProductOption>();
+                    List<string> columnList = ObjectHelper.GetColumnList(reader);
+                    OrderProductOption orderProductOption;
+                    while (reader.Read())
+                    {
+                        orderProductOption = new OrderProductOption();
+                        ObjectHelper.LoadAs<OrderProductOption>(reader, orderProductOption, props, columnList);
+                        orderProductOptions.Add(orderProductOption);
+                    }
                 }
             }
             catch (Exception e)
@@ -85,7 +100,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return orderProductOptions;
         }
 
-        public List<OrderProductCustomField> GetOrderItemCustomFields(int orderProductID)
+        public static List<OrderProductCustomField> GetOrderItemCustomFields(int orderProductID)
         {
             List<OrderProductCustomField> orderProductCustomFields = new List<OrderProductCustomField>();
 
@@ -96,7 +111,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetOrderProductCustomFields", OrderProductIDSqlParameter))
                 {
-                    orderProductCustomFields = ObjectHelper.GetAsList<OrderProductCustomField>(reader);
+                    PropertyInfo[] props = ObjectHelper.GetCachedProperties<OrderProductCustomField>();
+                    List<string> columnList = ObjectHelper.GetColumnList(reader);
+                    OrderProductCustomField orderProductCustomField;
+                    while (reader.Read())
+                    {
+                        orderProductCustomField = new OrderProductCustomField();
+                        ObjectHelper.LoadAs<OrderProductCustomField>(reader, orderProductCustomField, props, columnList);
+                        orderProductCustomFields.Add(orderProductCustomField);
+                    }
                 }
             }
             catch (Exception e)
@@ -111,7 +134,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         /// </summary>
         /// <param name="shippingProviderID"></param>
         /// <returns></returns>
-        public decimal GetShippingCosts(int shippingProviderID)
+        public static decimal GetShippingCosts(int shippingProviderID)
         {
             decimal shippingCosts = 0;
 
@@ -138,7 +161,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         /// <param name="productID"></param>
         /// <param name="shippingProviderID"></param>
         /// <returns></returns>
-        public decimal GetProductShippingCosts(int countryID, int? stateID, int? provinceID, int productID , int shippingProviderID)
+        public static decimal GetProductShippingCosts(int countryID, int? stateID, int? provinceID, int productID , int shippingProviderID)
         {
             decimal shippingCosts = 0;
             SqlParameter[] paramArray = new SqlParameter[5];
@@ -180,7 +203,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return shippingCosts;
         }
 
-        public List<Tax> GetTaxes(int countryID, int? stateID, int? provinceID)
+        public static List<Tax> GetTaxes(int countryID, int? stateID, int? provinceID)
         {
             List<Tax> taxes = new List<Tax>();
             SqlParameter[] paramArray = new SqlParameter[3];
@@ -207,7 +230,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetTaxes", paramArray))
                 {
-                    taxes = ObjectHelper.GetAsList<Tax>(reader);
+                    PropertyInfo[] props = ObjectHelper.GetCachedProperties<Tax>();
+                    List<string> columnList = ObjectHelper.GetColumnList(reader);
+                    Tax tax;
+                    while (reader.Read())
+                    {
+                        tax = new Tax();
+                        ObjectHelper.LoadAs<Tax>(reader, tax, props, columnList);
+                        taxes.Add(tax);
+                    }
                 }
             }
             catch (Exception e)
@@ -260,7 +291,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                     SqlHelper.PrepareCommand(cmd, conn, null, CommandType.StoredProcedure, "GetOrders", paramArray);
                     using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                     {
-                        orderList = ObjectHelper.GetAsList<OrderDisplay>(rdr);
+                        PropertyInfo[] props = ObjectHelper.GetCachedProperties<OrderDisplay>();
+                        List<string> columnList = ObjectHelper.GetColumnList(rdr);
+                        OrderDisplay order;
+                        while (rdr.Read())
+                        {
+                            order = new OrderDisplay();
+                            ObjectHelper.LoadAs<OrderDisplay>(rdr, order, props, columnList);
+                            orderList.Add(order);
+                        }
                     }
                     OrderCount = Convert.ToInt32(TotalRecordsSqlParameter.Value);
                     cmd.Parameters.Clear();
@@ -281,12 +320,11 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         #endregion
 
         #region Insert
-        public int AddOrder(Order order)
+        public static int AddOrder(Order order)
         {
             try
             {
-                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(order);
-                paramArray[0] = null;
+                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(order, CrudFieldType.Create);
                 order.OrderID = Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "AddOrder", paramArray));
                 foreach (OrderItem orderItem in order.OrderItems)
                 {
@@ -301,14 +339,11 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return order.OrderID;
         }
 
-        public int AddOrderItem(OrderItem orderItem)
+        public static int AddOrderItem(OrderItem orderItem)
         {
             try
             {
                 SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(orderItem);
-                paramArray[0] = null;
-                paramArray[3] = null;
-                paramArray[4] = null;
                 orderItem.OrderProductID = Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "AddOrderProduct", paramArray));
                 foreach (OrderProductOption option in orderItem.OptionList)
                     AddOrderProductOption(orderItem.OrderProductID, option.ProductOptionID);
@@ -325,7 +360,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return orderItem.OrderProductID;
         }
 
-        public int AddOrderProductOption(int orderProductID, int productOptionID)
+        public static int AddOrderProductOption(int orderProductID, int productOptionID)
         {
             int orderProductOptionID = -1;
             try
@@ -349,14 +384,11 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return orderProductOptionID;
         }
 
-        public int AddOrderCustomField(OrderProductCustomField orderProductCustomField)
+        public static int AddOrderCustomField(OrderProductCustomField orderProductCustomField)
         {
             try
             {
                 SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(orderProductCustomField);
-                paramArray[0] = null;
-                paramArray[3] = null;
-
                 orderProductCustomField.OrderProductCustomFieldID = Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "AddOrderProductCustomField", paramArray));
             }
             catch (Exception e)
@@ -368,7 +400,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         #endregion
 
         #region Update
-        public void UpdateOrderStatus(int orderID, int orderStatusID)
+        public static void UpdateOrderStatus(int orderID, int orderStatusID)
         {
             SqlParameter[] paramArray = new SqlParameter[5];
 
@@ -390,7 +422,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             }
         }
 
-        public void UpdateOrder(Order order)
+        public static void UpdateOrder(Order order)
         {
             try
             {
@@ -403,7 +435,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             }
         }
 
-        public void UpdateOrderItem(OrderItem orderItem)
+        public static void UpdateOrderItem(OrderItem orderItem)
         {
             try
             {

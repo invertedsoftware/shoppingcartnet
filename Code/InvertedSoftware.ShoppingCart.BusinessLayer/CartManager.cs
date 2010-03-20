@@ -62,8 +62,7 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
             }
             else
             {
-                Products products = new Products();
-                Product product = products.GetProduct(productID);
+                Product product = Products.GetProduct(productID);
                 CartItem cartItem = new CartItem() { ProductID = productID, PricePerUnit = product.price, ProductName = product.ProductName, CatalogNumber = product.CatalogNumber, Quantity = 1, Subtotal = product.price };//Get from data layer
                 Add(cartItem);
             }

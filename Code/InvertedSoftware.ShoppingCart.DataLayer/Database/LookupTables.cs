@@ -20,9 +20,9 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         GetProvinces
     }
 
-    public class LookupTables
+    public static class LookupTables
     {
-        public ListItemCollection GetLookupTable(LookupDataEnum LookupData, bool AddEmptyItem)
+        public static ListItemCollection GetLookupTable(LookupDataEnum LookupData, bool AddEmptyItem)
         {
             ListItemCollection LookupDataCollection = new ListItemCollection();
             if (AddEmptyItem) LookupDataCollection.Add(new ListItem("-Select-", ""));

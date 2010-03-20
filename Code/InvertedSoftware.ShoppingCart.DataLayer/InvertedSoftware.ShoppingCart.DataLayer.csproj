@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\CacheManager.cs" />
+    <Compile Include="DataAttributes\CrudField .cs" />
     <Compile Include="Database\Categories.cs" />
     <Compile Include="Database\Customers.cs" />
     <Compile Include="Database\LookupTables.cs" />

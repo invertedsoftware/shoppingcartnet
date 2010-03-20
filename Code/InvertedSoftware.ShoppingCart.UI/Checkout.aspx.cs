@@ -52,6 +52,7 @@ public partial class Checkout : BasePage
         else
             ShippingAddressControl.Enabled = true;
     }
+
     protected void BuyButton_Click(object sender, EventArgs e)
     {
         if (!Page.IsValid)
@@ -73,8 +74,7 @@ public partial class Checkout : BasePage
             {
                 //Log in the customer and set the transaction to error
                 FormsAuthentication.SetAuthCookie(customer.Email, true);
-                Orders orders = new Orders();
-                orders.UpdateOrderStatus(order.OrderID, (int)OrderStatusEnum.PaymentError);
+                Orders.UpdateOrderStatus(order.OrderID, (int)OrderStatusEnum.PaymentError);
             }
         }
         catch (Exception ex)
@@ -88,8 +88,7 @@ public partial class Checkout : BasePage
         //If the customer is not logged on check to see if the email address already exists
         if (GetLoggedCustomerID() == -1)
         {
-            Customers customers = new Customers();
-            if (customers.IsEmailExists(args.Value) || Membership.GetUser(args.Value) !=null)
+            if (Customers.IsEmailExists(args.Value) || Membership.GetUser(args.Value) != null)
                 args.IsValid = false;
             else
                 args.IsValid = true;
@@ -154,8 +153,7 @@ public partial class Checkout : BasePage
             Active = true
         };
 
-        Customers customers = new Customers();
-        customer.CustomerID = customers.AddCustomer(customer);
+        customer.CustomerID = Customers.AddCustomer(customer);
         SendNewCustomerEmail(password);
         return customer;
     }
@@ -197,8 +195,7 @@ public partial class Checkout : BasePage
         }
         AddOrderItems(order);
 
-        Orders orders = new Orders();
-        order.OrderID = orders.AddOrder(order);
+        order.OrderID = Orders.AddOrder(order);
         SendNewCustomerOrderEmail(orderNo);
         EmailManager.SendNewStoreOrderEmail(order, customer);
         return order;
@@ -227,13 +224,12 @@ public partial class Checkout : BasePage
         //calculate the shipping
         try
         {
-            Orders orders = new Orders();
             //Flat shipping
-            decimal shipping = orders.GetShippingCosts(shippingProviderID);
+            decimal shipping = Orders.GetShippingCosts(shippingProviderID);
             //Add per product shipping
             foreach (CartItem item in Cart.CartItems)
             {
-                shipping += orders.GetProductShippingCosts(BillingAddressControl.CountryID, BillingAddressControl.StateID, BillingAddressControl.ProvinceID, item.ProductID, shippingProviderID) * item.Quantity;
+                shipping += Orders.GetProductShippingCosts(BillingAddressControl.CountryID, BillingAddressControl.StateID, BillingAddressControl.ProvinceID, item.ProductID, shippingProviderID) * item.Quantity;
             }
             Cart.Shipping = shipping;
             Cart.Total = Cart.Subtotal + Cart.Tax + Cart.Shipping;
@@ -286,15 +282,14 @@ public partial class Checkout : BasePage
     private bool ChargeCreditCard(string orderNumber)
     {
         bool cardCharged = false;
-        Payment payment = new Payment();
         OrderManager orderManager = new OrderManager();
         CacheManager cache = new CacheManager();
 
         string buyerStateOrProvince = string.Empty;
         if (BillingAddressControl.StateID.HasValue)
-            buyerStateOrProvince = payment.GetStateCode(BillingAddressControl.StateID.Value);
+            buyerStateOrProvince = Payment.GetStateCode(BillingAddressControl.StateID.Value);
         if (BillingAddressControl.ProvinceID.HasValue)
-            buyerStateOrProvince = payment.GetProvinceCode(BillingAddressControl.ProvinceID.Value);
+            buyerStateOrProvince = Payment.GetProvinceCode(BillingAddressControl.ProvinceID.Value);
 
         string response = orderManager.TakePayment(orderNumber,
             Cart.Total.ToString("F"),
@@ -303,7 +298,7 @@ public partial class Checkout : BasePage
         BillingAddressControl.Address,
         BillingAddressControl.City,
         buyerStateOrProvince,
-        payment.GetCountryCode(BillingAddressControl.CountryID),
+        Payment.GetCountryCode(BillingAddressControl.CountryID),
         cache.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(BillingAddressControl.CountryID.ToString()).Text,
         BillingAddressControl.Zipcode,
         PaymentControl1.CardType,

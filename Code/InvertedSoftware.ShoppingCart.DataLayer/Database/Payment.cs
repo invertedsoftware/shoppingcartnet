@@ -11,7 +11,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
 {
     public class Payment
     {
-        public string GetCountryCode(int countryID)
+        public static string GetCountryCode(int countryID)
         {
             string countryCode = string.Empty;
 
@@ -29,7 +29,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return countryCode;
         }
 
-        public string GetStateCode(int stateID)
+        public static string GetStateCode(int stateID)
         {
             string stateCode = string.Empty;
 
@@ -47,7 +47,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return stateCode;
         }
 
-        public string GetProvinceCode(int provinceID)
+        public static string GetProvinceCode(int provinceID)
         {
             string provinceCode = string.Empty;
 

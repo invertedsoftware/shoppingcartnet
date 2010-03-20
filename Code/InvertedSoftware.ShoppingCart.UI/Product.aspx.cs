@@ -30,10 +30,9 @@ public partial class Product : BasePage
                 string productName = Request.QueryString["Product"];
                 if (!string.IsNullOrEmpty(productName))
                 {
-                    Products products = new Products();
-                    cartProduct = products.GetProduct(productName);
+                    cartProduct = Products.GetProduct(productName);
                 }
-                if (cartProduct == null)
+                if (cartProduct == null || cartProduct.ProductID == 0)
                     Response.Redirect("/Default.aspx");
             }
             return cartProduct;
@@ -52,8 +51,7 @@ public partial class Product : BasePage
         {
             if (productImages == null)
             {
-                Products products = new Products();
-                productImages = products.GetProductImages(CartProduct.ProductID, true);
+                productImages = Products.GetProductImages(CartProduct.ProductID, true);
             }
             return productImages;
         }

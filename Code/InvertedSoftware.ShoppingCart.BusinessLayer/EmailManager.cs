@@ -81,7 +81,6 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
         public static void SendNewStoreOrderEmail(Order order, Customer customer)
         {
             Dictionary<string, string> replacmentValues = new Dictionary<string, string>();
-            CacheManager cache = new CacheManager();
             //Customer
             replacmentValues.Add("Company", customer.Company);
             replacmentValues.Add("FirstName", customer.FirstName);
@@ -90,13 +89,13 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
             replacmentValues.Add("City", customer.City);
             string state = string.Empty;
             if (customer.StateID.HasValue)
-                state = cache.GetCachedLookupTable(LookupDataEnum.GetStates).FindByValue(customer.StateID.Value.ToString()).Text;
+                state = CacheManager.GetCachedLookupTable(LookupDataEnum.GetStates).FindByValue(customer.StateID.Value.ToString()).Text;
             replacmentValues.Add("State", state);
             string province = string.Empty;
             if (customer.ProvinceID.HasValue)
-                province = cache.GetCachedLookupTable(LookupDataEnum.GetProvinces).FindByValue(customer.ProvinceID.Value.ToString()).Text;
+                province = CacheManager.GetCachedLookupTable(LookupDataEnum.GetProvinces).FindByValue(customer.ProvinceID.Value.ToString()).Text;
             replacmentValues.Add("Province", province);
-            replacmentValues.Add("Country", cache.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(customer.CountryID.ToString()).Text);
+            replacmentValues.Add("Country", CacheManager.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(customer.CountryID.ToString()).Text);
             replacmentValues.Add("Zipcode", customer.Zipcode);
             replacmentValues.Add("Comments", order.Comments);
             replacmentValues.Add("DayPhone", customer.DayPhone);
@@ -108,15 +107,15 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
             replacmentValues.Add("ShippingAddress", order.Address);
             replacmentValues.Add("ShippingCity", order.City);
             if (order.StateID.HasValue)
-                state = cache.GetCachedLookupTable(LookupDataEnum.GetStates).FindByValue(order.StateID.Value.ToString()).Text;
+                state = CacheManager.GetCachedLookupTable(LookupDataEnum.GetStates).FindByValue(order.StateID.Value.ToString()).Text;
             replacmentValues.Add("ShippingState", state);
             if (order.ProvinceID.HasValue)
-                province = cache.GetCachedLookupTable(LookupDataEnum.GetProvinces).FindByValue(order.ProvinceID.Value.ToString()).Text;
+                province = CacheManager.GetCachedLookupTable(LookupDataEnum.GetProvinces).FindByValue(order.ProvinceID.Value.ToString()).Text;
             replacmentValues.Add("ShippingProvince", province);
-            replacmentValues.Add("ShippingCountry", cache.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(order.CountryID.ToString()).Text);
+            replacmentValues.Add("ShippingCountry", CacheManager.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(order.CountryID.ToString()).Text);
             replacmentValues.Add("ShippingZipcode", order.Zipcode);
             //Order Info
-            replacmentValues.Add("ShippingProvider", cache.GetCachedLookupTable(LookupDataEnum.GetShippingPoviders).FindByValue(order.ShippingProviderID.ToString()).Text);
+            replacmentValues.Add("ShippingProvider", CacheManager.GetCachedLookupTable(LookupDataEnum.GetShippingPoviders).FindByValue(order.ShippingProviderID.ToString()).Text);
             replacmentValues.Add("Shipping", order.Shipping.ToString("c"));
             replacmentValues.Add("Tax", order.Tax.ToString("c"));
             replacmentValues.Add("Total", order.Total.ToString("c"));

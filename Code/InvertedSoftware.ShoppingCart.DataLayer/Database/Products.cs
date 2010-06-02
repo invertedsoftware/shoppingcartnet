@@ -8,6 +8,7 @@ using System.Reflection;
 
 using InvertedSoftware.ShoppingCart.DataLayer.Helpers;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
+using InvertedSoftware.ShoppingCart.DataLayer.DataAttributes;
 
 namespace InvertedSoftware.ShoppingCart.DataLayer.Database
 {
@@ -387,7 +388,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         {
             try
             {
-                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(product, InvertedSoftware.ShoppingCart.DataLayer.DataAttributes.CrudFieldType.Create);
+                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties<Product>(product, CrudFieldType.Create);
                 product.ProductID = (int)SqlHelper.ExecuteScalar(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "AddProduct", paramArray);
             }
             catch (Exception e)
@@ -403,7 +404,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         {
             try
             {
-                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(product, InvertedSoftware.ShoppingCart.DataLayer.DataAttributes.CrudFieldType.Update);
+                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties<Product>(product, CrudFieldType.Update);
                 SqlHelper.ExecuteNonQuery(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "UpdateProduct", paramArray);
             }
             catch (Exception e)

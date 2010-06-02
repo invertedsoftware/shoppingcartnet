@@ -7,7 +7,7 @@
 <ItemTemplate>
 <tr>
     <td><asp:Label ID="GroupLabel" Text='<%# Eval("Key") %>' runat=server></asp:Label></td>
-    <td><asp:DropDownList ID="OptionDropDownList" runat="server"></asp:DropDownList>
+    <td><asp:DropDownList ID="OptionDropDownList" runat="server" onchange="javascript:resetInventoryChecked();"></asp:DropDownList>
     </td>
 </tr>
 </ItemTemplate>

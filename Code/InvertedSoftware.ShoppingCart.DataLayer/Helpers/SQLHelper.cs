@@ -24,9 +24,6 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         //Database connection strings
         public static readonly string mainConnectionString = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
 
-        // Hashtable to store cached parameters
-        private static Hashtable parmCache = Hashtable.Synchronized(new Hashtable());
-
         /// <summary>
         /// Execute a SqlCommand (that returns no resultset) against the database specified in the connection string 
         /// using the provided parameters.
@@ -42,61 +39,16 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         /// <returns>an int representing the number of rows affected by the command</returns>
         public static int ExecuteNonQuery(string connectionString, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
         {
-
-            SqlCommand cmd = new SqlCommand();
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            int val;
+            using (SqlCommand cmd = new SqlCommand())
             {
-                PrepareCommand(cmd, conn, null, cmdType, cmdText, commandParameters);
-                int val = cmd.ExecuteNonQuery();
-                cmd.Parameters.Clear();
-                return val;
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    PrepareCommand(cmd, conn, null, cmdType, cmdText, commandParameters);
+                    val = cmd.ExecuteNonQuery();
+                    cmd.Parameters.Clear();
+                }
             }
-        }
-
-        /// <summary>
-        /// Execute a SqlCommand (that returns no resultset) against an existing database connection 
-        /// using the provided parameters.
-        /// </summary>
-        /// <remarks>
-        /// e.g.:  
-        ///  int result = ExecuteNonQuery(connString, CommandType.StoredProcedure, "PublishOrders", new SqlParameter("@prodid", 24));
-        /// </remarks>
-        /// <param name="conn">an existing database connection</param>
-        /// <param name="commandType">the CommandType (stored procedure, text, etc.)</param>
-        /// <param name="commandText">the stored procedure name or T-SQL command</param>
-        /// <param name="commandParameters">an array of SqlParamters used to execute the command</param>
-        /// <returns>an int representing the number of rows affected by the command</returns>
-        public static int ExecuteNonQuery(SqlConnection connection, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
-        {
-
-            SqlCommand cmd = new SqlCommand();
-
-            PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
-            int val = cmd.ExecuteNonQuery();
-            cmd.Parameters.Clear();
-            return val;
-        }
-
-        /// <summary>
-        /// Execute a SqlCommand (that returns no resultset) using an existing SQL Transaction 
-        /// using the provided parameters.
-        /// </summary>
-        /// <remarks>
-        /// e.g.:  
-        ///  int result = ExecuteNonQuery(connString, CommandType.StoredProcedure, "PublishOrders", new SqlParameter("@prodid", 24));
-        /// </remarks>
-        /// <param name="trans">an existing sql transaction</param>
-        /// <param name="commandType">the CommandType (stored procedure, text, etc.)</param>
-        /// <param name="commandText">the stored procedure name or T-SQL command</param>
-        /// <param name="commandParameters">an array of SqlParamters used to execute the command</param>
-        /// <returns>an int representing the number of rows affected by the command</returns>
-        public static int ExecuteNonQuery(SqlTransaction trans, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
-        {
-            SqlCommand cmd = new SqlCommand();
-            PrepareCommand(cmd, trans.Connection, trans, cmdType, cmdText, commandParameters);
-            int val = cmd.ExecuteNonQuery();
-            cmd.Parameters.Clear();
             return val;
         }
 
@@ -131,6 +83,8 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
             catch
             {
                 conn.Close();
+                conn.Dispose();
+                cmd.Dispose();
                 throw;
             }
         }
@@ -150,15 +104,18 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         /// <returns>An object that should be converted to the expected type using Convert.To{Type}</returns>
         public static object ExecuteScalar(string connectionString, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
         {
-            SqlCommand cmd = new SqlCommand();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            object val;
+            using (SqlCommand cmd = new SqlCommand())
             {
-                PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
-                object val = cmd.ExecuteScalar();
-                cmd.Parameters.Clear();
-                return val;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
+                    val = cmd.ExecuteScalar();
+                    cmd.Parameters.Clear();
+
+                }
             }
+            return val;
         }
 
         /// <summary>
@@ -176,43 +133,14 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         /// <returns>An object that should be converted to the expected type using Convert.To{Type}</returns>
         public static object ExecuteScalar(SqlConnection connection, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
         {
-
-            SqlCommand cmd = new SqlCommand();
-
-            PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
-            object val = cmd.ExecuteScalar();
-            cmd.Parameters.Clear();
+            object val;
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
+                val = cmd.ExecuteScalar();
+                cmd.Parameters.Clear();
+            }
             return val;
-        }
-
-        /// <summary>
-        /// add parameter array to the cache
-        /// </summary>
-        /// <param name="cacheKey">Key to the parameter cache</param>
-        /// <param name="cmdParms">an array of SqlParamters to be cached</param>
-        public static void CacheParameters(string cacheKey, params SqlParameter[] commandParameters)
-        {
-            parmCache[cacheKey] = commandParameters;
-        }
-
-        /// <summary>
-        /// Retrieve cached parameters
-        /// </summary>
-        /// <param name="cacheKey">key used to lookup parameters</param>
-        /// <returns>Cached SqlParamters array</returns>
-        public static SqlParameter[] GetCachedParameters(string cacheKey)
-        {
-            SqlParameter[] cachedParms = (SqlParameter[])parmCache[cacheKey];
-
-            if (cachedParms == null)
-                return null;
-
-            SqlParameter[] clonedParms = new SqlParameter[cachedParms.Length];
-
-            for (int i = 0, j = cachedParms.Length; i < j; i++)
-                clonedParms[i] = (SqlParameter)((ICloneable)cachedParms[i]).Clone();
-
-            return clonedParms;
         }
 
         /// <summary>

@@ -40,7 +40,7 @@
 
     <form id="form1" runat="server">
     <div>
-        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"/>
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="true" EnablePartialRendering="true"/>
         
         <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
         </asp:ContentPlaceHolder>

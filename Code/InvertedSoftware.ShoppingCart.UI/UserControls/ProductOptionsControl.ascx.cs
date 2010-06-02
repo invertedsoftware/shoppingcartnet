@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
 using InvertedSoftware.ShoppingCart.DataLayer.Database;
+using InvertedSoftware.ShoppingCart.DataLayer.Cache;
 
 public partial class UserControls_ProductOptionsControl : System.Web.UI.UserControl
 {
@@ -34,9 +35,17 @@ public partial class UserControls_ProductOptionsControl : System.Web.UI.UserCont
         set
         {
             productID = value;
-            productOptions = Products.GetProductOptions(productID);
+            productOptions = CacheManager.GetProductOptions(productID);
             if (!Page.IsPostBack)
                 BindGroups();
+        }
+    }
+
+    public bool HasOptions
+    {
+        get
+        {
+            return productOptions.Count > 0 ? true : false;
         }
     }
 

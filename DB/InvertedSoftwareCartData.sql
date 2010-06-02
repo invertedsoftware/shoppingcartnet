@@ -309,7 +309,6 @@ INSERT INTO Country (CountryName, CountryCode, Active) VALUES ('YEMEN', 'YE', 1)
 INSERT INTO Country (CountryName, CountryCode, Active) VALUES ('ZAMBIA', 'ZM', 1)
 INSERT INTO Country (CountryName, CountryCode, Active) VALUES ('ZIMBABWE', 'ZW', 1)
 
-
 INSERT INTO State (StateName, StateCode, Active) VALUES ('Alabama', 'AL', 1)
 INSERT INTO State (StateName, StateCode, Active) VALUES ('Alaska', 'AK', 1)
 INSERT INTO State (StateName, StateCode, Active) VALUES ('American Samoa', 'AS', 1)
@@ -394,3 +393,13 @@ INSERT INTO OrderStatus (OrderStatusName, Active) VALUES ('PaymentError', 1)
 
 INSERT INTO CustomFieldType (CustomFieldTypeName, Active) VALUES ('TextBox', 1)
 INSERT INTO CustomFieldType (CustomFieldTypeName, Active) VALUES ('CheckBox', 1)
+
+INSERT INTO InventoryAction (InventoryActionName) VALUES ('StopSellingOption')
+INSERT INTO InventoryAction (InventoryActionName) VALUES ('StopSellingProduct')
+INSERT INTO InventoryAction (InventoryActionName) VALUES ('ShowPreOrderOption')
+INSERT INTO InventoryAction (InventoryActionName) VALUES ('ShowPreOrderProduct')
+INSERT INTO InventoryAction (InventoryActionName) VALUES ('DoNothing')
+
+GO
+
+

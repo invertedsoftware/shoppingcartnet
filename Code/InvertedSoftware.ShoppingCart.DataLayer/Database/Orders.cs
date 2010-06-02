@@ -324,7 +324,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         {
             try
             {
-                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(order, CrudFieldType.Create);
+                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties<Order>(order, CrudFieldType.Create);
                 order.OrderID = Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "AddOrder", paramArray));
                 foreach (OrderItem orderItem in order.OrderItems)
                 {
@@ -343,7 +343,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         {
             try
             {
-                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(orderItem);
+                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties <OrderItem>(orderItem, CrudFieldType.Create);
                 orderItem.OrderProductID = Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "AddOrderProduct", paramArray));
                 foreach (OrderProductOption option in orderItem.OptionList)
                     AddOrderProductOption(orderItem.OrderProductID, option.ProductOptionID);
@@ -388,7 +388,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         {
             try
             {
-                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(orderProductCustomField);
+                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties<OrderProductCustomField>(orderProductCustomField, CrudFieldType.Create);
                 orderProductCustomField.OrderProductCustomFieldID = Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "AddOrderProductCustomField", paramArray));
             }
             catch (Exception e)
@@ -426,7 +426,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         {
             try
             {
-                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(order);
+                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties<Order>(order, CrudFieldType.Update);
                 SqlHelper.ExecuteNonQuery(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "UpdateOrder", paramArray);
             }
             catch (Exception e)
@@ -439,7 +439,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         {
             try
             {
-                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties(orderItem);
+                SqlParameter[] paramArray = ObjectHelper.GetSQLParametersFromPublicProperties<OrderItem>(orderItem, CrudFieldType.Update);
                 SqlHelper.ExecuteNonQuery(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "UpdateOrderItem", paramArray);
             }
             catch (Exception e)

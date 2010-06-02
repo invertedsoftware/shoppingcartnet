@@ -144,55 +144,35 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
             return objetList;
         }
 
-        public static SqlParameter[] GetSQLParametersFromPublicProperties(object dataObject)
+        public static SqlParameter[] GetSQLParametersFromPublicProperties<T>(object dataObject, CrudFieldType usedFor)
         {
-            Type type = dataObject.GetType();
-            PropertyInfo[] props = type.GetProperties();
-            SqlParameter[] paramArray = new SqlParameter[props.Length];
+            Type type = typeof(T);
+            PropertyInfo[] props = GetCachedProperties<T>();
+            List<SqlParameter> paramList = new List<SqlParameter>();
 
             for (int i = 0; i < props.Length; i++)
             {
                 if (props[i].PropertyType.Namespace.Equals("System.Collections.Generic"))
                     continue;
-                object fieldValue = type.InvokeMember(props[i].Name, BindingFlags.GetProperty, null, dataObject, null);
-                if (fieldValue != null)
+
+                CrudField usedForAttr = Attribute.GetCustomAttribute(props[i], typeof(CrudField)) as CrudField;
+                if (usedForAttr != null && ((usedForAttr.UsedFor & usedFor) == usedForAttr.UsedFor || usedForAttr.UsedFor == CrudFieldType.All))
                 {
                     SqlParameter sqlParameter = new SqlParameter();
                     sqlParameter.ParameterName = "@" + props[i].Name;
-                    sqlParameter.Value = fieldValue;
-                    paramArray[i] = sqlParameter;
+                    sqlParameter.Value = type.InvokeMember(props[i].Name, BindingFlags.GetProperty, null, dataObject, null);
+                    paramList.Add(sqlParameter);
                 }
-            }
-
-            return paramArray;
-        }
-
-        public static SqlParameter[] GetSQLParametersFromPublicProperties(object dataObject, CrudFieldType usedFor)
-        {
-            Type type = dataObject.GetType();
-            PropertyInfo[] props = type.GetProperties();
-            List<SqlParameter> paramList = new List<SqlParameter>();
-            for (int i = 0; i < props.Length; i++)
-            {
-                if (props[i].PropertyType.IsValueType || props[i].PropertyType.Name == "String")
+                else if (usedForAttr == null) // Include the property is it has no CRUD Attribute.
                 {
-                    object fieldValue = type.InvokeMember(props[i].Name, BindingFlags.GetProperty, null, dataObject, null);
-                    CrudField usedForAttr = Attribute.GetCustomAttribute(props[i], typeof(CrudField)) as CrudField;
-                    if (usedForAttr != null && (usedForAttr.UsedFor & usedFor) == usedForAttr.UsedFor)
-                    {
-                        SqlParameter sqlParameter = new SqlParameter("@" + props[i].Name, fieldValue);
-                        paramList.Add(sqlParameter);
-                    }
-                    else if (usedForAttr == null)
-                    {
-                        SqlParameter sqlParameter = new SqlParameter("@" + props[i].Name, fieldValue);
-                        paramList.Add(sqlParameter);
-                    }
+                    SqlParameter sqlParameter = new SqlParameter();
+                    sqlParameter.ParameterName = "@" + props[i].Name;
+                    sqlParameter.Value = type.InvokeMember(props[i].Name, BindingFlags.GetProperty, null, dataObject, null);
+                    paramList.Add(sqlParameter);
                 }
             }
             return paramList.ToArray();
         }
-
 
         /// <summary>
         /// Get a list of column names from the reader

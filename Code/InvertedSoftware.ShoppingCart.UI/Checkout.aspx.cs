@@ -283,7 +283,6 @@ public partial class Checkout : BasePage
     {
         bool cardCharged = false;
         OrderManager orderManager = new OrderManager();
-        CacheManager cache = new CacheManager();
 
         string buyerStateOrProvince = string.Empty;
         if (BillingAddressControl.StateID.HasValue)
@@ -299,7 +298,7 @@ public partial class Checkout : BasePage
         BillingAddressControl.City,
         buyerStateOrProvince,
         Payment.GetCountryCode(BillingAddressControl.CountryID),
-        cache.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(BillingAddressControl.CountryID.ToString()).Text,
+        CacheManager.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(BillingAddressControl.CountryID.ToString()).Text,
         BillingAddressControl.Zipcode,
         PaymentControl1.CardType,
         PaymentControl1.CardNumber,
@@ -308,7 +307,10 @@ public partial class Checkout : BasePage
         PaymentControl1.ExpYear);
 
         if (response.Equals("OK"))
+        {
+            RemoveFromInventory();   
             return true;
+        }
         else
         {
             MessageLabel.Text = "Billing Error Accured. Please <a href='Contact.aspx'>contact customer support</a>. Error description " + response;
@@ -317,5 +319,14 @@ public partial class Checkout : BasePage
         return cardCharged;
     }
 
-   
+    private void RemoveFromInventory()
+    {
+        foreach (CartItem item in Cart.CartItems)
+        {
+            if (item.ProductOptions.Count == 0)
+                InvertedSoftware.ShoppingCart.DataLayer.Database.Inventory.UpdateProductInventory(item.ProductID, new List<int>(), item.Quantity);
+            else
+                InvertedSoftware.ShoppingCart.DataLayer.Database.Inventory.UpdateProductInventory(item.ProductID, item.ProductOptions.Select(o => o.ProductOptionID).ToList(), item.Quantity);
+        }
+    }
 }

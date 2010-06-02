@@ -64,8 +64,7 @@ public partial class UserControls_GoogleCheckoutControl : System.Web.UI.UserCont
 
     private MerchantCheckoutFlowSupportShippingmethods GetGoogleShippingMethods()
     {
-        CacheManager cache = new CacheManager();
-        ListItemCollection shippingCollection = cache.GetCachedLookupTable(LookupDataEnum.GetShippingPoviders);
+        ListItemCollection shippingCollection = CacheManager.GetCachedLookupTable(LookupDataEnum.GetShippingPoviders);
   
         MerchantCheckoutFlowSupportShippingmethods shipping = new MerchantCheckoutFlowSupportShippingmethods();
         shipping.Items = new object[shippingCollection.Count];

@@ -28,10 +28,9 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer.Controls
                 return;
             }
 
-            CacheManager cache = new CacheManager();
             try
             {
-                this.DataSource = cache.GetCachedLookupTable(LookupType);
+                this.DataSource = CacheManager.GetCachedLookupTable(LookupType);
                 this.DataTextField = "Text";
                 this.DataValueField = "Value";
 

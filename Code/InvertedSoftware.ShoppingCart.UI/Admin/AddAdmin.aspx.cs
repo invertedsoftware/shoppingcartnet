@@ -20,11 +20,10 @@ public partial class Admin_AddAdmin : System.Web.UI.Page
     {
         //Add the user to the admin group and create an empty customer record
         Roles.AddUserToRole(CreateUserWizard1.UserName, "Admin");
-        CacheManager cache = new CacheManager();
         Customer customer = new Customer()
         {
             MemberID = new Guid(Membership.GetUser(CreateUserWizard1.UserName).ProviderUserKey.ToString()),
-            CountryID = Convert.ToInt32(cache.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByText("UNITED STATES")),
+            CountryID = Convert.ToInt32(CacheManager.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByText("UNITED STATES")),
             Email = CreateUserWizard1.Email,
             DateCreated = DateTime.Now,
             DateUpdated = DateTime.Now,

@@ -17,13 +17,14 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
 
     public class Order
     {
-        [CrudField(UsedFor=CrudFieldType.Delete|CrudFieldType.Read|CrudFieldType.Update)]
+        [CrudField(UsedFor = CrudFieldType.Delete | CrudFieldType.Read | CrudFieldType.Update)]
         public int OrderID { get; set; }
         public int CustomerID { get; set; }
         public string OrderNumber { get; set; }
         public DateTime OrderDate { get; set; }
         public int OrderStatusID { get; set; }
         public int ShippingProviderID { get; set; }
+        [CrudField(UsedFor = CrudFieldType.Read | CrudFieldType.Update)]
         public string ShippingNumber { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
@@ -39,6 +40,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
         public decimal Tax { get; set; }
         public bool Active { get; set; }
 
+        [CrudField(UsedFor = CrudFieldType.DontUse)]
         public List<OrderItem> OrderItems { get; set; }
     }
 }

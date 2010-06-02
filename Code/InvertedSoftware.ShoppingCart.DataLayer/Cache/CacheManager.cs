@@ -6,25 +6,26 @@ using System.Linq;
 using System.Text;
 
 using InvertedSoftware.ShoppingCart.DataLayer.Database;
+using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
+using System.Web.Caching;
 
 namespace InvertedSoftware.ShoppingCart.DataLayer.Cache
 {
-    public class CacheManager
+    public static class CacheManager
     {
         const double CacheDuration = 5.0;
 
-        private object GetCacheItem(string cacheKey)
+        private static object GetCacheItem(string cacheKey)
         {
             return HttpRuntime.Cache[cacheKey];
         }
 
-        private void AddCacheItem(string cacheKey, object value)
+        private static void AddCacheItem(string cacheKey, object value)
         {
-            System.Web.Caching.Cache DataCache = HttpRuntime.Cache;
-            DataCache.Insert(cacheKey, value, null, DateTime.Now.AddMinutes(CacheDuration), TimeSpan.Zero);
+            HttpRuntime.Cache.Insert(cacheKey, value, null, DateTime.Now.AddMinutes(CacheDuration), TimeSpan.Zero, CacheItemPriority.Normal, null);
         }
 
-        public ListItemCollection GetCachedLookupTable(LookupDataEnum LookupData)
+        public static ListItemCollection GetCachedLookupTable(LookupDataEnum LookupData)
         {
             // See if the item is in the cache
             ListItemCollection LookupDataCollection = GetCacheItem(Enum.GetName(typeof(LookupDataEnum), LookupData)) as ListItemCollection;
@@ -38,7 +39,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Cache
             return LookupDataCollection;
         }
 
-        public ListItemCollection GetCachedCategories(int? parentCategoryID)
+        public static ListItemCollection GetCachedCategories(int? parentCategoryID)
         {
             // See if the item is in the cache
             ListItemCollection categoryCollection = GetCacheItem("categories-parent" + parentCategoryID) as ListItemCollection;
@@ -50,6 +51,17 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Cache
             }
 
             return categoryCollection;
+        }
+
+        public static List<ProductOption> GetProductOptions(int productID)
+        {
+            List<ProductOption> productOptions = (List<ProductOption>)GetCacheItem("productOptions" + productID);
+            if (productOptions == null)
+            {
+                productOptions = Products.GetProductOptions(productID);
+                AddCacheItem("productOptions" + productID, productOptions);
+            }
+            return productOptions;
         }
     }
 }

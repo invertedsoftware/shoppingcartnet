@@ -79,6 +79,7 @@ public partial class UserControls_CustomFieldsControl : System.Web.UI.UserContro
                     RequiredFieldValidator CustomFieldTextBoxRequiredFieldValidator = new RequiredFieldValidator();
                     CustomFieldTextBoxRequiredFieldValidator.ControlToValidate = "CustomFieldControl";
                     CustomFieldTextBoxRequiredFieldValidator.ErrorMessage = "Required";
+                    //CustomFieldTextBoxRequiredFieldValidator
                     CustomFieldCell.Controls.Add(CustomFieldTextBoxRequiredFieldValidator);
                 }
                 break;

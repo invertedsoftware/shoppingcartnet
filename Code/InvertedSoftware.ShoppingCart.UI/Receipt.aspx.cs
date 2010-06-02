@@ -38,8 +38,7 @@ public partial class Receipt : System.Web.UI.Page
         {
             if (!Order.StateID.HasValue)
                 return string.Empty;
-            CacheManager cache = new CacheManager();
-            return cache.GetCachedLookupTable(LookupDataEnum.GetStates).FindByValue(Order.StateID.Value.ToString()).Text;
+            return CacheManager.GetCachedLookupTable(LookupDataEnum.GetStates).FindByValue(Order.StateID.Value.ToString()).Text;
         }
     }
     public string Province
@@ -48,16 +47,14 @@ public partial class Receipt : System.Web.UI.Page
         {
             if (!Order.ProvinceID.HasValue)
                 return string.Empty;
-            CacheManager cache = new CacheManager();
-            return cache.GetCachedLookupTable(LookupDataEnum.GetProvinces).FindByValue(Order.ProvinceID.Value.ToString()).Text;
+            return CacheManager.GetCachedLookupTable(LookupDataEnum.GetProvinces).FindByValue(Order.ProvinceID.Value.ToString()).Text;
         }
     }
     public string Country
     {
         get
         {
-            CacheManager cache = new CacheManager();
-            return cache.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(Order.CountryID.ToString()).Text;
+            return CacheManager.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(Order.CountryID.ToString()).Text;
         }
     }
     #endregion

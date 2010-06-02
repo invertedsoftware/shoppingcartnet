@@ -1,6 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Database Name="InvertedSoftwareCart" Class="CartDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=GAL;Initial Catalog=InvertedSoftwareCart;Integrated Security=True" SettingsObjectName="InvertedSoftware.ShoppingCart.DataLayer.Properties.Settings" SettingsPropertyName="InvertedSoftwareCartConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="InvertedSoftwareCart" Class="CartDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Table Name="dbo.Category" Member="Categories">
     <Type Name="Category">
       <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -107,6 +105,35 @@
       <Association Name="Product_Image" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.Inventory" Member="Inventories">
+    <Type Name="Inventory">
+      <Column Name="InventoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InventoryActionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductAmountInStock" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Inventory_InventoryProductOption" Member="InventoryProductOptions" ThisKey="InventoryID" OtherKey="InventoryID" Type="InventoryProductOption" />
+      <Association Name="InventoryAction_Inventory" Member="InventoryAction" ThisKey="InventoryActionID" OtherKey="InventoryActionID" Type="InventoryAction" IsForeignKey="true" />
+      <Association Name="Product_Inventory" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InventoryAction" Member="InventoryActions">
+    <Type Name="InventoryAction">
+      <Column Name="InventoryActionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InventoryActionName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="InventoryAction_Inventory" Member="Inventories" ThisKey="InventoryActionID" OtherKey="InventoryActionID" Type="Inventory" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InventoryProductOption" Member="InventoryProductOptions">
+    <Type Name="InventoryProductOption">
+      <Column Name="InventoryProductOptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InventoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductOptionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Inventory_InventoryProductOption" Member="Inventory" ThisKey="InventoryID" OtherKey="InventoryID" Type="Inventory" IsForeignKey="true" />
+      <Association Name="ProductOption_InventoryProductOption" Member="ProductOption" ThisKey="ProductOptionID" OtherKey="ProductOptionID" Type="ProductOption" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.[Order]" Member="Orders">
     <Type Name="Order">
       <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -195,13 +222,14 @@
       <Association Name="Product_CustomField" Member="CustomFields" ThisKey="ProductID" OtherKey="ProductID" Type="CustomField" />
       <Association Name="Product_FeaturedProduct" Member="FeaturedProducts" ThisKey="ProductID" OtherKey="ProductID" Type="FeaturedProduct" />
       <Association Name="Product_Image" Member="Images" ThisKey="ProductID" OtherKey="ProductID" Type="Image" />
+      <Association Name="Product_Inventory" Member="Inventories" ThisKey="ProductID" OtherKey="ProductID" Type="Inventory" />
       <Association Name="Product_OrderProduct" Member="OrderProducts" ThisKey="ProductID" OtherKey="ProductID" Type="OrderProduct" />
       <Association Name="Product_ProductCategory" Member="ProductCategories" ThisKey="ProductID" OtherKey="ProductID" Type="ProductCategory" />
       <Association Name="Product_ProductOption" Member="ProductOptions" ThisKey="ProductID" OtherKey="ProductID" Type="ProductOption" />
+      <Association Name="Product_ProductTag" Member="ProductTags" ThisKey="ProductID" OtherKey="ProductID" Type="ProductTag" />
       <Association Name="Product_RelatedProduct" Member="RelatedProducts" ThisKey="ProductID" OtherKey="ProductOneID" Type="RelatedProduct" />
       <Association Name="Product_RelatedProduct1" Member="RelatedProducts1" ThisKey="ProductID" OtherKey="ProductTwoID" Type="RelatedProduct" />
       <Association Name="Product_Shipping" Member="Shippings" ThisKey="ProductID" OtherKey="ProductID" Type="Shipping" />
-      <Association Name="Product_ProductTag" Member="ProductTags" ThisKey="ProductID" OtherKey="ProductID" Type="ProductTag" />
     </Type>
   </Table>
   <Table Name="dbo.ProductCategory" Member="ProductCategories">
@@ -222,8 +250,19 @@
       <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PriceChange" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="ProductOption_InventoryProductOption" Member="InventoryProductOptions" ThisKey="ProductOptionID" OtherKey="ProductOptionID" Type="InventoryProductOption" />
       <Association Name="ProductOption_OrderProductOption" Member="OrderProductOptions" ThisKey="ProductOptionID" OtherKey="ProductOptionID" Type="OrderProductOption" />
       <Association Name="Product_ProductOption" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductTag" Member="ProductTags">
+    <Type Name="ProductTag">
+      <Column Name="ProductTagID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TagID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Product_ProductTag" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+      <Association Name="Tag_ProductTag" Member="Tag" ThisKey="TagID" OtherKey="TagID" Type="Tag" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Province" Member="Provinces">
@@ -285,16 +324,6 @@
       <Association Name="State_Customer" Member="Customers" ThisKey="StateID" OtherKey="StateID" Type="Customer" />
       <Association Name="State_Order" Member="Orders" ThisKey="StateID" OtherKey="StateID" Type="Order" />
       <Association Name="State_Shipping" Member="Shippings" ThisKey="StateID" OtherKey="StateID" Type="Shipping" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ProductTag" Member="ProductTags">
-    <Type Name="ProductTag">
-      <Column Name="ProductTagID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TagID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Product_ProductTag" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
-      <Association Name="Tag_ProductTag" Member="Tag" ThisKey="TagID" OtherKey="TagID" Type="Tag" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Tag" Member="Tags">

@@ -30,6 +30,7 @@ public partial class Admin_Upload : System.Web.UI.Page
         if (!AllowedFiles.Contains(Path.GetExtension(fileName)))
             return;
 
+        fileName = Server.UrlDecode(fileName);
         String savePath = HttpRuntime.AppDomainAppPath + @"\ProductImages\";
         savePath += fileName;
 

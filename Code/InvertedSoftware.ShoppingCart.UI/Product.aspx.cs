@@ -17,6 +17,8 @@ public partial class Product : BasePage
         RelatedProductsControl1.ProductID = CartProduct.ProductID.ToString();
         ProductOptionsControl1.ProductID = CartProduct.ProductID;
         CustomFieldsControl1.ProductID = CartProduct.ProductID;
+        if (!Page.IsPostBack)
+            CheckProductInventory();
     }
 
     InvertedSoftware.ShoppingCart.DataLayer.DataObjects.Product cartProduct;
@@ -28,12 +30,15 @@ public partial class Product : BasePage
             if (cartProduct == null)
             {
                 string productName = Request.QueryString["Product"];
+                if (string.IsNullOrEmpty(productName))
+                    productName = Page.RouteData.Values["Product"] as string;
+
                 if (!string.IsNullOrEmpty(productName))
                 {
                     cartProduct = Products.GetProduct(productName);
                 }
                 if (cartProduct == null || cartProduct.ProductID == 0)
-                    Response.Redirect("/Default.aspx");
+                    Response.Redirect("Default.aspx");
             }
             return cartProduct;
         }
@@ -62,6 +67,7 @@ public partial class Product : BasePage
         if (!Page.IsValid)
             return;
         DeleteSavedCart();
+
         CartManager manager = new CartManager(this.Cart);
         manager.Add(new CartItem() { CatalogNumber = CartProduct.CatalogNumber, PricePerUnit = CartProduct.price, ProductID = CartProduct.ProductID, ProductName = CartProduct.ProductName, Quantity = Convert.ToInt32(QtyTextBox.Text), ProductOptions = ProductOptionsControl1.SelectedOptions, CustomFields = CustomFieldsControl1.CustomFields });
         this.Cart = manager.ShoppingCart;
@@ -77,5 +83,26 @@ public partial class Product : BasePage
         }
     }
 
+    /// <summary>
+    /// For products with no options check inventory on load.
+    /// </summary>
+    public void CheckProductInventory()
+    {
+        if (ProductOptionsControl1.HasOptions)
+            return;
 
+        InventoryAction inventoryAction;
+        InvertedSoftware.ShoppingCart.DataLayer.DataObjects.Inventory inventory = InvertedSoftware.ShoppingCart.DataLayer.Database.Inventory.GetProductInventory(CartProduct.ProductID, new List<int>());
+        Enum.TryParse(inventory.InventoryActionID.ToString(), out inventoryAction);
+      
+        if (inventoryAction == InventoryAction.StopSellingProduct && inventory.ProductAmountInStock == 0)
+        {
+            AddButton.Enabled = false;
+            AddButton.Text = "Sorry Out of Stock.";
+        }
+        else if (inventoryAction == InventoryAction.ShowPreOrderProduct && inventory.ProductAmountInStock == 0)
+        {
+            AddButton.Text = "Currently out of stock. Click here to pre order.";
+        }
+    }
 }

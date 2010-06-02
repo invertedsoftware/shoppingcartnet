@@ -20,8 +20,7 @@ public partial class UserControls_MenuControl : System.Web.UI.UserControl
         SiteMenu.Items.Add(new MenuItem("Home", "Home", null, "../Default.aspx"));
         //Get list of pages and dynamic categories
         MenuItem Categories = new MenuItem("Shop");
-        CacheManager cache = new CacheManager();
-        ListItemCollection categoryCollection = cache.GetCachedCategories(null);
+        ListItemCollection categoryCollection = CacheManager.GetCachedCategories(null);
         foreach (ListItem item in categoryCollection)
         {
             Categories.ChildItems.Add(new MenuItem(item.Text, item.Value, null, "../Category.aspx?Category=" + HttpUtility.UrlEncode(item.Text) + "&CategoryID=" + item.Value));

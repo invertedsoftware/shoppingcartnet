@@ -85,6 +85,23 @@ public partial class UserControls_ProductsGridControl : System.Web.UI.UserContro
             AddButton.Text = "Customize";
             AddButton.CommandName = "Customize";
         }
+        else
+        {
+            //Check Inventory
+            InventoryAction inventoryAction;
+            InvertedSoftware.ShoppingCart.DataLayer.DataObjects.Inventory inventory = InvertedSoftware.ShoppingCart.DataLayer.Database.Inventory.GetProductInventory(Convert.ToInt32(ProductIDHiddenField.Value), new List<int>());
+            Enum.TryParse(inventory.InventoryActionID.ToString(), out inventoryAction);
+
+            if (inventoryAction == InventoryAction.StopSellingProduct && inventory.ProductAmountInStock == 0)
+            {
+                AddButton.Enabled = false;
+                AddButton.Text = "Out of Stock.";
+            }
+            else if (inventoryAction == InventoryAction.ShowPreOrderProduct && inventory.ProductAmountInStock == 0)
+            {
+                AddButton.Text = "Pre Order.";
+            }
+        }
     }
     #endregion
 

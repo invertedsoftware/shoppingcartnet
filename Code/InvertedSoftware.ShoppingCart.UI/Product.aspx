@@ -16,6 +16,22 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/element/element-min.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/carousel/carousel-min.js"></script>
+<script src="JS/InventoryService.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function checkInventory() {
+        if(inventoryChecked)
+            return inventoryChecked;
+        var qty = document.getElementById("<%= QtyTextBox.ClientID %>").value;
+        var objRegExp  = /(^-?\d\d*$)/;
+        if(objRegExp.test(qty))
+            GetProductStockStatus(<%= CartProduct.ProductID %>, parseInt(qty));
+        return inventoryChecked;
+    }
+
+    function resetInventoryChecked(){
+        inventoryChecked = false;
+    }
+</script>
 
 <table cellpadding="2" cellspacing="3" border="0" width="100%">
 <tr>
@@ -110,8 +126,8 @@
     </td>
 </tr>
 <tr>
-    <td>Price: <%= CartProduct.price.ToString("c")%> <asp:Button ID="AddButton" runat="server" Text="Add to Cart" onclick="AddButton_Click" />
-    <asp:TextBox ID="QtyTextBox" Text="1" MaxLength="4" Columns="3" runat="server"></asp:TextBox>
+    <td>Price: <%= CartProduct.price.ToString("c")%> <asp:Button ID="AddButton" ClientIDMode="Static" runat="server" Text="Add to Cart" onclick="AddButton_Click" OnClientClick="return checkInventory();" />
+    <asp:TextBox ID="QtyTextBox" ClientIDMode="Static" Text="1" MaxLength="4" Columns="3" runat="server"></asp:TextBox>
     <asp:RequiredFieldValidator ControlToValidate="QtyTextBox" ID="QtyRequiredFieldValidator" runat="server" ErrorMessage="Required"></asp:RequiredFieldValidator>
     <asp:RangeValidator
         ID="QtyRangeValidator" ControlToValidate="QtyTextBox" runat="server" ErrorMessage="Please enter a number between 1 and 9999" MinimumValue="1" MaximumValue="9999" Type="Integer"></asp:RangeValidator></td>

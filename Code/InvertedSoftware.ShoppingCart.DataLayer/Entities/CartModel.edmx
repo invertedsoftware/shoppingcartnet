@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="InvertedSoftwareCartModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2000" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+    <Schema Namespace="InvertedSoftwareCartModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2000" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="InvertedSoftwareCartModelStoreContainer">
-          <EntitySet Name="Category" EntityType="InvertedSoftwareCartModel.Store.Category" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="CustomField" EntityType="InvertedSoftwareCartModel.Store.CustomField" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="CustomFieldType" EntityType="InvertedSoftwareCartModel.Store.CustomFieldType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="FeaturedProduct" EntityType="InvertedSoftwareCartModel.Store.FeaturedProduct" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Image" EntityType="InvertedSoftwareCartModel.Store.Image" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Product" EntityType="InvertedSoftwareCartModel.Store.Product" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ProductCategory" EntityType="InvertedSoftwareCartModel.Store.ProductCategory" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ProductOption" EntityType="InvertedSoftwareCartModel.Store.ProductOption" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RelatedProduct" EntityType="InvertedSoftwareCartModel.Store.RelatedProduct" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Category" EntityType="InvertedSoftwareCartModel.Store.Category" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="CustomField" EntityType="InvertedSoftwareCartModel.Store.CustomField" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="CustomFieldType" EntityType="InvertedSoftwareCartModel.Store.CustomFieldType" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="FeaturedProduct" EntityType="InvertedSoftwareCartModel.Store.FeaturedProduct" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Image" EntityType="InvertedSoftwareCartModel.Store.Image" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Product" EntityType="InvertedSoftwareCartModel.Store.Product" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ProductCategory" EntityType="InvertedSoftwareCartModel.Store.ProductCategory" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ProductOption" EntityType="InvertedSoftwareCartModel.Store.ProductOption" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="RelatedProduct" EntityType="InvertedSoftwareCartModel.Store.RelatedProduct" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <AssociationSet Name="FK_CustomField_CustomFieldType" Association="InvertedSoftwareCartModel.Store.FK_CustomField_CustomFieldType">
             <End Role="CustomFieldType" EntitySet="CustomFieldType" />
             <End Role="CustomField" EntitySet="CustomField" />
@@ -268,8 +268,8 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="InvertedSoftwareCartModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
-        <EntityContainer Name="Entities">
+      <Schema Namespace="InvertedSoftwareCartModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="Entities" a:LazyLoadingEnabled="true" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
           <EntitySet Name="Category" EntityType="InvertedSoftwareCartModel.Category" />
           <EntitySet Name="FeaturedProduct" EntityType="InvertedSoftwareCartModel.FeaturedProduct" />
           <EntitySet Name="Image" EntityType="InvertedSoftwareCartModel.Image" />
@@ -448,7 +448,7 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="InvertedSoftwareCartModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="Category">
             <EntityTypeMapping TypeName="IsTypeOf(InvertedSoftwareCartModel.Category)">
@@ -606,20 +606,20 @@
     </edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:Designer>
     <edmx:Connection>
-      <DesignerInfoPropertySet>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
         <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
       </DesignerInfoPropertySet>
     </edmx:Connection>
     <edmx:Options>
-      <DesignerInfoPropertySet>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
       </DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="CartModel">
+      <Diagram Name="CartModel" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
         <EntityTypeShape EntityType="InvertedSoftwareCartModel.Category" Width="1.5" PointX="0.75" PointY="0.875" Height="1.9436327856779097" IsExpanded="true" />
         <EntityTypeShape EntityType="InvertedSoftwareCartModel.FeaturedProduct" Width="1.5" PointX="3" PointY="5.125" Height="1.6099088333050418" IsExpanded="true" />
         <EntityTypeShape EntityType="InvertedSoftwareCartModel.Image" Width="1.5" PointX="3" PointY="10.75" Height="2.110494761864345" IsExpanded="true" />
@@ -670,17 +670,17 @@
           <ConnectorPoint PointX="2.1321659895833336" PointY="8.8885422688708147" />
           <ConnectorPoint PointX="3" PointY="8.8885422688708147" /></AssociationConnector>
         <EntityTypeShape EntityType="InvertedSoftwareCartModel.ProductOption" Width="1.5" PointX="3" PointY="14" Height="1.9436327856779094" />
-        <AssociationConnector Association="InvertedSoftwareCartModel.FK_ProductOption_Product" >
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_ProductOption_Product">
           <ConnectorPoint PointX="2.04883265625" PointY="7.6116666189829507" />
           <ConnectorPoint PointX="2.04883265625" PointY="14.971816392838955" />
           <ConnectorPoint PointX="3" PointY="14.971816392838955" /></AssociationConnector>
         <EntityTypeShape EntityType="InvertedSoftwareCartModel.CustomField" Width="1.5" PointX="7.75" PointY="6.625" Height="1.9436327856779094" />
         <EntityTypeShape EntityType="InvertedSoftwareCartModel.CustomFieldType" Width="1.5" PointX="5.5" PointY="0.75" Height="1.6099088333050413" />
-        <AssociationConnector Association="InvertedSoftwareCartModel.FK_CustomField_CustomFieldType" >
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_CustomField_CustomFieldType">
           <ConnectorPoint PointX="6.25" PointY="2.3599088333050413" />
           <ConnectorPoint PointX="6.25" PointY="7.5968163928389547" />
           <ConnectorPoint PointX="7.75" PointY="7.5968163928389547" /></AssociationConnector>
-        <AssociationConnector Association="InvertedSoftwareCartModel.FK_CustomField_Product" >
+        <AssociationConnector Association="InvertedSoftwareCartModel.FK_CustomField_Product">
           <ConnectorPoint PointX="2.25" PointY="7.2488221551969216" />
           <ConnectorPoint PointX="6.166666666666667" PointY="7.2488221551969207" />
           <ConnectorPoint PointX="6.333333333333333" PointY="7.2488221551969216" />

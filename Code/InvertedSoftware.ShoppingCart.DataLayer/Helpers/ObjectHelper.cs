@@ -156,7 +156,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
                     continue;
 
                 CrudField usedForAttr = Attribute.GetCustomAttribute(props[i], typeof(CrudField)) as CrudField;
-                if (usedForAttr != null && ((usedForAttr.UsedFor & usedFor) == usedForAttr.UsedFor || usedForAttr.UsedFor == CrudFieldType.All))
+                if (usedForAttr != null && ((usedForAttr.UsedFor & usedFor) == usedFor || usedForAttr.UsedFor == CrudFieldType.All))
                 {
                     SqlParameter sqlParameter = new SqlParameter();
                     sqlParameter.ParameterName = "@" + props[i].Name;

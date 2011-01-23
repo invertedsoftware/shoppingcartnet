@@ -8,12 +8,12 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataAttributes
     [Flags]
     public enum CrudFieldType
     {
-        Create = 0x0,
-        Read = 0x1,
-        Update = 0x2,
-        Delete = 0x4,
-        DontUse = 0x8,
-        All = 0x10
+        Create = 0x1,
+        Read = 0x2,
+        Update = 0x4,
+        Delete = 0x8,
+        DontUse = 0x10,
+        All = 0x20
     }
 
     public class CrudField : Attribute

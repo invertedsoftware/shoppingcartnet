@@ -62,6 +62,10 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
             {
                 sb.Append("<tr>");
                 sb.Append("<td>" + item.ProductName);
+                if (!string.IsNullOrWhiteSpace(item.DownloadURL))
+                    sb.Append(@"<br><a href=""" + item.DownloadURL + @""" target=""_blank"">Download</a>");
+                if (!string.IsNullOrWhiteSpace(item.DownloadKey))
+                    sb.Append("<br>Key:" + item.DownloadKey);
                 foreach(OrderProductOption option in item.OptionList)
                     sb.Append("<br>" + option.ProductOptionName);
                 sb.Append("</td>");

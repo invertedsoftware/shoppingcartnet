@@ -22,6 +22,8 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
         public decimal TotalPrice { get; set; }
         public decimal Discount { get; set; }
         public decimal Shipping { get; set; }
+        public string DownloadKey { get; set; }
+        public string DownloadURL { get; set; }
         public DateTime OrderDate { get; set; }
         public bool Active { get; set; }
 

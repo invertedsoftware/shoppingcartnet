@@ -91,6 +91,7 @@
     <Compile Include="Database\Orders.cs" />
     <Compile Include="Database\Payment.cs" />
     <Compile Include="Database\Products.cs" />
+    <Compile Include="Database\Reviews.cs" />
     <Compile Include="DataObjects\Cart.cs" />
     <Compile Include="DataObjects\CartItem.cs" />
     <Compile Include="DataObjects\Customer.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="DataObjects\OrderProductOption.cs" />
     <Compile Include="DataObjects\Product.cs" />
     <Compile Include="DataObjects\ProductOption.cs" />
+    <Compile Include="DataObjects\ProductReview.cs" />
     <Compile Include="DataObjects\RelatedProduct.cs" />
     <Compile Include="DataObjects\Tax.cs" />
     <Compile Include="Dynamic\CartDataClasses.cs">

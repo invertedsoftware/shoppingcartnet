@@ -142,11 +142,17 @@
         <uc1:AddressControl ID="ShippingAddressControl" Enabled="false" runat="server" />
            <tr>
            <td align="right">Select Shipping Method</td>
-            <td ><cc1:LookupDataDropDownList ID="ShippingLookupDataDropDownList" 
+            <td >
+            <asp:Panel ID="ShippingPanel" runat="server">
+            <cc1:LookupDataDropDownList ID="ShippingLookupDataDropDownList" 
                     LookupType="GetShippingPoviders" runat="server" 
                 AutoPostBack="True" 
                     onselectedindexchanged="ShippingLookupDataDropDownList_SelectedIndexChanged">
-            </cc1:LookupDataDropDownList></td>
+            </cc1:LookupDataDropDownList>
+            </asp:Panel>
+            <asp:Literal ID="DownloadLiteral" Visible="false" runat="server">Download Only</asp:Literal>
+            </td>
+               
             <td><asp:RequiredFieldValidator ID="ShippingRequiredFieldValidator" 
                     ControlToValidate="ShippingLookupDataDropDownList" runat="server" 
                     ErrorMessage="Please select Shipping Method">*</asp:RequiredFieldValidator></td>

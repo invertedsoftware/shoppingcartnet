@@ -27,12 +27,17 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Cache
 
         public static ListItemCollection GetCachedLookupTable(LookupDataEnum LookupData)
         {
+            return GetCachedLookupTable(LookupData, true);
+        }
+
+        public static ListItemCollection GetCachedLookupTable(LookupDataEnum LookupData, bool AddEmptyItem)
+        {
             // See if the item is in the cache
             ListItemCollection LookupDataCollection = GetCacheItem(Enum.GetName(typeof(LookupDataEnum), LookupData)) as ListItemCollection;
             if (LookupDataCollection == null)
             {
                 // Item not found in cache - retrieve it and insert it into the cache
-                LookupDataCollection = LookupTables.GetLookupTable(LookupData, true);
+                LookupDataCollection = LookupTables.GetLookupTable(LookupData, AddEmptyItem);
                 AddCacheItem(Enum.GetName(typeof(LookupDataEnum), LookupData), LookupDataCollection);
             }
 

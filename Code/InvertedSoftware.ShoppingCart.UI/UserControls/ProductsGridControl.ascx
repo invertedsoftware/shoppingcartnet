@@ -21,7 +21,7 @@
             <td><asp:Label ID="ProductNameLabel" runat="server" Text='<%# Eval("ProductName") %>'></asp:Label></td>
         </tr>
         <tr>
-            <td colspan="2"><%# Eval("Description")%> <a href='Product.aspx?Product=<%# HttpUtility.UrlEncode(Eval("ProductName").ToString()) %>'>More...</a></td>
+            <td colspan="2"><%# Eval("Description")%> <a href='Product.aspx?Product=<%# HttpUtility.UrlEncode(Eval("ProductName").ToString()) %>&ProductID=<%# WebUtility.EncodeParamForQueryString(Eval("ProductID").ToString()) %>'>More...</a></td>
         </tr>
         <tr>
             <td colspan="2"><asp:Button ID="AddButton" runat="server" Text="Add to Cart" CommandName="AddToCart" /></td>

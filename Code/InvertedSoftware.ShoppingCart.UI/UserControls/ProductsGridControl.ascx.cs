@@ -52,13 +52,14 @@ public partial class UserControls_ProductsGridControl : System.Web.UI.UserContro
     #region Events
     protected void ProductsRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
+        HiddenField ProductIDHiddenField = (HiddenField)((RepeaterItem)e.Item).FindControl("ProductIDHiddenField");
+        int productID = 0;
+        if (!int.TryParse(ProductIDHiddenField.Value, out productID))
+            return;
         if (e.CommandName == "AddToCart")
         {
             DeleteSavedCart();
-            HiddenField ProductIDHiddenField = (HiddenField)((RepeaterItem)e.Item).FindControl("ProductIDHiddenField");
-            int productID = 0;
-            if (!int.TryParse(ProductIDHiddenField.Value, out productID))
-                return;
+
             CartManager manager = new CartManager(((BasePage)Page).Cart);
             manager.Add(productID);
             ((BasePage)Page).Cart = manager.ShoppingCart;
@@ -67,9 +68,10 @@ public partial class UserControls_ProductsGridControl : System.Web.UI.UserContro
         else if (e.CommandName == "Customize")
         {
             Label ProductNameLabel = e.Item.FindControl("ProductNameLabel") as Label;
-            Response.Redirect("Product.aspx?Product=" + HttpUtility.UrlEncode(ProductNameLabel.Text));
+            Response.Redirect("Product.aspx?Product=" + HttpUtility.UrlEncode(ProductNameLabel.Text) + "&ProductID=" + WebUtility.EncodeParamForQueryString(productID.ToString()));
         }
     }
+
     protected void ProductsRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
         if (e.Item.ItemType == ListItemType.Separator)

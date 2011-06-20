@@ -62,8 +62,20 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
             }
             else
             {
-                Product product = Products.GetProduct(productID);
-                CartItem cartItem = new CartItem() { ProductID = productID, PricePerUnit = product.price, ProductName = product.ProductName, CatalogNumber = product.CatalogNumber, Quantity = 1, Subtotal = product.price };//Get from data layer
+                Product product = Products.GetProduct(productID); //Get from data layer
+                CartItem cartItem = new CartItem()
+                {
+                    ProductID = productID,
+                    PricePerUnit = product.SalePrice == 0 ? product.Price : product.SalePrice,
+                    ProductName = product.ProductName,
+                    CatalogNumber = product.CatalogNumber,
+                    IsDownloadable = product.IsDownloadable,
+                    DownloadURL = product.DownloadURL,
+                    IsDownloadKeyRequired = product.IsDownloadKeyRequired,
+                    IsDownloadKeyUnique = product.IsDownloadKeyUnique,
+                    Quantity = 1,
+                    Subtotal = product.Price
+                };
                 Add(cartItem);
             }
         }
@@ -97,6 +109,13 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
         {
             ShoppingCart.CartItems.ElementAt(cartItemIndex).Quantity = quantity;
             ResetItemSubtotal(ShoppingCart.CartItems.ElementAt(cartItemIndex).ProductID);
+        }
+
+        public bool IsCartDownloadable()
+        {
+            if (ShoppingCart.CartItems.Count(I => !I.IsDownloadable) > 0)
+                return false;
+            return true;
         }
 
         private void ResetItemSubtotal(int productID)

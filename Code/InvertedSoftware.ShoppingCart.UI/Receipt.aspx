@@ -34,6 +34,14 @@
            <tr>
             <td>
             <%= item.ProductName%>
+            <%if (!string.IsNullOrWhiteSpace(item.DownloadURL))
+              {  %>
+              <a href="<%: item.DownloadURL%>" target="_blank">Download</a>
+            <%} %>
+             <%if (!string.IsNullOrWhiteSpace(item.DownloadKey))
+              {  %>
+              Key: <%: item.DownloadKey %>
+            <%} %>
             <% foreach (InvertedSoftware.ShoppingCart.DataLayer.DataObjects.OrderProductOption option in item.OptionList)
                {%>
                <br />

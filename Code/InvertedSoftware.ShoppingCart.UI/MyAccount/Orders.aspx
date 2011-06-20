@@ -59,6 +59,7 @@
                 <asp:TemplateField HeaderText="Product" SortExpression="ProductName">
                     <ItemTemplate>
                         <%# Eval("ProductName") %>
+                        <%# GetDownloadText(Eval("DownloadURL"), Eval("DownloadKey"))%>
                         <asp:Repeater ID="OptionsRepeater" DataSource='<%# Eval("OptionList")%>' runat="server">
                         <ItemTemplate><br /><%# Eval("ProductOptionName")%></ItemTemplate>
                         </asp:Repeater>

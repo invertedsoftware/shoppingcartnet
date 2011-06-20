@@ -381,6 +381,25 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             }
             return products;
         }
+
+        public static string GetNextProductKey(int productID, bool isExpireKey)
+        {
+            string productKey = string.Empty;
+            try
+            {
+                SqlParameter[] paramArray = new SqlParameter[]{
+                    new SqlParameter("@ProductID", SqlDbType.Int) { Value = productID },
+                    new SqlParameter("@IsExpireKey", SqlDbType.Bit) { Value = isExpireKey }
+                };
+
+                productKey = Convert.ToString(SqlHelper.ExecuteScalar(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetNextProductKey", paramArray));
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error getting product key", e);
+            }
+            return productKey;
+        }
         #endregion
 
         #region Insert

@@ -9,7 +9,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
 {
     public class Product
     {
-        [CrudField(UsedFor=CrudFieldType.Delete|CrudFieldType.Read|CrudFieldType.Update)]
+        [CrudField(UsedFor = CrudFieldType.Delete | CrudFieldType.Read | CrudFieldType.Update)]
         public int ProductID { get; set; }
         public string CatalogNumber { get; set; }
         public string ProductName { get; set; }
@@ -43,7 +43,23 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
                     imageURL = value;
             }
         }
-        public decimal price { get; set; }
+        public decimal Price { get; set; }
+        public decimal SalePrice { get; set; }
+        public decimal Weight { get; set; }
+        public decimal ShippingWeight { get; set; }
+        public decimal Height { get; set; }
+        public decimal ShippingHeight { get; set; }
+        public decimal Length { get; set; }
+        public decimal ShippingLength { get; set; }
+        public decimal Width { get; set; }
+        public decimal ShippingWidth { get; set; }
+        public bool IsDownloadable { get; set; }
+        public bool IsDownloadKeyRequired { get; set; }
+        public bool IsDownloadKeyUnique { get; set; }
+        public string DownloadURL { get; set; }
+        public bool IsReviewEnabled { get; set; }
+        public int TotalReviewCount { get; set; }
+        public decimal RatingScore { get; set; }
         public bool Active { get; set; }
     }
 }

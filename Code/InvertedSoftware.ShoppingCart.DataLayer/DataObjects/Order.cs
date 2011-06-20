@@ -23,7 +23,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
         public string OrderNumber { get; set; }
         public DateTime OrderDate { get; set; }
         public int OrderStatusID { get; set; }
-        public int ShippingProviderID { get; set; }
+        public int? ShippingProviderID { get; set; }
         [CrudField(UsedFor = CrudFieldType.Read | CrudFieldType.Update)]
         public string ShippingNumber { get; set; }
         public string Address { get; set; }

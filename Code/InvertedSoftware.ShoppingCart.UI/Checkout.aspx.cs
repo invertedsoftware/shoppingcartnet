@@ -28,6 +28,14 @@ public partial class Checkout : BasePage
     {
         if (!Page.IsPostBack)
         {
+            // If there are only Downloadable items in the cart no need for shipping
+            CartManager manager = new CartManager(this.Cart);
+            if (manager.IsCartDownloadable())
+            {
+                ShippingPanel.Visible = false;
+                ShippingRequiredFieldValidator.Enabled = false;
+                DownloadLiteral.Visible = true;
+            }
             Customer customer = GetLoggedCustomer();
             if (customer != null)
             {
@@ -163,17 +171,21 @@ public partial class Checkout : BasePage
         PasswordGenerator gen = new PasswordGenerator() { ConsecutiveCharacters = true, ExcludeSymbols = true, Maximum = 25, Minimum = 25, RepeatCharacters = true };
         string orderNo = gen.Generate();
 
-        Order order = new Order() { CustomerID = customer.CustomerID, 
-            OrderNumber = orderNo, 
+        Order order = new Order()
+        {
+            CustomerID = customer.CustomerID,
+            OrderNumber = orderNo,
             DatePlaced = DateTime.Now,
             OrderStatusID = (int)OrderStatusEnum.Accepted,
             Tax = Cart.Tax,
             Shipping = Cart.Shipping,
             Total = Cart.Total,
             OrderDate = DateTime.Now,
-            Active = true, 
-            ShippingProviderID = Convert.ToInt32(ShippingLookupDataDropDownList.SelectedValue),
-            Comments = CommentsTextBox.Text };
+            Active = true,
+            Comments = CommentsTextBox.Text
+        };
+        if (ShippingLookupDataDropDownList.Visible)
+            order.ShippingProviderID = Convert.ToInt32(ShippingLookupDataDropDownList.SelectedValue);
 
         if (ShippingCheckBox.Checked)
         {
@@ -206,7 +218,27 @@ public partial class Checkout : BasePage
         order.OrderItems = new List<OrderItem>();
         foreach (CartItem item in Cart.CartItems)
         {
-            OrderItem orderItem = new OrderItem() { ProductID = item.ProductID, PricePerUnit = item.PricePerUnit, Discount = 0, OrderDate = DateTime.Now, Quantity = item.Quantity, Shipping = 0, TotalPrice = item.Subtotal, ProductName = item.ProductName, CatalogNumber = item.CatalogNumber };
+            OrderItem orderItem = new OrderItem()
+            {
+                ProductID = item.ProductID,
+                PricePerUnit = item.PricePerUnit,
+                Discount = 0,
+                OrderDate = DateTime.Now,
+                Quantity = item.Quantity,
+                Shipping = 0,
+                TotalPrice = item.Subtotal,
+                ProductName = item.ProductName,
+                CatalogNumber = item.CatalogNumber,
+                Active = true
+            };
+
+            // For downloadable products get a key if needed
+            if (item.IsDownloadable)
+            {
+                orderItem.DownloadURL = item.DownloadURL;
+                if (item.IsDownloadKeyRequired)
+                    orderItem.DownloadKey = Products.GetNextProductKey(item.ProductID, item.IsDownloadKeyUnique);
+            }
 
             foreach (ProductOption option in item.ProductOptions)
                 orderItem.OptionList.Add(new OrderProductOption() { ProductOptionID = option.ProductOptionID });

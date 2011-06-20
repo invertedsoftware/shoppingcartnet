@@ -17,6 +17,8 @@ public partial class Product : BasePage
         RelatedProductsControl1.ProductID = CartProduct.ProductID.ToString();
         ProductOptionsControl1.ProductID = CartProduct.ProductID;
         CustomFieldsControl1.ProductID = CartProduct.ProductID;
+        ProductReviewsControl1.Visible = CartProduct.IsReviewEnabled;
+        ProductReviewsControl1.ProductID = CartProduct.ProductID;
         if (!Page.IsPostBack)
             CheckProductInventory();
     }
@@ -29,13 +31,23 @@ public partial class Product : BasePage
         {
             if (cartProduct == null)
             {
-                string productName = Request.QueryString["Product"];
-                if (string.IsNullOrEmpty(productName))
-                    productName = Page.RouteData.Values["Product"] as string;
-
-                if (!string.IsNullOrEmpty(productName))
+                // First look for a product ID
+                int productID = WebUtility.GetDecodedIntFromQueryString("ProductID");
+                if (productID > 0)
                 {
-                    cartProduct = Products.GetProduct(productName);
+                    cartProduct = Products.GetProduct(productID);
+                }
+                else
+                {
+                    // Then fall back on product name
+                    string productName = Request.QueryString["Product"];
+                    if (string.IsNullOrEmpty(productName))
+                        productName = Page.RouteData.Values["Product"] as string;
+
+                    if (!string.IsNullOrEmpty(productName))
+                    {
+                        cartProduct = Products.GetProduct(productName);
+                    }
                 }
                 if (cartProduct == null || cartProduct.ProductID == 0)
                     Response.Redirect("Default.aspx");
@@ -69,7 +81,20 @@ public partial class Product : BasePage
         DeleteSavedCart();
 
         CartManager manager = new CartManager(this.Cart);
-        manager.Add(new CartItem() { CatalogNumber = CartProduct.CatalogNumber, PricePerUnit = CartProduct.price, ProductID = CartProduct.ProductID, ProductName = CartProduct.ProductName, Quantity = Convert.ToInt32(QtyTextBox.Text), ProductOptions = ProductOptionsControl1.SelectedOptions, CustomFields = CustomFieldsControl1.CustomFields });
+        manager.Add(new CartItem()
+        {
+            CatalogNumber = CartProduct.CatalogNumber,
+            PricePerUnit = CartProduct.SalePrice == 0 ? CartProduct.Price : CartProduct.SalePrice,
+            ProductID = CartProduct.ProductID,
+            ProductName = CartProduct.ProductName,
+            IsDownloadable = CartProduct.IsDownloadable,
+            DownloadURL = CartProduct.DownloadURL,
+            IsDownloadKeyRequired = CartProduct.IsDownloadKeyRequired, 
+            IsDownloadKeyUnique = CartProduct.IsDownloadKeyUnique,
+            Quantity = Convert.ToInt32(QtyTextBox.Text),
+            ProductOptions = ProductOptionsControl1.SelectedOptions,
+            CustomFields = CustomFieldsControl1.CustomFields
+        });
         this.Cart = manager.ShoppingCart;
         Response.Redirect("ShoppingCart.aspx");
     }
@@ -104,5 +129,10 @@ public partial class Product : BasePage
         {
             AddButton.Text = "Currently out of stock. Click here to pre order.";
         }
+    }
+
+    public int GetCartProduct()
+    {
+        return 1;
     }
 }

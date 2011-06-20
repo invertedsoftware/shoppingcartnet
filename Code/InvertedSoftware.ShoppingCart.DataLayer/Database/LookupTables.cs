@@ -17,7 +17,8 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
         GetShippingPoviders,
         GetCountries,
         GetStates,
-        GetProvinces
+        GetProvinces,
+        GetProductReviewCategories
     }
 
     public static class LookupTables

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Category.aspx.cs" Inherits="Category" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Category.aspx.cs" Inherits="Category" %>
 
 <%@ Register src="UserControls/ProductsGridControl.ascx" tagname="ProductsGridControl" tagprefix="uc1" %>
 
@@ -7,6 +7,7 @@
 <%@ Register src="UserControls/TagsControl.ascx" tagname="TagsControl" tagprefix="uc3" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 <table cellpadding="2" cellspacing="3" border="0" width="100%">
@@ -18,7 +19,7 @@
             <tr>
         </HeaderTemplate>
         <ItemTemplate>
-            <td><a href='Category.aspx?Category=<%# HttpUtility.UrlEncode(Eval("Text").ToString()) %>&CategoryID=<%# Eval("Value") %>'><%# Eval("Text") %></a> </td>
+            <td><a href='Category.aspx?Category=<%# HttpUtility.UrlEncode(Eval("CategoryName").ToString()) %>&CategoryID=<%# Eval("CategoryID") %>'><%# Eval("CategoryName") %></a> </td>
         </ItemTemplate>
         <FooterTemplate>
             </tr>
@@ -26,7 +27,7 @@
         </FooterTemplate>
     </asp:Repeater>
     <asp:ObjectDataSource ID="CategoryObjectDataSource" runat="server" 
-        SelectMethod="GetCachedCategories" 
+        SelectMethod="GetCachedChildCategories" 
         TypeName="InvertedSoftware.ShoppingCart.DataLayer.Cache.CacheManager">
         <SelectParameters>
             <asp:QueryStringParameter QueryStringField="CategoryID" Name="parentCategoryID" Type="Int32" />

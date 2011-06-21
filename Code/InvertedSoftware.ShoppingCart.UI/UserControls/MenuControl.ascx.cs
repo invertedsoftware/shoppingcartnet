@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using InvertedSoftware.ShoppingCart.DataLayer.Cache;
+using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
 
 public partial class UserControls_MenuControl : System.Web.UI.UserControl
 {
@@ -20,10 +21,10 @@ public partial class UserControls_MenuControl : System.Web.UI.UserControl
         SiteMenu.Items.Add(new MenuItem("Home", "Home", null, "../Default.aspx"));
         //Get list of pages and dynamic categories
         MenuItem Categories = new MenuItem("Shop", "Shop", null, "../Default.aspx");
-        ListItemCollection categoryCollection = CacheManager.GetCachedCategories(null);
-        foreach (ListItem item in categoryCollection)
+        var categories = CacheManager.GetCachedCategories().Where(c=> !c.ParentCategoryID.HasValue);
+        foreach (Category category in categories)
         {
-            Categories.ChildItems.Add(new MenuItem(item.Text, item.Value, null, "../Category.aspx?Category=" + HttpUtility.UrlEncode(item.Text) + "&CategoryID=" + item.Value));
+            Categories.ChildItems.Add(new MenuItem(category.CategoryName, category.CategoryID.ToString(), null, "../Category.aspx?Category=" + HttpUtility.UrlEncode(category.CategoryName) + "&CategoryID=" + category.CategoryID));
         }
         SiteMenu.Items.Add(Categories);
 

@@ -44,18 +44,23 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Cache
             return LookupDataCollection;
         }
 
-        public static ListItemCollection GetCachedCategories(int? parentCategoryID)
+        public static List<Category> GetCachedCategories()
         {
             // See if the item is in the cache
-            ListItemCollection categoryCollection = GetCacheItem("categories-parent" + parentCategoryID) as ListItemCollection;
-            if (categoryCollection == null)
+            List<Category> categories = (List<Category>)GetCacheItem("categories");
+            if (categories == null)
             {
                 // Item not found in cache - retrieve it and insert it into the cache
-                categoryCollection = Categories.GetCategories(parentCategoryID, true);
-                AddCacheItem("categories-parent" + parentCategoryID, categoryCollection);
+                categories = Categories.GetCategories();
+                AddCacheItem("categories", categories);
             }
 
-            return categoryCollection;
+            return categories;
+        }
+
+        public static List<Category> GetCachedChildCategories(int? parentCategoryID)
+        {
+            return GetCachedCategories().Where(c => c.ParentCategoryID == parentCategoryID).ToList();
         }
 
         public static Product GetProduct(int productID)

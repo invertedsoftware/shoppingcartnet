@@ -4,41 +4,32 @@ using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 using System.Web.UI.WebControls;
 
 using InvertedSoftware.ShoppingCart.DataLayer.Helpers;
+using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
+
 
 namespace InvertedSoftware.ShoppingCart.DataLayer.Database
 {
     public class Categories
     {
-        public static ListItemCollection GetCategories(int? parentCategoryID, bool active)
+        public static List<Category> GetCategories()
         {
-            ListItemCollection categoryCollection = new ListItemCollection();
-            SqlParameter[] paramArray = new SqlParameter[2];
-
-            SqlParameter ParentCategoryIDSqlParameter = new SqlParameter("@ParentCategoryID", SqlDbType.Int);
-            if (parentCategoryID.HasValue)
-                ParentCategoryIDSqlParameter.Value = parentCategoryID.Value;
-            else
-                ParentCategoryIDSqlParameter.Value = DBNull.Value;
-            paramArray[0] = ParentCategoryIDSqlParameter;
-
-            SqlParameter ActiveSqlParameter = new SqlParameter("@Active", SqlDbType.Bit);
-            ActiveSqlParameter.Value = active;
-            paramArray[1] = ActiveSqlParameter;
-
+            List<Category> categories = new List<Category>();
             try
             {
-
-                using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetCategories", paramArray))
+                using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetCategories"))
                 {
-                    while (rdr.Read())
+                    PropertyInfo[] props = ObjectHelper.GetCachedProperties<Category>();
+                    List<string> columnList = ObjectHelper.GetColumnList(reader);
+                    Category category;
+                    while (reader.Read())
                     {
-                        ListItem item = new ListItem();
-                        item.Value = rdr["CategoryID"].ToString();
-                        item.Text = rdr["CategoryName"].ToString();
-                        categoryCollection.Add(item);
+                        category = new Category();
+                        ObjectHelper.LoadAs<Category>(reader, category, props, columnList);
+                        categories.Add(category);
                     }
                 }
             }
@@ -46,8 +37,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             {
                 throw new Exception("Error getting categories", e);
             }
-
-            return categoryCollection;
+            return categories;
         }
 
         public static List<string> GetTags()
@@ -67,6 +57,27 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
                 throw new Exception("Error getting tags", e);
             }
             return tags;
+        }
+
+        public static List<int> GetProductCategories(int productID)
+        {
+            List<int> productCategories = new List<int>();
+
+            try
+            {
+                SqlParameter ProductIDSqlParameter = new SqlParameter("@ProductID", SqlDbType.Int) { Value = productID };
+
+                using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetProductCategories", ProductIDSqlParameter))
+                {
+                    while (rdr.Read())
+                        productCategories.Add(rdr.GetInt32(0));
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error product categories tags", e);
+            }
+            return productCategories;
         }
     }
 }

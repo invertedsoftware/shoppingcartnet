@@ -95,6 +95,7 @@
     <Compile Include="Database\Reviews.cs" />
     <Compile Include="DataObjects\Cart.cs" />
     <Compile Include="DataObjects\CartItem.cs" />
+    <Compile Include="DataObjects\Category.cs" />
     <Compile Include="DataObjects\Customer.cs" />
     <Compile Include="DataObjects\CustomField.cs" />
     <Compile Include="DataObjects\FeaturedProduct.cs" />

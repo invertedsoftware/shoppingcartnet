@@ -20,8 +20,13 @@ public partial class Product : BasePage
         RelatedProductsControl1.ProductID = CartProduct.ProductID.ToString();
         ProductOptionsControl1.ProductID = CartProduct.ProductID;
         CustomFieldsControl1.ProductID = CartProduct.ProductID;
+        if (ProductBreadcrumbControl1 != null)
+            ProductBreadcrumbControl1.ProductID = CartProduct.ProductID;
         if (!Page.IsPostBack)
+        {
+            Page.Title = CartProduct.ProductName + " - " + ConfigurationManager.AppSettings["StoreName"];
             CheckProductInventory();
+        }
     }
 
     InvertedSoftware.ShoppingCart.DataLayer.DataObjects.Product cartProduct;

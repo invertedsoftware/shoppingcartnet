@@ -8,6 +8,8 @@
 
 <%@ Register src="UserControls/TagsControl.ascx" tagname="TagsControl" tagprefix="uc4" %>
 
+<%@ Register src="UserControls/ProductBreadcrumbControl.ascx" tagname="ProductBreadcrumbControl" tagprefix="uc5" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -159,28 +161,33 @@
  { %>
  <script language=javascript type="text/ecmascript">
 
-     function showReviewMethod() {
-         $("#messageDiv").html("In order to keep reviews real this store will only accept reviews from verified customers that have purchased this product. If you wish to review this product, please log in to your account and use the review form on this page.");
-         if ($("#facebox").data("overlay") != null) {
-             $("#facebox").data("overlay").load();
-         } else {
-             $("#facebox").overlay({
-                 top: '20%',
-                 mask: {
-                     color: '#fff',
-                     loadSpeed: 200,
-                     opacity: 0.5
-                 },
-                 closeOnClick: false,
-                 load: true
-             });
-         }
-     }
+	 function showReviewMethod() {
+		 $("#messageDiv").html("In order to keep reviews real this store will only accept reviews from verified customers that have purchased this product. If you wish to review this product, please log in to your account and use the review form on this page.");
+		 if ($("#facebox").data("overlay") != null) {
+			 $("#facebox").data("overlay").load();
+		 } else {
+			 $("#facebox").overlay({
+				 top: '20%',
+				 mask: {
+					 color: '#fff',
+					 loadSpeed: 200,
+					 opacity: 0.5
+				 },
+				 closeOnClick: false,
+				 load: true
+			 });
+		 }
+	 }
 			</script>
  <tr>
 	<td><iframe src="ProductReviews.aspx?ProductID=<%: WebUtility.EncodeParamForQueryString(CartProduct.ProductID.ToString()) %>" width="100%" height="300" scrolling="auto" frameborder="0"></iframe></td>
  </tr>
  <%} %>
+ <tr>
+	<td>
+		<uc5:ProductBreadcrumbControl ID="ProductBreadcrumbControl1" runat="server" />
+	 </td>
+ </tr>
 </table></td>
 	<td>
 		<uc1:RelatedProductsControl ID="RelatedProductsControl1" runat="server" /><br />

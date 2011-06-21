@@ -36,6 +36,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AuthorizeNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="AuthorizeNet.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -59,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="apiv2.cs" />
+    <Compile Include="AuthorizeNetGateway.cs" />
     <Compile Include="IPaymentGateway.cs" />
     <Compile Include="PayPalGateway.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,6 +94,10 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\AuthorizeNet.dll" />
+    <Content Include="lib\AuthorizeNet.Helpers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

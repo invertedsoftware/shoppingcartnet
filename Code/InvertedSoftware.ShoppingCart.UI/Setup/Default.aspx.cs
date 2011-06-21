@@ -89,6 +89,9 @@ public partial class Setup_Default : System.Web.UI.Page
             appSettings.Settings["GoogleMerchantkey"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleMerchantkey")).Text;
             appSettings.Settings["GoogleImageButtonURL"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleImageButtonURL")).Text;
             appSettings.Settings["GoogleCheckoutURL"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleCheckoutURL")).Text;
+            appSettings.Settings["AuthorizeNetTestMode"].Value = ((CheckBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("AuthorizeNetTestMode")).Checked.ToString().ToLower();
+            appSettings.Settings["AuthorizeNetAPILoginID"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("AuthorizeNetAPILoginID")).Text;
+            appSettings.Settings["AuthorizeNetTransactionKey"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("AuthorizeNetTransactionKey")).Text;
             configuration.Save();
         }
     }

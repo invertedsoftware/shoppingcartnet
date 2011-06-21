@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,8 @@ using InvertedSoftware.ShoppingCart.BusinessLayer.Controls;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
 using InvertedSoftware.ShoppingCart.DataLayer.Database;
 
+using InvertedSoftware.ShoppingCart.DataLayer.Cache;
+
 public partial class Product : BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -17,8 +20,6 @@ public partial class Product : BasePage
         RelatedProductsControl1.ProductID = CartProduct.ProductID.ToString();
         ProductOptionsControl1.ProductID = CartProduct.ProductID;
         CustomFieldsControl1.ProductID = CartProduct.ProductID;
-        ProductReviewsControl1.Visible = CartProduct.IsReviewEnabled;
-        ProductReviewsControl1.ProductID = CartProduct.ProductID;
         if (!Page.IsPostBack)
             CheckProductInventory();
     }
@@ -35,7 +36,10 @@ public partial class Product : BasePage
                 int productID = WebUtility.GetDecodedIntFromQueryString("ProductID");
                 if (productID > 0)
                 {
-                    cartProduct = Products.GetProduct(productID);
+                    if (bool.Parse(ConfigurationManager.AppSettings["IsProductCacheEnabled"]))
+                        cartProduct = CacheManager.GetProduct(productID);
+                    else
+                        cartProduct = Products.GetProduct(productID);
                 }
                 else
                 {

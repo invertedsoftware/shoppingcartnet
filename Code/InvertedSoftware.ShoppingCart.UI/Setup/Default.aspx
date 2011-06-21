@@ -241,6 +241,27 @@ Using this account you can log onto your store’s management panel by simply typi
                                 <asp:TextBox ID="GoogleCheckoutURL" Text="https://sandbox.google.com/checkout/api/checkout/v2/merchantCheckout/Merchant/{0}" runat="server"></asp:TextBox></td>
                         </tr>
                         <tr>
+                            <td align="right">
+                                <asp:Label ID="AuthorizeNetTestModeLabel" runat="server" AssociatedControlID="AuthorizeNetTestMode">AuthorizeNet in test mode:</asp:Label>
+                            </td>
+                             <td>
+                                <asp:CheckBox ID="AuthorizeNetTestMode" runat="server" /></td>
+                        </tr>
+                         <tr>
+                            <td align="right">
+                                <asp:Label ID="AuthorizeNetAPILoginIDLabel" runat="server" AssociatedControlID="AuthorizeNetAPILoginID">AuthorizeNet Login ID:</asp:Label>
+                            </td>
+                              <td>
+                                <asp:TextBox ID="AuthorizeNetAPILoginID" Text="" runat="server"></asp:TextBox></td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                <asp:Label ID="AuthorizeNetTransactionKeyLabel" runat="server" AssociatedControlID="AuthorizeNetTransactionKey">AuthorizeNet Transaction Key:</asp:Label>
+                            </td>
+                             <td>
+                                <asp:TextBox ID="AuthorizeNetTransactionKey" Text="" runat="server"></asp:TextBox></td>
+                        </tr>
+                        <tr>
                             <td align="center" colspan="2" style="color:Red;">
                                 <asp:Literal ID="ErrorMessage" runat="server" EnableViewState="False"></asp:Literal>
                             </td>

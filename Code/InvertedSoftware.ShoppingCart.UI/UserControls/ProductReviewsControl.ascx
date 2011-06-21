@@ -10,27 +10,7 @@
 <tr>
 	<td>
 		<asp:LoginView ID="ReviewLoginView" runat="server">
-			<AnonymousTemplate><a href="#" onclick="javascript:showReviewMethod();">How can I review products?</a> 
-			<script language=javascript type="text/ecmascript">
-
-				function showReviewMethod() {
-					$("#messageDiv").html("In order to keep reviews real this store will only accept reviews from verified customers that have purchased this product. If you wish to review this product, please log in to your account and use the review form on this page.");
-					if ($("#facebox").data("overlay") != null) {
-						$("#facebox").data("overlay").load();
-					} else {
-						$("#facebox").overlay({
-							top: '20%',
-							mask: {
-								color: '#fff',
-								loadSpeed: 200,
-								opacity: 0.5
-							},
-							closeOnClick: false,
-							load: true
-						});
-					}
-				}
-			</script>
+			<AnonymousTemplate><a href="#" onclick="javascript:parent.showReviewMethod();">How can I review products?</a> 
 			</AnonymousTemplate>
 			<RoleGroups>
 				<asp:RoleGroup Roles="Customer">

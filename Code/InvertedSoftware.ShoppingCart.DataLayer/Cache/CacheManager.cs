@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Web;
+using System.Runtime.Caching;
 using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +17,12 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Cache
 
         private static object GetCacheItem(string cacheKey)
         {
-            return HttpRuntime.Cache[cacheKey];
+            return MemoryCache.Default.Get(cacheKey);
         }
 
         private static void AddCacheItem(string cacheKey, object value)
         {
-            HttpRuntime.Cache.Insert(cacheKey, value, null, DateTime.Now.AddMinutes(CacheDuration), TimeSpan.Zero, CacheItemPriority.Normal, null);
+            MemoryCache.Default.Add(new CacheItem(cacheKey, value), new CacheItemPolicy() { SlidingExpiration = TimeSpan.FromMinutes(10), Priority = System.Runtime.Caching.CacheItemPriority.Default });
         }
 
         public static ListItemCollection GetCachedLookupTable(LookupDataEnum LookupData)
@@ -56,6 +56,17 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Cache
             }
 
             return categoryCollection;
+        }
+
+        public static Product GetProduct(int productID)
+        {
+            Product product = (Product)GetCacheItem("Product" + productID);
+            if (product == null)
+            {
+                product = Products.GetProduct(productID);
+                AddCacheItem("Product" + productID, product);
+            }
+            return product;
         }
 
         public static List<ProductOption> GetProductOptions(int productID)

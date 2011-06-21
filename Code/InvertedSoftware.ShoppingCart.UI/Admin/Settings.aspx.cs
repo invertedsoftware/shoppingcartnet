@@ -40,6 +40,9 @@ public partial class Admin_Settings : System.Web.UI.Page
             appSettings.Settings["GoogleMerchantkey"].Value = GoogleMerchantkey.Text;
             appSettings.Settings["GoogleImageButtonURL"].Value = GoogleImageButtonURL.Text;
             appSettings.Settings["GoogleCheckoutURL"].Value = GoogleCheckoutURL.Text;
+            appSettings.Settings["AuthorizeNetTestMode"].Value = AuthorizeNetTestMode.Checked.ToString().ToLower();
+            appSettings.Settings["AuthorizeNetAPILoginID"].Value = AuthorizeNetAPILoginID.Text;
+            appSettings.Settings["AuthorizeNetTransactionKey"].Value = AuthorizeNetTransactionKey.Text;
             configuration.Save();
             ErrorLiteral.Text = "Configuration Saved";
         }
@@ -65,5 +68,8 @@ public partial class Admin_Settings : System.Web.UI.Page
         GoogleMerchantkey.Text = ConfigurationManager.AppSettings["GoogleMerchantkey"];
         GoogleImageButtonURL.Text = ConfigurationManager.AppSettings["GoogleImageButtonURL"];
         GoogleCheckoutURL.Text = ConfigurationManager.AppSettings["GoogleCheckoutURL"];
+        AuthorizeNetTestMode.Checked = Convert.ToBoolean(ConfigurationManager.AppSettings["AuthorizeNetTestMode"]);
+        AuthorizeNetAPILoginID.Text = ConfigurationManager.AppSettings["AuthorizeNetAPILoginID"];
+        AuthorizeNetTransactionKey.Text = ConfigurationManager.AppSettings["AuthorizeNetTransactionKey"];
     }
 }

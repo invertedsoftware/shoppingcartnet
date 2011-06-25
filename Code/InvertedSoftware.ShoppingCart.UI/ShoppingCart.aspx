@@ -10,7 +10,8 @@
     <td align="center">
     <table cellpadding="2" cellspacing="3" border="0" width="0%">
     <tr>
-        <td><asp:Literal ID="MessageLiteral" runat="server"></asp:Literal></td>
+        <td><asp:Literal ID="MessageLiteral" runat="server"></asp:Literal><br />
+        <asp:Literal ID="CouponMessageLiteral" runat="server"></asp:Literal></td>
     </tr>
     <tr>
         <td align="center">
@@ -42,6 +43,32 @@
                     </tr>
                 </ItemTemplate>
                 <FooterTemplate>
+                    <tr>
+                        <td colspan="6" align="right">
+                            <asp:Repeater ID="OffersRepeater" onitemcommand="OffersRepeater_ItemCommand" runat="server">
+                            <HeaderTemplate>
+                                <table cellpadding="2" cellspacing="3" border="0">
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                            <tr>
+                                <td><asp:Button ID="RemoveOfferButton" CommandName="DeleteCoupon" CommandArgument='<%# Eval("CouponID") %>' runat="server" Text="Remove" /></td>
+                                <td style="border-style:dashed;background-color:#f1efb6;padding:5px"><%# Eval("CouponDescription") %></td>
+                            </tr>
+                            </ItemTemplate>
+                            <FooterTemplate>
+                                </table>
+                            </FooterTemplate>
+                            </asp:Repeater>
+                        </td>
+                        <tr>
+                            <td colspan="5" align="right"> Add Offer Code:</td>
+                            <td><asp:RequiredFieldValidator ID="OfferCodeTextBoxRequiredFieldValidator" ControlToValidate="OfferCodeTextBox" ValidationGroup="Offers" runat="server" ErrorMessage="*"></asp:RequiredFieldValidator><asp:TextBox ID="OfferCodeTextBox" ValidationGroup="Offers" runat="server"></asp:TextBox><asp:Button ID="AddOfferButton" ValidationGroup="Offers" runat="server" Text="Add" CommandName="AddCoupon" /></td>
+                        </tr>
+                    </tr>
+                    <tr>
+                        <td colspan="5" align="right">Discounts</td>
+                        <td><%= this.Cart.Discounts.ToString("c")%></td>
+                    </tr>
                     <tr>
                         <td colspan="5" align="right">SubTotal</td>
                         <td><%= this.Cart.Subtotal.ToString("c")%></td>

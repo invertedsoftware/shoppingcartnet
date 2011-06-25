@@ -30,15 +30,18 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertCategory(Category instance);
-    partial void UpdateCategory(Category instance);
-    partial void DeleteCategory(Category instance);
     partial void InsertTax(Tax instance);
     partial void UpdateTax(Tax instance);
     partial void DeleteTax(Tax instance);
+    partial void InsertCategory(Category instance);
+    partial void UpdateCategory(Category instance);
+    partial void DeleteCategory(Category instance);
     partial void InsertCountry(Country instance);
     partial void UpdateCountry(Country instance);
     partial void DeleteCountry(Country instance);
+    partial void InsertCoupon(Coupon instance);
+    partial void UpdateCoupon(Coupon instance);
+    partial void DeleteCoupon(Coupon instance);
     partial void InsertCustomer(Customer instance);
     partial void UpdateCustomer(Customer instance);
     partial void DeleteCustomer(Customer instance);
@@ -120,8 +123,11 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
     partial void InsertTag(Tag instance);
     partial void UpdateTag(Tag instance);
     partial void DeleteTag(Tag instance);
+    partial void InsertCouponType(CouponType instance);
+    partial void UpdateCouponType(CouponType instance);
+    partial void DeleteCouponType(CouponType instance);
     #endregion
-			
+		
 		public CartDataClassesDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
@@ -146,14 +152,6 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Category> Categories
-		{
-			get
-			{
-				return this.GetTable<Category>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Tax> Taxes
 		{
 			get
@@ -162,11 +160,27 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 			}
 		}
 		
+		public System.Data.Linq.Table<Category> Categories
+		{
+			get
+			{
+				return this.GetTable<Category>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Country> Countries
 		{
 			get
 			{
 				return this.GetTable<Country>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Coupon> Coupons
+		{
+			get
+			{
+				return this.GetTable<Coupon>();
 			}
 		}
 		
@@ -385,195 +399,13 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 				return this.GetTable<Tag>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Category")]
-	public partial class Category : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _CategoryID;
-		
-		private System.Nullable<int> _ParentCategoryID;
-		
-		private string _CategoryName;
-		
-		private bool _Active;
-		
-		private EntitySet<FeaturedProduct> _FeaturedProducts;
-		
-		private EntitySet<ProductCategory> _ProductCategories;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnCategoryIDChanging(int value);
-    partial void OnCategoryIDChanged();
-    partial void OnParentCategoryIDChanging(System.Nullable<int> value);
-    partial void OnParentCategoryIDChanged();
-    partial void OnCategoryNameChanging(string value);
-    partial void OnCategoryNameChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
-    #endregion
-		
-		public Category()
-		{
-			this._FeaturedProducts = new EntitySet<FeaturedProduct>(new Action<FeaturedProduct>(this.attach_FeaturedProducts), new Action<FeaturedProduct>(this.detach_FeaturedProducts));
-			this._ProductCategories = new EntitySet<ProductCategory>(new Action<ProductCategory>(this.attach_ProductCategories), new Action<ProductCategory>(this.detach_ProductCategories));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int CategoryID
+		public System.Data.Linq.Table<CouponType> CouponTypes
 		{
 			get
 			{
-				return this._CategoryID;
+				return this.GetTable<CouponType>();
 			}
-			set
-			{
-				if ((this._CategoryID != value))
-				{
-					this.OnCategoryIDChanging(value);
-					this.SendPropertyChanging();
-					this._CategoryID = value;
-					this.SendPropertyChanged("CategoryID");
-					this.OnCategoryIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentCategoryID", DbType="Int")]
-		public System.Nullable<int> ParentCategoryID
-		{
-			get
-			{
-				return this._ParentCategoryID;
-			}
-			set
-			{
-				if ((this._ParentCategoryID != value))
-				{
-					this.OnParentCategoryIDChanging(value);
-					this.SendPropertyChanging();
-					this._ParentCategoryID = value;
-					this.SendPropertyChanged("ParentCategoryID");
-					this.OnParentCategoryIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string CategoryName
-		{
-			get
-			{
-				return this._CategoryName;
-			}
-			set
-			{
-				if ((this._CategoryName != value))
-				{
-					this.OnCategoryNameChanging(value);
-					this.SendPropertyChanging();
-					this._CategoryName = value;
-					this.SendPropertyChanged("CategoryName");
-					this.OnCategoryNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this.OnActiveChanging(value);
-					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Category_FeaturedProduct", Storage="_FeaturedProducts", ThisKey="CategoryID", OtherKey="CategoryID")]
-		public EntitySet<FeaturedProduct> FeaturedProducts
-		{
-			get
-			{
-				return this._FeaturedProducts;
-			}
-			set
-			{
-				this._FeaturedProducts.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Category_ProductCategory", Storage="_ProductCategories", ThisKey="CategoryID", OtherKey="CategoryID")]
-		public EntitySet<ProductCategory> ProductCategories
-		{
-			get
-			{
-				return this._ProductCategories;
-			}
-			set
-			{
-				this._ProductCategories.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_FeaturedProducts(FeaturedProduct entity)
-		{
-			this.SendPropertyChanging();
-			entity.Category = this;
-		}
-		
-		private void detach_FeaturedProducts(FeaturedProduct entity)
-		{
-			this.SendPropertyChanging();
-			entity.Category = null;
-		}
-		
-		private void attach_ProductCategories(ProductCategory entity)
-		{
-			this.SendPropertyChanging();
-			entity.Category = this;
-		}
-		
-		private void detach_ProductCategories(ProductCategory entity)
-		{
-			this.SendPropertyChanging();
-			entity.Category = null;
 		}
 	}
 	
@@ -930,6 +762,196 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Category")]
+	public partial class Category : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CategoryID;
+		
+		private System.Nullable<int> _ParentCategoryID;
+		
+		private string _CategoryName;
+		
+		private bool _Active;
+		
+		private EntitySet<FeaturedProduct> _FeaturedProducts;
+		
+		private EntitySet<ProductCategory> _ProductCategories;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCategoryIDChanging(int value);
+    partial void OnCategoryIDChanged();
+    partial void OnParentCategoryIDChanging(System.Nullable<int> value);
+    partial void OnParentCategoryIDChanged();
+    partial void OnCategoryNameChanging(string value);
+    partial void OnCategoryNameChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public Category()
+		{
+			this._FeaturedProducts = new EntitySet<FeaturedProduct>(new Action<FeaturedProduct>(this.attach_FeaturedProducts), new Action<FeaturedProduct>(this.detach_FeaturedProducts));
+			this._ProductCategories = new EntitySet<ProductCategory>(new Action<ProductCategory>(this.attach_ProductCategories), new Action<ProductCategory>(this.detach_ProductCategories));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int CategoryID
+		{
+			get
+			{
+				return this._CategoryID;
+			}
+			set
+			{
+				if ((this._CategoryID != value))
+				{
+					this.OnCategoryIDChanging(value);
+					this.SendPropertyChanging();
+					this._CategoryID = value;
+					this.SendPropertyChanged("CategoryID");
+					this.OnCategoryIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentCategoryID", DbType="Int")]
+		public System.Nullable<int> ParentCategoryID
+		{
+			get
+			{
+				return this._ParentCategoryID;
+			}
+			set
+			{
+				if ((this._ParentCategoryID != value))
+				{
+					this.OnParentCategoryIDChanging(value);
+					this.SendPropertyChanging();
+					this._ParentCategoryID = value;
+					this.SendPropertyChanged("ParentCategoryID");
+					this.OnParentCategoryIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string CategoryName
+		{
+			get
+			{
+				return this._CategoryName;
+			}
+			set
+			{
+				if ((this._CategoryName != value))
+				{
+					this.OnCategoryNameChanging(value);
+					this.SendPropertyChanging();
+					this._CategoryName = value;
+					this.SendPropertyChanged("CategoryName");
+					this.OnCategoryNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Category_FeaturedProduct", Storage="_FeaturedProducts", ThisKey="CategoryID", OtherKey="CategoryID")]
+		public EntitySet<FeaturedProduct> FeaturedProducts
+		{
+			get
+			{
+				return this._FeaturedProducts;
+			}
+			set
+			{
+				this._FeaturedProducts.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Category_ProductCategory", Storage="_ProductCategories", ThisKey="CategoryID", OtherKey="CategoryID")]
+		public EntitySet<ProductCategory> ProductCategories
+		{
+			get
+			{
+				return this._ProductCategories;
+			}
+			set
+			{
+				this._ProductCategories.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_FeaturedProducts(FeaturedProduct entity)
+		{
+			this.SendPropertyChanging();
+			entity.Category = this;
+		}
+		
+		private void detach_FeaturedProducts(FeaturedProduct entity)
+		{
+			this.SendPropertyChanging();
+			entity.Category = null;
+		}
+		
+		private void attach_ProductCategories(ProductCategory entity)
+		{
+			this.SendPropertyChanging();
+			entity.Category = this;
+		}
+		
+		private void detach_ProductCategories(ProductCategory entity)
+		{
+			this.SendPropertyChanging();
+			entity.Category = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Country")]
 	public partial class Country : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1173,6 +1195,390 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		{
 			this.SendPropertyChanging();
 			entity.Country = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Coupon")]
+	public partial class Coupon : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CouponID;
+		
+		private int _CouponTypeID;
+		
+		private System.Nullable<int> _ProductID;
+		
+		private string _CouponCode;
+		
+		private string _CouponDescription;
+		
+		private decimal _Amount;
+		
+		private bool _IsCouponUnique;
+		
+		private bool _IsCanBeCombined;
+		
+		private System.DateTime _IssuedDate;
+		
+		private System.Nullable<System.DateTime> _ExpirationDate;
+		
+		private bool _Active;
+		
+		private EntityRef<Product> _Product;
+		
+		private EntityRef<CouponType> _CouponType;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCouponIDChanging(int value);
+    partial void OnCouponIDChanged();
+    partial void OnCouponTypeIDChanging(int value);
+    partial void OnCouponTypeIDChanged();
+    partial void OnProductIDChanging(System.Nullable<int> value);
+    partial void OnProductIDChanged();
+    partial void OnCouponCodeChanging(string value);
+    partial void OnCouponCodeChanged();
+    partial void OnCouponDescriptionChanging(string value);
+    partial void OnCouponDescriptionChanged();
+    partial void OnAmountChanging(decimal value);
+    partial void OnAmountChanged();
+    partial void OnIsCouponUniqueChanging(bool value);
+    partial void OnIsCouponUniqueChanged();
+    partial void OnIsCanBeCombinedChanging(bool value);
+    partial void OnIsCanBeCombinedChanged();
+    partial void OnIssuedDateChanging(System.DateTime value);
+    partial void OnIssuedDateChanged();
+    partial void OnExpirationDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnExpirationDateChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public Coupon()
+		{
+			this._Product = default(EntityRef<Product>);
+			this._CouponType = default(EntityRef<CouponType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CouponID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int CouponID
+		{
+			get
+			{
+				return this._CouponID;
+			}
+			set
+			{
+				if ((this._CouponID != value))
+				{
+					this.OnCouponIDChanging(value);
+					this.SendPropertyChanging();
+					this._CouponID = value;
+					this.SendPropertyChanged("CouponID");
+					this.OnCouponIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CouponTypeID", DbType="Int NOT NULL")]
+		public int CouponTypeID
+		{
+			get
+			{
+				return this._CouponTypeID;
+			}
+			set
+			{
+				if ((this._CouponTypeID != value))
+				{
+					if (this._CouponType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCouponTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._CouponTypeID = value;
+					this.SendPropertyChanged("CouponTypeID");
+					this.OnCouponTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductID", DbType="Int")]
+		public System.Nullable<int> ProductID
+		{
+			get
+			{
+				return this._ProductID;
+			}
+			set
+			{
+				if ((this._ProductID != value))
+				{
+					if (this._Product.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProductIDChanging(value);
+					this.SendPropertyChanging();
+					this._ProductID = value;
+					this.SendPropertyChanged("ProductID");
+					this.OnProductIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CouponCode", DbType="VarChar(200) NOT NULL", CanBeNull=false)]
+		public string CouponCode
+		{
+			get
+			{
+				return this._CouponCode;
+			}
+			set
+			{
+				if ((this._CouponCode != value))
+				{
+					this.OnCouponCodeChanging(value);
+					this.SendPropertyChanging();
+					this._CouponCode = value;
+					this.SendPropertyChanged("CouponCode");
+					this.OnCouponCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CouponDescription", DbType="VarChar(200)")]
+		public string CouponDescription
+		{
+			get
+			{
+				return this._CouponDescription;
+			}
+			set
+			{
+				if ((this._CouponDescription != value))
+				{
+					this.OnCouponDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._CouponDescription = value;
+					this.SendPropertyChanged("CouponDescription");
+					this.OnCouponDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Decimal(18,2) NOT NULL")]
+		public decimal Amount
+		{
+			get
+			{
+				return this._Amount;
+			}
+			set
+			{
+				if ((this._Amount != value))
+				{
+					this.OnAmountChanging(value);
+					this.SendPropertyChanging();
+					this._Amount = value;
+					this.SendPropertyChanged("Amount");
+					this.OnAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsCouponUnique", DbType="Bit NOT NULL")]
+		public bool IsCouponUnique
+		{
+			get
+			{
+				return this._IsCouponUnique;
+			}
+			set
+			{
+				if ((this._IsCouponUnique != value))
+				{
+					this.OnIsCouponUniqueChanging(value);
+					this.SendPropertyChanging();
+					this._IsCouponUnique = value;
+					this.SendPropertyChanged("IsCouponUnique");
+					this.OnIsCouponUniqueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsCanBeCombined", DbType="Bit NOT NULL")]
+		public bool IsCanBeCombined
+		{
+			get
+			{
+				return this._IsCanBeCombined;
+			}
+			set
+			{
+				if ((this._IsCanBeCombined != value))
+				{
+					this.OnIsCanBeCombinedChanging(value);
+					this.SendPropertyChanging();
+					this._IsCanBeCombined = value;
+					this.SendPropertyChanged("IsCanBeCombined");
+					this.OnIsCanBeCombinedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IssuedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime IssuedDate
+		{
+			get
+			{
+				return this._IssuedDate;
+			}
+			set
+			{
+				if ((this._IssuedDate != value))
+				{
+					this.OnIssuedDateChanging(value);
+					this.SendPropertyChanging();
+					this._IssuedDate = value;
+					this.SendPropertyChanged("IssuedDate");
+					this.OnIssuedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExpirationDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ExpirationDate
+		{
+			get
+			{
+				return this._ExpirationDate;
+			}
+			set
+			{
+				if ((this._ExpirationDate != value))
+				{
+					this.OnExpirationDateChanging(value);
+					this.SendPropertyChanging();
+					this._ExpirationDate = value;
+					this.SendPropertyChanged("ExpirationDate");
+					this.OnExpirationDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Coupon", Storage="_Product", ThisKey="ProductID", OtherKey="ProductID", IsForeignKey=true)]
+		public Product Product
+		{
+			get
+			{
+				return this._Product.Entity;
+			}
+			set
+			{
+				Product previousValue = this._Product.Entity;
+				if (((previousValue != value) 
+							|| (this._Product.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Product.Entity = null;
+						previousValue.Coupons.Remove(this);
+					}
+					this._Product.Entity = value;
+					if ((value != null))
+					{
+						value.Coupons.Add(this);
+						this._ProductID = value.ProductID;
+					}
+					else
+					{
+						this._ProductID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Product");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CouponType_Coupon", Storage="_CouponType", ThisKey="CouponTypeID", OtherKey="CouponTypeID", IsForeignKey=true)]
+		public CouponType CouponType
+		{
+			get
+			{
+				return this._CouponType.Entity;
+			}
+			set
+			{
+				CouponType previousValue = this._CouponType.Entity;
+				if (((previousValue != value) 
+							|| (this._CouponType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CouponType.Entity = null;
+						previousValue.Coupons.Remove(this);
+					}
+					this._CouponType.Entity = value;
+					if ((value != null))
+					{
+						value.Coupons.Add(this);
+						this._CouponTypeID = value.CouponTypeID;
+					}
+					else
+					{
+						this._CouponTypeID = default(int);
+					}
+					this.SendPropertyChanged("CouponType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -5171,6 +5577,8 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		
 		private bool _Active;
 		
+		private EntitySet<Coupon> _Coupons;
+		
 		private EntitySet<CustomField> _CustomFields;
 		
 		private EntitySet<FeaturedProduct> _FeaturedProducts;
@@ -5249,6 +5657,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		
 		public Product()
 		{
+			this._Coupons = new EntitySet<Coupon>(new Action<Coupon>(this.attach_Coupons), new Action<Coupon>(this.detach_Coupons));
 			this._CustomFields = new EntitySet<CustomField>(new Action<CustomField>(this.attach_CustomFields), new Action<CustomField>(this.detach_CustomFields));
 			this._FeaturedProducts = new EntitySet<FeaturedProduct>(new Action<FeaturedProduct>(this.attach_FeaturedProducts), new Action<FeaturedProduct>(this.detach_FeaturedProducts));
 			this._Images = new EntitySet<Image>(new Action<Image>(this.attach_Images), new Action<Image>(this.detach_Images));
@@ -5705,6 +6114,19 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Coupon", Storage="_Coupons", ThisKey="ProductID", OtherKey="ProductID")]
+		public EntitySet<Coupon> Coupons
+		{
+			get
+			{
+				return this._Coupons;
+			}
+			set
+			{
+				this._Coupons.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_CustomField", Storage="_CustomFields", ThisKey="ProductID", OtherKey="ProductID")]
 		public EntitySet<CustomField> CustomFields
 		{
@@ -5892,6 +6314,18 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_Coupons(Coupon entity)
+		{
+			this.SendPropertyChanging();
+			entity.Product = this;
+		}
+		
+		private void detach_Coupons(Coupon entity)
+		{
+			this.SendPropertyChanging();
+			entity.Product = null;
 		}
 		
 		private void attach_CustomFields(CustomField entity)
@@ -7025,7 +7459,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		
 		private int _ProductReviewID;
 		
-		private decimal _Rating;
+		private int _Rating;
 		
 		private bool _Active;
 		
@@ -7043,7 +7477,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
     partial void OnProductReviewCategoryIDChanged();
     partial void OnProductReviewIDChanging(int value);
     partial void OnProductReviewIDChanged();
-    partial void OnRatingChanging(decimal value);
+    partial void OnRatingChanging(int value);
     partial void OnRatingChanged();
     partial void OnActiveChanging(bool value);
     partial void OnActiveChanged();
@@ -7124,8 +7558,8 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Rating", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Rating
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Rating", DbType="Int NOT NULL")]
+		public int Rating
 		{
 			get
 			{
@@ -9075,6 +9509,144 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		{
 			this.SendPropertyChanging();
 			entity.Tag = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CouponType")]
+	public partial class CouponType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CouponTypeID;
+		
+		private string _CouponTypeName;
+		
+		private bool _Active;
+		
+		private EntitySet<Coupon> _Coupons;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCouponTypeIDChanging(int value);
+    partial void OnCouponTypeIDChanged();
+    partial void OnCouponTypeNameChanging(string value);
+    partial void OnCouponTypeNameChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public CouponType()
+		{
+			this._Coupons = new EntitySet<Coupon>(new Action<Coupon>(this.attach_Coupons), new Action<Coupon>(this.detach_Coupons));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CouponTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int CouponTypeID
+		{
+			get
+			{
+				return this._CouponTypeID;
+			}
+			set
+			{
+				if ((this._CouponTypeID != value))
+				{
+					this.OnCouponTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._CouponTypeID = value;
+					this.SendPropertyChanged("CouponTypeID");
+					this.OnCouponTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CouponTypeName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string CouponTypeName
+		{
+			get
+			{
+				return this._CouponTypeName;
+			}
+			set
+			{
+				if ((this._CouponTypeName != value))
+				{
+					this.OnCouponTypeNameChanging(value);
+					this.SendPropertyChanging();
+					this._CouponTypeName = value;
+					this.SendPropertyChanged("CouponTypeName");
+					this.OnCouponTypeNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CouponType_Coupon", Storage="_Coupons", ThisKey="CouponTypeID", OtherKey="CouponTypeID")]
+		public EntitySet<Coupon> Coupons
+		{
+			get
+			{
+				return this._Coupons;
+			}
+			set
+			{
+				this._Coupons.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Coupons(Coupon entity)
+		{
+			this.SendPropertyChanging();
+			entity.CouponType = this;
+		}
+		
+		private void detach_Coupons(Coupon entity)
+		{
+			this.SendPropertyChanging();
+			entity.CouponType = null;
 		}
 	}
 }

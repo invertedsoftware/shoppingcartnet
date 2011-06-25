@@ -8,7 +8,9 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
     public class Cart
     {
         public HashSet<CartItem> CartItems { get; set; }
+        public HashSet<Coupon> CartCoupons { get; set; }
         public decimal Subtotal { get; set; }
+        public decimal Discounts { get; set; }
         public decimal Shipping { get; set; }
         public decimal Tax { get; set; }
         public decimal Total { get; set; }
@@ -16,6 +18,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
         public Cart()
         {
             CartItems = new HashSet<CartItem>();
+            CartCoupons = new HashSet<Coupon>();
         }
     }
 }

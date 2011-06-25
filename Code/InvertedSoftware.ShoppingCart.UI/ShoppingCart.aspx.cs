@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
 using InvertedSoftware.ShoppingCart.BusinessLayer;
 using InvertedSoftware.ShoppingCart.BusinessLayer.Controls;
+using InvertedSoftware.ShoppingCart.DataLayer.Database;
 
 public partial class ShoppingCart : BasePage
 {
@@ -31,7 +32,10 @@ public partial class ShoppingCart : BasePage
         MessageLiteral.Text = "Your Cart";
         CartRepeater.DataSource = this.Cart.CartItems;
         CartRepeater.DataBind();
+        ((Repeater)CartRepeater.Controls[CartRepeater.Controls.Count - 1].FindControl("OffersRepeater")).DataSource = this.Cart.CartCoupons;
+        ((Repeater)CartRepeater.Controls[CartRepeater.Controls.Count - 1].FindControl("OffersRepeater")).DataBind();
         CartManager manager = new CartManager(this.Cart);
+        this.Cart.Discounts = manager.Discounts;
         this.Cart.Subtotal = manager.SubTotal;
         this.Cart.Total = manager.Total;
         if (this.Cart.CartItems.Count == 0)
@@ -50,12 +54,43 @@ public partial class ShoppingCart : BasePage
     protected void CartRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
         CartManager manager = new CartManager(this.Cart);
-        manager.Remove(e.Item.ItemIndex);
+        if (e.CommandName == "AddCoupon")
+        {
+            TextBox OfferCodeTextBox = CartRepeater.Controls[CartRepeater.Controls.Count - 1].FindControl("OfferCodeTextBox") as TextBox;
+            if (OfferCodeTextBox == null)
+                return;
+            Coupon coupon = Coupons.GetCoupon(OfferCodeTextBox.Text);
+            if (coupon.CouponID > 0)
+            {
+                try
+                {
+                    manager.AddCoupon(coupon);
+                    CouponMessageLiteral.Text = "Offer added to cart";
+                }
+                catch (Exception ex)
+                {
+                    CouponMessageLiteral.Text = ex.Message;
+                }
+            }
+            else
+                CouponMessageLiteral.Text = "Offer Code not found.";
+        }
+        else
+            manager.Remove(e.Item.ItemIndex);
         DeleteSavedCart();
         this.Cart = manager.ShoppingCart;
         BindCart();
-
     }
+
+    protected void OffersRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        CartManager manager = new CartManager(this.Cart);
+        manager.RemoveCoupon(Convert.ToInt32(e.CommandArgument));
+        DeleteSavedCart();
+        this.Cart = manager.ShoppingCart;
+        BindCart();
+    }
+
     protected void UpdateButton_Click(object sender, EventArgs e)
     {
         CartManager manager = new CartManager(this.Cart);
@@ -140,7 +175,10 @@ public partial class ShoppingCart : BasePage
     {
         ProfileCommon savedProfile = Profile.GetProfile(cartID);
         if (savedProfile != null)
+        {
             Cart = savedProfile.ShoppingCart;
+            Cart.CartCoupons.RemoveWhere(c => c.ExpirationDate.HasValue && c.ExpirationDate.Value.CompareTo(DateTime.Now) > 0);
+        }
 
     }
 }

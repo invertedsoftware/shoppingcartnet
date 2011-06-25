@@ -72,11 +72,12 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer.Controls
         public DataLayer.DataObjects.Cart Cart
         {
             get
-            {   // If there is a saved cart, show it
+            {   // If there is a saved cart, remove expired coupons and show it
                 if (HttpContext.Current.Profile["ShoppingCart"] != null &&
                     ((DataLayer.DataObjects.Cart)HttpContext.Current.Profile["ShoppingCart"]).CartItems.Count > 0)
                 {
                     cart = (DataLayer.DataObjects.Cart)HttpContext.Current.Profile["ShoppingCart"];
+                    cart.CartCoupons.RemoveWhere(c => c.ExpirationDate.HasValue && c.ExpirationDate.Value.CompareTo(DateTime.Now) > 0);
                     Session["ShoppingCart"] = cart;
                     return cart;
                 }

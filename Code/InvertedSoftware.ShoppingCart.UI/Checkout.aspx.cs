@@ -34,7 +34,15 @@ public partial class Checkout : BasePage
             {
                 ShippingPanel.Visible = false;
                 ShippingRequiredFieldValidator.Enabled = false;
-                DownloadLiteral.Visible = true;
+                NoShippingLiteral.Text = "Download Only";
+                NoShippingLiteral.Visible = true;
+            }
+            else if (manager.IsCartFreeShipping())
+            {
+                ShippingPanel.Visible = false;
+                ShippingRequiredFieldValidator.Enabled = false;
+                NoShippingLiteral.Text = "Free Shipping";
+                NoShippingLiteral.Visible = true;
             }
             Customer customer = GetLoggedCustomer();
             if (customer != null)
@@ -70,11 +78,13 @@ public partial class Checkout : BasePage
             Customer customer = GetLoggedCustomer();
             if (customer == null)
                 customer = AddCustomer();
+
             Order order = AddOrder(customer);
             //Take credit card payment
             if (ChargeCreditCard(order.OrderNumber))
             {
-                //Clear the cart and redirect to Receipt.aspx
+                //Expire any coupons, clear the cart and redirect to Receipt.aspx
+                Cart.CartCoupons.Where(c => c.IsCouponUnique).All((c) => { Coupons.DeactivateCoupon(c.CouponID); return true; });
                 Cart = null;
                 Response.Redirect("Receipt.aspx?CustomerID=" + WebUtility.EncodeParamForQueryString(customer.CustomerID.ToString()) + "&OrderID=" + WebUtility.EncodeParamForQueryString(order.OrderID.ToString()));
             }
@@ -314,38 +324,45 @@ public partial class Checkout : BasePage
     private bool ChargeCreditCard(string orderNumber)
     {
         bool cardCharged = false;
-        OrderManager orderManager = new OrderManager();
-
-        string buyerStateOrProvince = string.Empty;
-        if (BillingAddressControl.StateID.HasValue)
-            buyerStateOrProvince = Payment.GetStateCode(BillingAddressControl.StateID.Value);
-        if (BillingAddressControl.ProvinceID.HasValue)
-            buyerStateOrProvince = Payment.GetProvinceCode(BillingAddressControl.ProvinceID.Value);
-
-        string response = orderManager.TakePayment(orderNumber,
-            Cart.Total.ToString("F"),
-        FirstNameTextBox.Text,
-        LastNameTextBox.Text,
-        BillingAddressControl.Address,
-        BillingAddressControl.City,
-        buyerStateOrProvince,
-        Payment.GetCountryCode(BillingAddressControl.CountryID),
-        CacheManager.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(BillingAddressControl.CountryID.ToString()).Text,
-        BillingAddressControl.Zipcode,
-        PaymentControl1.CardType,
-        PaymentControl1.CardNumber,
-        PaymentControl1.CCV,
-        PaymentControl1.ExpMonth,
-        PaymentControl1.ExpYear);
-
-        if (response.Equals("OK"))
+        try
         {
-            RemoveFromInventory();   
-            return true;
+            OrderManager orderManager = new OrderManager();
+
+            string buyerStateOrProvince = string.Empty;
+            if (BillingAddressControl.StateID.HasValue)
+                buyerStateOrProvince = Payment.GetStateCode(BillingAddressControl.StateID.Value);
+            if (BillingAddressControl.ProvinceID.HasValue)
+                buyerStateOrProvince = Payment.GetProvinceCode(BillingAddressControl.ProvinceID.Value);
+
+            string response = orderManager.TakePayment(orderNumber,
+                Cart.Total.ToString("F"),
+            FirstNameTextBox.Text,
+            LastNameTextBox.Text,
+            BillingAddressControl.Address,
+            BillingAddressControl.City,
+            buyerStateOrProvince,
+            Payment.GetCountryCode(BillingAddressControl.CountryID),
+            CacheManager.GetCachedLookupTable(LookupDataEnum.GetCountries).FindByValue(BillingAddressControl.CountryID.ToString()).Text,
+            BillingAddressControl.Zipcode,
+            PaymentControl1.CardType,
+            PaymentControl1.CardNumber,
+            PaymentControl1.CCV,
+            PaymentControl1.ExpMonth,
+            PaymentControl1.ExpYear);
+
+            if (response.Equals("OK"))
+            {
+                RemoveFromInventory();
+                return true;
+            }
+            else
+            {
+                MessageLabel.Text = "Billing Error Accured. Please <a href='Contact.aspx'>contact customer support</a>. Error description " + response;
+            }
         }
-        else
+        catch (Exception e)
         {
-            MessageLabel.Text = "Billing Error Accured. Please <a href='Contact.aspx'>contact customer support</a>. Error description " + response;
+             MessageLabel.Text = "Billing Error Accured. Please <a href='Contact.aspx'>contact customer support</a>. Error description " + e.Message;
         }
 
         return cardCharged;

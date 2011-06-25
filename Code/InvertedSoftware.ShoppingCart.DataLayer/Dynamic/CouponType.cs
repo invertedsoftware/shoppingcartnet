@@ -7,14 +7,15 @@ using System.ComponentModel;
 
 namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 {
-    [MetadataType(typeof(OrderStatusMetadata))]
-    public partial class OrderStatus
+    [MetadataType(typeof(CouponTypeMetadata))]
+    public partial class CouponType
     {
     }
 
     [ReadOnly(true)]
-    public class OrderStatusMetadata
+    public class CouponTypeMetadata
     {
 
     }
+  
 }

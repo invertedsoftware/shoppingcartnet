@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="InvertedSoftwareCart" Class="CartDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=gratner\;Initial Catalog=InvertedSoftwareCart;Integrated Security=True" SettingsObjectName="InvertedSoftware.ShoppingCart.DataLayer.Properties.Settings" SettingsPropertyName="InvertedSoftwareCartConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Category" Member="Categories">
-    <Type Name="Category">
-      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ParentCategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CategoryName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Category_FeaturedProduct" Member="FeaturedProducts" ThisKey="CategoryID" OtherKey="CategoryID" Type="FeaturedProduct" />
-      <Association Name="Category_ProductCategory" Member="ProductCategories" ThisKey="CategoryID" OtherKey="CategoryID" Type="ProductCategory" />
-    </Type>
-  </Table>
   <Table Name="dbo.Tax" Member="Taxes">
     <Type Name="Tax">
       <Column Name="TaxID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -25,6 +15,16 @@
       <Association Name="State_Tax" Member="State" ThisKey="StateID" OtherKey="StateID" Type="State" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.Category" Member="Categories">
+    <Type Name="Category">
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ParentCategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CategoryName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Category_FeaturedProduct" Member="FeaturedProducts" ThisKey="CategoryID" OtherKey="CategoryID" Type="FeaturedProduct" />
+      <Association Name="Category_ProductCategory" Member="ProductCategories" ThisKey="CategoryID" OtherKey="CategoryID" Type="ProductCategory" />
+    </Type>
+  </Table>
   <Table Name="dbo.Country" Member="Countries">
     <Type Name="Country">
       <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -35,6 +35,23 @@
       <Association Name="Country_Customer" Member="Customers" ThisKey="CountryID" OtherKey="CountryID" Type="Customer" />
       <Association Name="Country_Order" Member="Orders" ThisKey="CountryID" OtherKey="CountryID" Type="Order" />
       <Association Name="Country_Shipping" Member="Shippings" ThisKey="CountryID" OtherKey="CountryID" Type="Shipping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Coupon" Member="Coupons">
+    <Type Name="Coupon">
+      <Column Name="CouponID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CouponTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CouponCode" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="CouponDescription" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="IsCouponUnique" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsCanBeCombined" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IssuedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ExpirationDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Product_Coupon" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+      <Association Name="CouponType_Coupon" Member="CouponType" ThisKey="CouponTypeID" OtherKey="CouponTypeID" Type="CouponType" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Customer" Member="Customers">
@@ -239,6 +256,7 @@
       <Column Name="TotalReviewCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="RatingScore" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Product_Coupon" Member="Coupons" ThisKey="ProductID" OtherKey="ProductID" Type="Coupon" />
       <Association Name="Product_CustomField" Member="CustomFields" ThisKey="ProductID" OtherKey="ProductID" Type="CustomField" />
       <Association Name="Product_FeaturedProduct" Member="FeaturedProducts" ThisKey="ProductID" OtherKey="ProductID" Type="FeaturedProduct" />
       <Association Name="Product_Image" Member="Images" ThisKey="ProductID" OtherKey="ProductID" Type="Image" />
@@ -304,7 +322,7 @@
       <Column Name="ProductReviewCaregoryProductReviewID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="ProductReviewCategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ProductReviewID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Rating" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="Rating" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="ProductReview_ProductReviewCaregoryProductReview" Member="ProductReview" ThisKey="ProductReviewID" OtherKey="ProductReviewID" Type="ProductReview" IsForeignKey="true" />
       <Association Name="ProductReviewCategory_ProductReviewCaregoryProductReview" Member="ProductReviewCategory" ThisKey="ProductReviewCategoryID" OtherKey="ProductReviewCategoryID" Type="ProductReviewCategory" IsForeignKey="true" />
@@ -395,6 +413,14 @@
       <Column Name="TagName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="Tag_ProductTag" Member="ProductTags" ThisKey="TagID" OtherKey="TagID" Type="ProductTag" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CouponType" Member="CouponTypes">
+    <Type Name="CouponType">
+      <Column Name="CouponTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CouponTypeName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="CouponType_Coupon" Member="Coupons" ThisKey="CouponTypeID" OtherKey="CouponTypeID" Type="Coupon" />
     </Type>
   </Table>
 </Database>

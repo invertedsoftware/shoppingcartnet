@@ -86,6 +86,7 @@
     <Compile Include="Cache\CacheManager.cs" />
     <Compile Include="DataAttributes\CrudField .cs" />
     <Compile Include="Database\Categories.cs" />
+    <Compile Include="Database\Coupons.cs" />
     <Compile Include="Database\Customers.cs" />
     <Compile Include="Database\Inventory.cs" />
     <Compile Include="Database\LookupTables.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="DataObjects\Cart.cs" />
     <Compile Include="DataObjects\CartItem.cs" />
     <Compile Include="DataObjects\Category.cs" />
+    <Compile Include="DataObjects\Coupon.cs" />
     <Compile Include="DataObjects\Customer.cs" />
     <Compile Include="DataObjects\CustomField.cs" />
     <Compile Include="DataObjects\FeaturedProduct.cs" />
@@ -120,7 +122,10 @@
       <DependentUpon>CartDataClasses.dbml</DependentUpon>
     </Compile>
     <Compile Include="Dynamic\CartDataClassesDataContext.cs" />
+    <Compile Include="Dynamic\CouponType.cs" />
     <Compile Include="Dynamic\Customer.cs" />
+    <Compile Include="Dynamic\CustomFieldType.cs" />
+    <Compile Include="Dynamic\InventoryAction.cs" />
     <Compile Include="Dynamic\OrderStatus.cs" />
     <Compile Include="Entities\CartModel.Designer.cs">
       <AutoGen>True</AutoGen>

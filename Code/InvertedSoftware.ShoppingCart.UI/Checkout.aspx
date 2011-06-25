@@ -58,6 +58,9 @@
         <tr>
             <td><uc3:CartSummaryControl ID="CartSummaryControl1" runat="server" /></td>
         </tr>
+         <tr>
+            <td><b>Discounts: <%= Cart.Discounts.ToString("c")%></b></td>
+        </tr>
         <tr>
             <td><b>Subtotal: <%= Cart.Subtotal.ToString("c") %></b></td>
         </tr>
@@ -150,7 +153,7 @@
                     onselectedindexchanged="ShippingLookupDataDropDownList_SelectedIndexChanged">
             </cc1:LookupDataDropDownList>
             </asp:Panel>
-            <asp:Literal ID="DownloadLiteral" Visible="false" runat="server">Download Only</asp:Literal>
+            <asp:Literal ID="NoShippingLiteral" Visible="false" runat="server"></asp:Literal>
             </td>
                
             <td><asp:RequiredFieldValidator ID="ShippingRequiredFieldValidator" 

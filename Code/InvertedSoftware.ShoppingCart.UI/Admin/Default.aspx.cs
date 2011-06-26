@@ -71,7 +71,7 @@ public partial class _Default : System.Web.UI.Page {
                                                   where op.OrderDate.Value.Year == year && op.OrderDate.Value.Month == g.Key
                                                   group op by op.ProductID into opg
                                                   orderby opg.Count() descending
-                                                  select new { ProductName = context.Products.Where(p => p.ProductID == opg.Key).Single().ProductName, ProductCount = opg.Count() })
+                                                  select new { ProductName = context.Products.Where(p => p.ProductID == opg.Key).Single().ProductName, ProductCount = opg.Count() }).Take(5)
                                };
 
 

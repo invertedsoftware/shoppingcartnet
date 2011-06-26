@@ -18,5 +18,7 @@ public partial class _Default : System.Web.UI.Page
             Utils.IS_CONFIGURED = true;
         else if (!Utils.IS_CONFIGURED)
             Response.Redirect("Setup/Default.aspx");
+        if (!Page.IsPostBack)
+            Page.Title = ConfigurationManager.AppSettings["StoreName"];
     }
 }

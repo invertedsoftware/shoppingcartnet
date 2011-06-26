@@ -24,6 +24,7 @@ public partial class ShoppingCart : BasePage
 
             BindCart();
             GoogleCheckoutControl1.Visible = Convert.ToBoolean(ConfigurationManager.AppSettings["GoogleCheckoutEnabled"]);
+            Page.Title = "My Cart - " + ConfigurationManager.AppSettings["StoreName"];
         }
     }
 

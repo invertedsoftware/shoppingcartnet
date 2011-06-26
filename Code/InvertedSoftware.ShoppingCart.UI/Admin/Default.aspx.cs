@@ -29,6 +29,8 @@ public partial class _Default : System.Web.UI.Page {
         {
             BindYearsDropDown();
             BindSalesChart(DateTime.Now.Year);
+            BindProductSalesChart(DateTime.Now.Year);
+            BindLastSalesRepeater();
         }
     }
 
@@ -46,15 +48,66 @@ public partial class _Default : System.Web.UI.Page {
             var sales = from o in context.Orders
                         where o.DatePlaced.Value.Year == year
                         group o by o.DatePlaced.Value.Month into g
+                        orderby g.Key
                         select new {Month = g, Orders = g.Count()};
 
             foreach (var sale in sales)
-                SalesChart.Series["Series1"].Points.AddXY(Enum.Parse(typeof(Month), sale.Month.FirstOrDefault().DatePlaced.Value.Month.ToString()).ToString(), (double)sale.Orders);
+                SalesChart.Series["Series1"].Points.AddXY(Enum.Parse(typeof(Month), sale.Month.Key.ToString()).ToString(), (double)sale.Orders);
+        }
+    }
+
+    public void BindProductSalesChart(int year)
+    {
+        using (CartDataClassesDataContext context = new CartDataClassesDataContext())
+        {
+            var productSales = from o in context.Orders
+                               where o.DatePlaced.Value.Year == year
+                               group o by o.DatePlaced.Value.Month into g
+                               orderby g.Key
+                               select new
+                               {
+                                   Month = g,
+                                   TopProducts = (from op in context.OrderProducts
+                                                  where op.OrderDate.Value.Year == year && op.OrderDate.Value.Month == g.Key
+                                                  group op by op.ProductID into opg
+                                                  orderby opg.Count() descending
+                                                  select new { ProductName = context.Products.Where(p => p.ProductID == opg.Key).Single().ProductName, ProductCount = opg.Count() })
+                               };
+
+
+            foreach (var sale in productSales)
+            {
+                Series series = new Series(Enum.Parse(typeof(Month), sale.Month.FirstOrDefault().DatePlaced.Value.Month.ToString()).ToString()) { ChartType = SeriesChartType.Bubble};
+                foreach (var topProduct in sale.TopProducts){
+                    DataPoint point = new DataPoint() { XValue = sale.Month.Key, YValues = new double[] { (double)topProduct.ProductCount }, Label = topProduct.ProductName };
+                    series.Points.Add(point);
+                    
+                }
+                ProductSalesChart.Series.Add(series);
+            }
+        }
+    }
+        
+    
+
+    public void BindLastSalesRepeater()
+    {
+        using (CartDataClassesDataContext context = new CartDataClassesDataContext())
+        {
+            var sales = from o in context.Orders.Take(10)
+                        join os in context.OrderStatus
+                        on o.OrderStatusID equals os.OrderStatusID
+                        orderby o.OrderDate descending
+                        select new { o.OrderID, o.OrderNumber, o.OrderDate, os.OrderStatusName };
+
+            LastSalesRepeater.DataSource = sales;
+            LastSalesRepeater.DataBind();
         }
     }
 
     protected void YearsDropDownList_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindSalesChart(Convert.ToInt32(YearsDropDownList.SelectedValue));
+        BindProductSalesChart(Convert.ToInt32(YearsDropDownList.SelectedValue));
     }
 }

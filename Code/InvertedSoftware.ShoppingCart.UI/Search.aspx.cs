@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,12 +10,16 @@ using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
 using InvertedSoftware.ShoppingCart.DataLayer.Database;
 using InvertedSoftware.ShoppingCart.BusinessLayer.Controls;
 
+
 public partial class Search : BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
+        {
             BindProducts();
+            Page.Title = ConfigurationManager.AppSettings["StoreName"];
+        }
     }
 
     public void BindMenu()

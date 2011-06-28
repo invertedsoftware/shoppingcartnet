@@ -12,7 +12,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
     {
     }
 
-    [ReadOnly(true)]
+    [ScaffoldTable(false)]
     public class OrderStatusMetadata
     {
 

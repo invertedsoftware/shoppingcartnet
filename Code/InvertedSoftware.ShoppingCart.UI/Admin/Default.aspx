@@ -62,14 +62,18 @@
         <br />
         <asp:Repeater ID="LastSalesRepeater" runat="server">
             <HeaderTemplate>
-            <table cellpadding="2" cellspacing="3" border="0" width="100%">
+            <table cellpadding="2" cellspacing="3" border="0" width="70%">
             <tr>
-                <td align="center"><b>Last Ten orders</b></td>
+                <td style="width:20%">&nbsp;</td>
+                <td><b>Last Ten orders</b></td>
+                <td align="center">&nbsp;</td>
             </tr>
             </HeaderTemplate>
             <ItemTemplate>
             <tr>
-                <td><a href='Orders/Details.aspx?OrderID=<%# Eval("OrderID") %>'><%# Eval("OrderNumber")%></a><%# Eval("OrderDate", "{0:MMMM d, yyyy}")%> <%# Eval("OrderStatusName")%></td>
+                 <td style="width:50%" align="right"><a href='Orders/Details.aspx?OrderID=<%# Eval("OrderID") %>'><%# Eval("OrderNumber")%></a></td>
+                 <td><%# Eval("OrderDate", "{0:MMMM d, yyyy}")%></td>
+                <td><%# Eval("OrderStatusName")%></td>
             </tr>
             </ItemTemplate>
             <FooterTemplate>

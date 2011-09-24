@@ -12,6 +12,15 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 <table cellpadding="2" cellspacing="3" border="0" width="100%">
 <tr>
+    <td align="center"><b><%: WebUtility.LoadStringFromQueryString("Category", 200, true) %></b></td>
+    <td>Sort By <select name="sort" id="sort" onchange="javascript:location.href='Category.aspx?Category=<%: WebUtility.LoadStringFromQueryString("Category", 200, true) %>&CategoryID=<%: WebUtility.LoadInt32FromQueryString("CategoryID") %>&Sort='+ this.options[this.selectedIndex].value;">
+                                    <option value="DontSort" <%if(Request.QueryString["Sort"] == "DontSort") Response.Write("selected"); %>>Don't Sort</option>
+                                    <option value="LowtoHigh" <%if(Request.QueryString["Sort"] == "LowtoHigh") Response.Write("selected"); %>>Price: Low to High</option>
+                                    <option value="HightoLow" <%if(Request.QueryString["Sort"] == "HightoLow") Response.Write("selected"); %>>Price: High to Low</option>
+                                    <option value="Name" <%if(Request.QueryString["Sort"] == "Name") Response.Write("selected"); %>>Name</option>
+                                  </select></td>
+</tr>
+<tr>
     <td colspan="2" align="center"><asp:Repeater ID="CategoryNavRepeater" runat="server" 
         DataSourceID="CategoryObjectDataSource">
         <HeaderTemplate>
@@ -33,9 +42,6 @@
             <asp:QueryStringParameter QueryStringField="CategoryID" Name="parentCategoryID" Type="Int32" />
         </SelectParameters>
     </asp:ObjectDataSource></td>
-</tr>
-<tr>
-    <td colspan="2" align="center"><b><%= Request.QueryString["Category"]%></b></td>
 </tr>
 <tr>
     <td align="center" style="width:100%"><uc1:ProductsGridControl ID="ProductsGrid" runat="server" /></td>

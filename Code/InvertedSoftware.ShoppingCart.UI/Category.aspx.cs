@@ -33,12 +33,13 @@ public partial class Category : BasePage
         if (pageNumber == -1) pageNumber = 0;
         int categoryID = WebUtility.LoadInt32FromQueryString("CategoryID");
         if (categoryID == -1) categoryID = 1;
-        
+        string sortOrder = WebUtility.LoadStringFromQueryString("Sort", 200, true);
+
         ProductsGrid.PageNumber = pageNumber;
         ProductsGrid.PageSize = 4;
         ProductsGrid.Columns = 3;
         Products products = new Products();
-        ProductsGrid.DataSource = products.GetProducts(categoryID, pageNumber, ProductsGrid.PageSize);
+        ProductsGrid.DataSource = products.GetProducts(categoryID, pageNumber, ProductsGrid.PageSize, sortOrder);
         ProductsGrid.TotalRecords = products.ProductCount;
         ProductsGrid.DataBind();
     }

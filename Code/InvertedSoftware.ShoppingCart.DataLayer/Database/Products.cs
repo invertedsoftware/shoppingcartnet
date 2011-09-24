@@ -89,11 +89,11 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
 
         public int ProductCount { get; set; }
 
-        public List<Product> GetProducts(int categoryID, int pageIndex, int maximumRows)
+        public List<Product> GetProducts(int categoryID, int pageIndex, int maximumRows, string sortOrder = null)
         {
             List<Product> productList = new List<Product>();
 
-            SqlParameter[] paramArray = new SqlParameter[4];
+            SqlParameter[] paramArray = new SqlParameter[5];
 
             SqlParameter PageIndexSqlParameter = new SqlParameter("@PageIndex", SqlDbType.Int);
             PageIndexSqlParameter.Value = pageIndex;
@@ -107,9 +107,16 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             CategoryIDSqlParameter.Value = categoryID;
             paramArray[2] = CategoryIDSqlParameter;
 
+            SqlParameter SortOrderSqlParameter = new SqlParameter("@SortOrder", SqlDbType.VarChar, 10);
+            if (!string.IsNullOrWhiteSpace(sortOrder))
+                SortOrderSqlParameter.Value = sortOrder;
+            else
+                SortOrderSqlParameter.Value = DBNull.Value;
+            paramArray[3] = SortOrderSqlParameter;
+
             SqlParameter TotalRecordsSqlParameter = new SqlParameter("@TotalRecords", SqlDbType.Int);
             TotalRecordsSqlParameter.Direction = ParameterDirection.ReturnValue;
-            paramArray[3] = TotalRecordsSqlParameter;
+            paramArray[4] = TotalRecordsSqlParameter;
 
             SqlCommand cmd = new SqlCommand();
             using (SqlConnection conn = new SqlConnection(SqlHelper.mainConnectionString))

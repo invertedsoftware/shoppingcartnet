@@ -50,6 +50,9 @@ public partial class Checkout : BasePage
                 LoadCustomer(customer);
                 EmailTextBox.Enabled = false;
             }
+            // If this is a purchase for a gift registry, no need for a shipping address
+            if (this.Cart.GiftRegistryID > 0)
+                ShippingCheckBox.Text = "Ship to Address in Gift Registry";
         }
     }
 
@@ -143,12 +146,6 @@ public partial class Checkout : BasePage
 
     private Customer AddCustomer()
     {
-        PasswordGenerator gen = new PasswordGenerator() { ConsecutiveCharacters = true, ExcludeSymbols = false, Maximum = 9, Minimum = 6, RepeatCharacters = true };
-        string password = gen.Generate();
-        MembershipUser user = Membership.CreateUser(EmailTextBox.Text, password, EmailTextBox.Text);
-        user.IsApproved = true;
-        Roles.AddUserToRole(user.UserName, "Customer");
-
         Customer customer = new Customer()
         {
             Address = BillingAddressControl.Address,
@@ -167,13 +164,10 @@ public partial class Checkout : BasePage
             LastName = LastNameTextBox.Text,
             ProvinceID = BillingAddressControl.ProvinceID,
             Zipcode = BillingAddressControl.Zipcode,
-            MemberID = new Guid(user.ProviderUserKey.ToString()), 
             Active = true
         };
 
-        customer.CustomerID = Customers.AddCustomer(customer);
-        SendNewCustomerEmail(password);
-        return customer;
+        return CustomerManager.AddCustomer(customer);
     }
 
     private Order AddOrder(Customer customer)
@@ -194,10 +188,12 @@ public partial class Checkout : BasePage
             Active = true,
             Comments = CommentsTextBox.Text
         };
+        if (Cart.GiftRegistryID > 0)
+            order.Comments = "This is a Gift Registry Order " + order.Comments;
         if (ShippingLookupDataDropDownList.Visible)
             order.ShippingProviderID = Convert.ToInt32(ShippingLookupDataDropDownList.SelectedValue);
 
-        if (ShippingCheckBox.Checked)
+        if (ShippingCheckBox.Checked && Cart.GiftRegistryID == 0)
         {
             order.Address = BillingAddressControl.Address;
             order.City = BillingAddressControl.City;
@@ -205,6 +201,18 @@ public partial class Checkout : BasePage
             order.StateID = BillingAddressControl.StateID;
             order.ProvinceID = BillingAddressControl.ProvinceID;
             order.Zipcode = BillingAddressControl.Zipcode;
+        }
+        else if (ShippingCheckBox.Checked && Cart.GiftRegistryID > 0)
+        {
+            // Get the address of the Gift Registry
+            int customerID = GiftRegistries.GetGiftRegistry(Cart.GiftRegistryID, 0, string.Empty, false).CustomerID;
+            Customer registryCustomer = Customers.GetCustomer(customerID);
+            order.Address = registryCustomer.Address;
+            order.City = registryCustomer.City;
+            order.CountryID = registryCustomer.CountryID;
+            order.StateID = registryCustomer.StateID;
+            order.ProvinceID = registryCustomer.ProvinceID;
+            order.Zipcode = registryCustomer.Zipcode;
         }
         else
         {
@@ -249,6 +257,9 @@ public partial class Checkout : BasePage
                 if (item.IsDownloadKeyRequired)
                     orderItem.DownloadKey = Products.GetNextProductKey(item.ProductID, item.IsDownloadKeyUnique);
             }
+            // Deactivate item in gift registry
+            if (Cart.GiftRegistryID > 0 && item.GiftRegistryProductID > 0)
+                GiftRegistries.UpdateRegistryProductActive(Cart.GiftRegistryID, item.GiftRegistryProductID, false);
 
             foreach (ProductOption option in item.ProductOptions)
                 orderItem.OptionList.Add(new OrderProductOption() { ProductOptionID = option.ProductOptionID });
@@ -286,23 +297,6 @@ public partial class Checkout : BasePage
     {
         Cart.Tax = OrderManager.GetTaxes(BillingAddressControl.CountryID, BillingAddressControl.StateID, BillingAddressControl.ProvinceID, Cart.Subtotal);
         Cart.Total = Cart.Subtotal + Cart.Shipping + Cart.Tax;
-    }
-
-    private void SendNewCustomerEmail(string password)
-    {
-        Dictionary<string, string> replacmentValues = new Dictionary<string, string>();
-        replacmentValues.Add("FirstName", FirstNameTextBox.Text);
-        replacmentValues.Add("StoreName", ConfigurationManager.AppSettings["StoreName"]);
-        replacmentValues.Add("StoreURL", ConfigurationManager.AppSettings["StoreURL"]);
-        replacmentValues.Add("Email", EmailTextBox.Text);
-        replacmentValues.Add("Password", password);
-
-        string emailBody = EmailManager.GetEmailString(replacmentValues, EmailType.NewCustomerEmail);
-        Email.SendSimpleEmail(ConfigurationManager.AppSettings["StoreName"] + " Sales",
-            ConfigurationManager.AppSettings["SalesTeamEmail"], new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(EmailTextBox.Text) },
-            "Welcome new customer",
-            emailBody,
-            true);
     }
 
     private void SendNewCustomerOrderEmail(string orderNo)

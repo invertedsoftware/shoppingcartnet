@@ -19,6 +19,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
         public decimal Subtotal { get; set; }
         public List<ProductOption> ProductOptions { get; set; }
         public List<CustomField> CustomFields { get; set; }
+        public int GiftRegistryProductID { get; set; }
 
         public CartItem()
         {

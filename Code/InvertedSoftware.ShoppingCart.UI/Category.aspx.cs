@@ -33,7 +33,8 @@ public partial class Category : BasePage
         if (pageNumber == -1) pageNumber = 0;
         int categoryID = WebUtility.LoadInt32FromQueryString("CategoryID");
         if (categoryID == -1) categoryID = 1;
-        string sortOrder = WebUtility.LoadStringFromQueryString("Sort", 200, true);
+        SortOrder sortOrder = SortOrder.DontSort;
+        Enum.TryParse<SortOrder>(WebUtility.LoadStringFromQueryString("Sort", 200, true), out sortOrder);
 
         ProductsGrid.PageNumber = pageNumber;
         ProductsGrid.PageSize = 4;

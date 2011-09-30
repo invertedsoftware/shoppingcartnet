@@ -33,7 +33,10 @@ public partial class UserControls_MenuControl : System.Web.UI.UserControl
         SiteMenu.Items.Add(new MenuItem("Support", "Customer Support", null, "../Support.aspx"));
         SiteMenu.Items.Add(new MenuItem("Contact Us", "Contact", null, "../Contact.aspx"));
         SiteMenu.Items.Add(new MenuItem("Company", "Company", null, "../Company.aspx"));
+        SiteMenu.Items.Add(new MenuItem("Register", "Register", null, "../Register.aspx"));
         SiteMenu.Items.Add(new MenuItem("My Account", "My Account", null, "../MyAccount/Default.aspx"));
         SiteMenu.Items.Add(new MenuItem("View My Cart", "My Account", null, "../ShoppingCart.aspx"));
+        SiteMenu.Items.Add(new MenuItem("Search for a Gift Registry", "Search for a Gift Registry", null, "../SearchGiftRegistries.aspx"));
+        
     }
 }

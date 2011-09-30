@@ -12,6 +12,14 @@ using InvertedSoftware.ShoppingCart.DataLayer.DataAttributes;
 
 namespace InvertedSoftware.ShoppingCart.DataLayer.Database
 {
+    public enum SortOrder
+    {
+        DontSort,
+        LowtoHigh,
+        HightoLow,
+        Name
+    }
+
     public class Products
     {
         #region Select
@@ -89,7 +97,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
 
         public int ProductCount { get; set; }
 
-        public List<Product> GetProducts(int categoryID, int pageIndex, int maximumRows, string sortOrder = null)
+        public List<Product> GetProducts(int categoryID, int pageIndex, int maximumRows, SortOrder sortOrder = SortOrder.DontSort)
         {
             List<Product> productList = new List<Product>();
 
@@ -108,10 +116,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             paramArray[2] = CategoryIDSqlParameter;
 
             SqlParameter SortOrderSqlParameter = new SqlParameter("@SortOrder", SqlDbType.VarChar, 10);
-            if (!string.IsNullOrWhiteSpace(sortOrder))
-                SortOrderSqlParameter.Value = sortOrder;
-            else
-                SortOrderSqlParameter.Value = DBNull.Value;
+            SortOrderSqlParameter.Value = sortOrder.ToString();
             paramArray[3] = SortOrderSqlParameter;
 
             SqlParameter TotalRecordsSqlParameter = new SqlParameter("@TotalRecords", SqlDbType.Int);

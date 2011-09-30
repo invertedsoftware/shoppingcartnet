@@ -10,7 +10,7 @@
     <td align="center"><uc1:LoginControl ID="LoginControl1" runat="server" /></td>
 </tr>
 <tr>
-    <td align="center"><a href="ForgotPassword.aspx">Forgot your password?</a> </td>
+    <td align="center"><a href="ForgotPassword.aspx">Forgot your password or need another registration email?</a></td>
 </tr>
 </table>
     

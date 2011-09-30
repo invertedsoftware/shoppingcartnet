@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Controls\LookupDataDropDownList.cs" />
     <Compile Include="CouponManager.cs" />
+    <Compile Include="CustomerManager.cs" />
     <Compile Include="CustomFieldComparer.cs" />
     <Compile Include="EmailManager.cs" />
     <Compile Include="FeedItems.cs" />

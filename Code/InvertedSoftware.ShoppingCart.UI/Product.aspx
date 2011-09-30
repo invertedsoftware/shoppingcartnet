@@ -155,7 +155,21 @@
 	<asp:TextBox ID="QtyTextBox" ClientIDMode="Static" Text="1" MaxLength="4" Columns="3" runat="server"></asp:TextBox>
 	<asp:RequiredFieldValidator ControlToValidate="QtyTextBox" ID="QtyRequiredFieldValidator" runat="server" ErrorMessage="Required"></asp:RequiredFieldValidator>
 	<asp:RangeValidator
-		ID="QtyRangeValidator" ControlToValidate="QtyTextBox" runat="server" ErrorMessage="Please enter a number between 1 and 9999" MinimumValue="1" MaximumValue="9999" Type="Integer"></asp:RangeValidator></td>
+		ID="QtyRangeValidator" ControlToValidate="QtyTextBox" runat="server" ErrorMessage="Please enter a number between 1 and 9999" MinimumValue="1" MaximumValue="9999" Type="Integer"></asp:RangeValidator>
+		<asp:LoginView id="LoginView1" runat="server">
+					<AnonymousTemplate>
+						<a href="Login.aspx">Login To add to Gift Registry</a>
+					</AnonymousTemplate>
+					<RoleGroups>
+						<asp:RoleGroup Roles="Customer">
+							<ContentTemplate>
+								<asp:Button ID="GiftButton" runat="server" CausesValidation="false" Text="Add to my Gift Registry" 
+									onclick="GiftButton_Click" />
+							</ContentTemplate>
+						</asp:RoleGroup>
+					</RoleGroups>
+				</asp:LoginView>
+	</td>
  </tr>
  <%if (CartProduct.IsReviewEnabled)
  { %>

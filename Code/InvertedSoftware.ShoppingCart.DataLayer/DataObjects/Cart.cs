@@ -14,6 +14,11 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
         public decimal Shipping { get; set; }
         public decimal Tax { get; set; }
         public decimal Total { get; set; }
+        /// <summary>
+        /// If this is a purchase for a gift registry,
+        /// deactivate the products in the registry and set the shipping address to the ouner of the registry
+        /// </summary>
+        public int GiftRegistryID { get; set; }
 
         public Cart()
         {

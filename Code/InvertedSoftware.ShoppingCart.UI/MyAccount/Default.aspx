@@ -6,6 +6,7 @@
 <table cellpadding="2" cellspacing="3" border="0" width="60%">
 <tr>
     <td><a href="Orders.aspx">Orders</a></td>
+    <td><a href="GiftRegistry.aspx">Gift Registry</a></td>
     <td><a href="AccountInfo.aspx">Update Account Info</a></td>
     <td><a href="UpdatePassword.aspx">Update Account Password</a> </td>
     <td><a href="../FAQ.aspx">FAQ</a></td>

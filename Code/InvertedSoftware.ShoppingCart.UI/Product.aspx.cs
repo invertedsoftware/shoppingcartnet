@@ -88,13 +88,16 @@ public partial class Product : BasePage
         if (!Page.IsValid)
             return;
         DeleteSavedCart();
+        if (!AddToGiftRegistry())
+            return;
 
         CartManager manager = new CartManager(this.Cart);
         manager.Add(new CartItem()
         {
             CatalogNumber = CartProduct.CatalogNumber,
             PricePerUnit = CartProduct.SalePrice == 0 ? CartProduct.Price : CartProduct.SalePrice,
-            ProductID = CartProduct.ProductID,
+            ProductID = CartProduct.ProductID, 
+            GiftRegistryProductID = WebUtility.GetDecodedIntFromQueryString("GiftRegistryProductID"),
             ProductName = CartProduct.ProductName,
             IsDownloadable = CartProduct.IsDownloadable,
             DownloadURL = CartProduct.DownloadURL,
@@ -106,6 +109,24 @@ public partial class Product : BasePage
         });
         this.Cart = manager.ShoppingCart;
         Response.Redirect("ShoppingCart.aspx");
+    }
+
+    private bool AddToGiftRegistry()
+    {
+        // Check if there is another gift registry in this cart.
+        int giftRegistryProductID = WebUtility.GetDecodedIntFromQueryString("GiftRegistryID");
+        if (giftRegistryProductID > 0)
+        {
+            if (this.Cart.GiftRegistryID != 0 && this.Cart.GiftRegistryID != giftRegistryProductID)
+            {
+                AddButton.Text = "You seem to have another Gift Registry saved. Please close your browser and try again.";
+                return false;
+            }
+            else
+                this.Cart.GiftRegistryID = giftRegistryProductID;
+        }
+        // If not add to cart
+        return true;
     }
 
     public void DeleteSavedCart()
@@ -140,8 +161,25 @@ public partial class Product : BasePage
         }
     }
 
-    public int GetCartProduct()
+
+    protected void GiftButton_Click(object sender, EventArgs e)
     {
-        return 1;
+        try
+        {
+            // If a user does not have a gift registry create one
+            int giftRegistryID = GiftRegistries.GetGiftRegistry(0, GetLoggedCustomerID(), string.Empty, false).GiftRegistryID;
+            if (giftRegistryID == 0)
+            {
+                GiftRegistry giftRegistry = new GiftRegistry() { CustomerID = GetLoggedCustomerID(), DateCreated = DateTime.Now, Active = true };
+                giftRegistryID = GiftRegistries.AddGiftRegistry(giftRegistry);
+            }
+            // Add this product
+            GiftRegistries.AddGiftRegistryProduct(new GiftRegistryProduct() { GiftRegistryID = giftRegistryID, ProductID = CartProduct.ProductID, Active = true });
+            Response.Redirect("MyAccount/GiftRegistry.aspx");
+        }
+        catch (Exception ex)
+        {
+            ((Button)sender).Text = "Error " + ex.Message;
+        }
     }
 }

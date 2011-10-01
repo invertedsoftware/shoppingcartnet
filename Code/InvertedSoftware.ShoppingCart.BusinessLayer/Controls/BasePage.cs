@@ -15,15 +15,14 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer.Controls
     public class BasePage : Page
     {
         private int customerID = -1;
+        private Customer customer = null;
 
         public int GetLoggedCustomerID()
         {
             if (customerID > -1) return customerID;
             MembershipUser currentUser = Membership.GetUser();
             if (currentUser != null)
-            {
                 customerID = Customers.GetCustomerID(new Guid(currentUser.ProviderUserKey.ToString()));
-            }
 
             return customerID;
         }
@@ -42,11 +41,11 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer.Controls
 
         public Customer GetLoggedCustomer()
         {
-            Customer customer = null;
-            MembershipUser currentUser = Membership.GetUser();
-            if (currentUser != null)
+            if (customer == null)
             {
-                customer = Customers.GetCustomer(new Guid(currentUser.ProviderUserKey.ToString()));
+                MembershipUser currentUser = Membership.GetUser();
+                if (currentUser != null)
+                    customer = Customers.GetCustomer(new Guid(currentUser.ProviderUserKey.ToString()));
             }
             return customer;
         }

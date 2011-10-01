@@ -17,6 +17,7 @@
 </tr>
 <tr>
     <td>
+        <asp:Literal ID="PrivateListLiteral" Visible="false" runat="server">This is a private Registry. Please <a href="Login.aspx">Login</a> or <a href="Register.aspx">Register</a> to view.</asp:Literal>
         <asp:ListView ID="GiftRegistryListView" DataKeyNames="GiftRegistryProductID" runat="server">
             <EmptyDataTemplate>
                 <table id="Table1" runat="server" style="">
@@ -26,11 +27,15 @@
                 </table>
             </EmptyDataTemplate>
             <ItemTemplate>
-                <tr style="">
-                    <td>
-                    <a href='Product.aspx?Product=<%# HttpUtility.UrlEncode(Eval("ProductName").ToString()) %>&ProductID=<%# WebUtility.EncodeParamForQueryString(Eval("ProductID").ToString()) %>&GiftRegistryID=<%: WebUtility.EncodeParamForQueryString(GiftRegistry.GiftRegistryID.ToString())%>&GiftRegistryProductID=<%# WebUtility.EncodeParamForQueryString(Eval("GiftRegistryProductID").ToString()) %>'><%# Eval("ProductName") %></a>
-                    </td>
-                </tr>
+            <tr>
+                <td><a href="Product.aspx?Product=<%# HttpUtility.UrlEncode(Eval("ProductName").ToString())%>&ProductID=<%# WebUtility.EncodeParamForQueryString(Eval("ProductID").ToString()) %>&GiftRegistryID=<%: WebUtility.EncodeParamForQueryString(GiftRegistry.GiftRegistryID.ToString())%>&GiftRegistryProductID=<%# WebUtility.EncodeParamForQueryString(Eval("GiftRegistryProductID").ToString()) %>"><%# Eval("ProductName")%></a></td>
+            </tr>
+            <tr>
+                <td><a href="Product.aspx?Product=<%# HttpUtility.UrlEncode(Eval("ProductName").ToString())%>&ProductID=<%# WebUtility.EncodeParamForQueryString(Eval("ProductID").ToString()) %>&GiftRegistryID=<%: WebUtility.EncodeParamForQueryString(GiftRegistry.GiftRegistryID.ToString())%>&GiftRegistryProductID=<%# WebUtility.EncodeParamForQueryString(Eval("GiftRegistryProductID").ToString()) %>"><img src='ProductImages/<%# Eval("Thumbnail") %>' alt='<%# Eval("ProductName") %>' style="border-style:none" width="75" height="75" /></a></td>
+            </tr>
+            <tr>
+                <td><a href="Product.aspx?Product=<%# HttpUtility.UrlEncode(Eval("ProductName").ToString())%>&ProductID=<%# WebUtility.EncodeParamForQueryString(Eval("ProductID").ToString()) %>&GiftRegistryID=<%: WebUtility.EncodeParamForQueryString(GiftRegistry.GiftRegistryID.ToString())%>&GiftRegistryProductID=<%# WebUtility.EncodeParamForQueryString(Eval("GiftRegistryProductID").ToString()) %>">Buy as Gift</a></td>
+            </tr>
             </ItemTemplate>
             <LayoutTemplate>
                 <table id="Table2" runat="server">

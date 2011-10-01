@@ -10,7 +10,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
         public int FeaturedProductID { get; set; }
         public int ProductID { get; set; }
         public string ProductName { get; set; }
-        public string thumbnail = "default.jpg";
+        private string thumbnail = "default.jpg";
         public string Thumbnail
         {
             get

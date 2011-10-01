@@ -52,6 +52,16 @@
         </asp:ListView>
     </td>
 </tr>
+<tr>
+    <td><b>Gift Registry Public Link: <a href='<%= ConfigurationManager.AppSettings["StoreURL"]%>/SearchGiftRegistries.aspx?Registry=<%: GetLoggedCustomer().Email %>'><%= ConfigurationManager.AppSettings["StoreURL"]%>/SearchGiftRegistries.aspx?Registry=<%: GetLoggedCustomer().Email %></a></b><br />
+    Gift Registry visibility: <asp:RadioButtonList ID="VisibilityRadioButtonList" runat="server" 
+            AutoPostBack="True" RepeatDirection="Horizontal" 
+            onselectedindexchanged="VisibilityRadioButtonList_SelectedIndexChanged">
+            <asp:ListItem Value="true">Public</asp:ListItem>
+            <asp:ListItem Value="false">Logged In Users</asp:ListItem>
+        </asp:RadioButtonList>
+    </td>
+</tr>
 </table>
 </asp:Content>
 

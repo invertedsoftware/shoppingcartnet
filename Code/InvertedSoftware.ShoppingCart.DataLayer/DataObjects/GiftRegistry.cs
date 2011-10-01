@@ -19,6 +19,8 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
         public string LastName { get; set; }
         [CrudField(UsedFor = CrudFieldType.Read | CrudFieldType.Update)]
         public DateTime DateCreated { get; set; }
+        [CrudField(UsedFor = CrudFieldType.Read | CrudFieldType.Update)]
+        public bool IsPublic { get; set; }
         [CrudField(UsedFor = CrudFieldType.Create | CrudFieldType.Read | CrudFieldType.Update)]
         public bool Active { get; set; }
 
@@ -26,6 +28,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
 
         public GiftRegistry()
         {
+            IsPublic = true;
             Products = new List<GiftRegistryProduct>();
         }
     }

@@ -116,6 +116,23 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
 
 		#region Update
 
+		public static void UpdateGiftRegistryPublic(int giftRegistryID, bool isPublic)
+		{
+			SqlParameter[] paramArray = new SqlParameter[] { 
+				new SqlParameter("@GiftRegistryID", SqlDbType.Int) { Value = giftRegistryID },
+				new SqlParameter("@IsPublic", SqlDbType.Bit) { Value = isPublic }
+			};
+
+			try
+			{
+				SqlHelper.ExecuteNonQuery(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "UpdateGiftRegistryPublic", paramArray);
+			}
+			catch (Exception e)
+			{
+				throw new Exception("Error Updating Registry public", e);
+			}
+		}
+
 		public static void UpdateRegistryProductActive(int giftRegistryID, int giftRegistryProductID, bool active)
 		{
 			SqlParameter[] paramArray = new SqlParameter[] { 

@@ -126,12 +126,12 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
     partial void InsertCouponType(CouponType instance);
     partial void UpdateCouponType(CouponType instance);
     partial void DeleteCouponType(CouponType instance);
-    partial void InsertGiftRegistry(GiftRegistry instance);
-    partial void UpdateGiftRegistry(GiftRegistry instance);
-    partial void DeleteGiftRegistry(GiftRegistry instance);
     partial void InsertGiftRegistryProduct(GiftRegistryProduct instance);
     partial void UpdateGiftRegistryProduct(GiftRegistryProduct instance);
     partial void DeleteGiftRegistryProduct(GiftRegistryProduct instance);
+    partial void InsertGiftRegistry(GiftRegistry instance);
+    partial void UpdateGiftRegistry(GiftRegistry instance);
+    partial void DeleteGiftRegistry(GiftRegistry instance);
     #endregion
 		
 		public CartDataClassesDataContext(string connection) : 
@@ -414,19 +414,19 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 			}
 		}
 		
-		public System.Data.Linq.Table<GiftRegistry> GiftRegistries
-		{
-			get
-			{
-				return this.GetTable<GiftRegistry>();
-			}
-		}
-		
 		public System.Data.Linq.Table<GiftRegistryProduct> GiftRegistryProducts
 		{
 			get
 			{
 				return this.GetTable<GiftRegistryProduct>();
+			}
+		}
+		
+		public System.Data.Linq.Table<GiftRegistry> GiftRegistries
+		{
+			get
+			{
+				return this.GetTable<GiftRegistry>();
 			}
 		}
 	}
@@ -9728,6 +9728,222 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GiftRegistryProduct")]
+	public partial class GiftRegistryProduct : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _GiftRegistryProductID;
+		
+		private int _GiftRegistryID;
+		
+		private System.Nullable<int> _ProductID;
+		
+		private bool _Active;
+		
+		private EntityRef<Product> _Product;
+		
+		private EntityRef<GiftRegistry> _GiftRegistry;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnGiftRegistryProductIDChanging(int value);
+    partial void OnGiftRegistryProductIDChanged();
+    partial void OnGiftRegistryIDChanging(int value);
+    partial void OnGiftRegistryIDChanged();
+    partial void OnProductIDChanging(System.Nullable<int> value);
+    partial void OnProductIDChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public GiftRegistryProduct()
+		{
+			this._Product = default(EntityRef<Product>);
+			this._GiftRegistry = default(EntityRef<GiftRegistry>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GiftRegistryProductID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int GiftRegistryProductID
+		{
+			get
+			{
+				return this._GiftRegistryProductID;
+			}
+			set
+			{
+				if ((this._GiftRegistryProductID != value))
+				{
+					this.OnGiftRegistryProductIDChanging(value);
+					this.SendPropertyChanging();
+					this._GiftRegistryProductID = value;
+					this.SendPropertyChanged("GiftRegistryProductID");
+					this.OnGiftRegistryProductIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GiftRegistryID", DbType="Int NOT NULL")]
+		public int GiftRegistryID
+		{
+			get
+			{
+				return this._GiftRegistryID;
+			}
+			set
+			{
+				if ((this._GiftRegistryID != value))
+				{
+					if (this._GiftRegistry.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGiftRegistryIDChanging(value);
+					this.SendPropertyChanging();
+					this._GiftRegistryID = value;
+					this.SendPropertyChanged("GiftRegistryID");
+					this.OnGiftRegistryIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductID", DbType="Int")]
+		public System.Nullable<int> ProductID
+		{
+			get
+			{
+				return this._ProductID;
+			}
+			set
+			{
+				if ((this._ProductID != value))
+				{
+					if (this._Product.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProductIDChanging(value);
+					this.SendPropertyChanging();
+					this._ProductID = value;
+					this.SendPropertyChanged("ProductID");
+					this.OnProductIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_GiftRegistryProduct", Storage="_Product", ThisKey="ProductID", OtherKey="ProductID", IsForeignKey=true)]
+		public Product Product
+		{
+			get
+			{
+				return this._Product.Entity;
+			}
+			set
+			{
+				Product previousValue = this._Product.Entity;
+				if (((previousValue != value) 
+							|| (this._Product.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Product.Entity = null;
+						previousValue.GiftRegistryProducts.Remove(this);
+					}
+					this._Product.Entity = value;
+					if ((value != null))
+					{
+						value.GiftRegistryProducts.Add(this);
+						this._ProductID = value.ProductID;
+					}
+					else
+					{
+						this._ProductID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Product");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GiftRegistry_GiftRegistryProduct", Storage="_GiftRegistry", ThisKey="GiftRegistryID", OtherKey="GiftRegistryID", IsForeignKey=true)]
+		public GiftRegistry GiftRegistry
+		{
+			get
+			{
+				return this._GiftRegistry.Entity;
+			}
+			set
+			{
+				GiftRegistry previousValue = this._GiftRegistry.Entity;
+				if (((previousValue != value) 
+							|| (this._GiftRegistry.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._GiftRegistry.Entity = null;
+						previousValue.GiftRegistryProducts.Remove(this);
+					}
+					this._GiftRegistry.Entity = value;
+					if ((value != null))
+					{
+						value.GiftRegistryProducts.Add(this);
+						this._GiftRegistryID = value.GiftRegistryID;
+					}
+					else
+					{
+						this._GiftRegistryID = default(int);
+					}
+					this.SendPropertyChanged("GiftRegistry");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GiftRegistry")]
 	public partial class GiftRegistry : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -9739,6 +9955,8 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		private int _CustomerID;
 		
 		private System.DateTime _DateCreated;
+		
+		private bool _IsPublic;
 		
 		private bool _Active;
 		
@@ -9756,6 +9974,8 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
     partial void OnCustomerIDChanged();
     partial void OnDateCreatedChanging(System.DateTime value);
     partial void OnDateCreatedChanged();
+    partial void OnIsPublicChanging(bool value);
+    partial void OnIsPublicChanged();
     partial void OnActiveChanging(bool value);
     partial void OnActiveChanged();
     #endregion
@@ -9827,6 +10047,26 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 					this._DateCreated = value;
 					this.SendPropertyChanged("DateCreated");
 					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPublic", DbType="Bit NOT NULL")]
+		public bool IsPublic
+		{
+			get
+			{
+				return this._IsPublic;
+			}
+			set
+			{
+				if ((this._IsPublic != value))
+				{
+					this.OnIsPublicChanging(value);
+					this.SendPropertyChanging();
+					this._IsPublic = value;
+					this.SendPropertyChanged("IsPublic");
+					this.OnIsPublicChanged();
 				}
 			}
 		}
@@ -9928,222 +10168,6 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		{
 			this.SendPropertyChanging();
 			entity.GiftRegistry = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GiftRegistryProduct")]
-	public partial class GiftRegistryProduct : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _GiftRegistryProductID;
-		
-		private int _GiftRegistryID;
-		
-		private System.Nullable<int> _ProductID;
-		
-		private bool _Active;
-		
-		private EntityRef<GiftRegistry> _GiftRegistry;
-		
-		private EntityRef<Product> _Product;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnGiftRegistryProductIDChanging(int value);
-    partial void OnGiftRegistryProductIDChanged();
-    partial void OnGiftRegistryIDChanging(int value);
-    partial void OnGiftRegistryIDChanged();
-    partial void OnProductIDChanging(System.Nullable<int> value);
-    partial void OnProductIDChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
-    #endregion
-		
-		public GiftRegistryProduct()
-		{
-			this._GiftRegistry = default(EntityRef<GiftRegistry>);
-			this._Product = default(EntityRef<Product>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GiftRegistryProductID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int GiftRegistryProductID
-		{
-			get
-			{
-				return this._GiftRegistryProductID;
-			}
-			set
-			{
-				if ((this._GiftRegistryProductID != value))
-				{
-					this.OnGiftRegistryProductIDChanging(value);
-					this.SendPropertyChanging();
-					this._GiftRegistryProductID = value;
-					this.SendPropertyChanged("GiftRegistryProductID");
-					this.OnGiftRegistryProductIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GiftRegistryID", DbType="Int NOT NULL")]
-		public int GiftRegistryID
-		{
-			get
-			{
-				return this._GiftRegistryID;
-			}
-			set
-			{
-				if ((this._GiftRegistryID != value))
-				{
-					if (this._GiftRegistry.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnGiftRegistryIDChanging(value);
-					this.SendPropertyChanging();
-					this._GiftRegistryID = value;
-					this.SendPropertyChanged("GiftRegistryID");
-					this.OnGiftRegistryIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductID", DbType="Int")]
-		public System.Nullable<int> ProductID
-		{
-			get
-			{
-				return this._ProductID;
-			}
-			set
-			{
-				if ((this._ProductID != value))
-				{
-					if (this._Product.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnProductIDChanging(value);
-					this.SendPropertyChanging();
-					this._ProductID = value;
-					this.SendPropertyChanged("ProductID");
-					this.OnProductIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this.OnActiveChanging(value);
-					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GiftRegistry_GiftRegistryProduct", Storage="_GiftRegistry", ThisKey="GiftRegistryID", OtherKey="GiftRegistryID", IsForeignKey=true)]
-		public GiftRegistry GiftRegistry
-		{
-			get
-			{
-				return this._GiftRegistry.Entity;
-			}
-			set
-			{
-				GiftRegistry previousValue = this._GiftRegistry.Entity;
-				if (((previousValue != value) 
-							|| (this._GiftRegistry.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._GiftRegistry.Entity = null;
-						previousValue.GiftRegistryProducts.Remove(this);
-					}
-					this._GiftRegistry.Entity = value;
-					if ((value != null))
-					{
-						value.GiftRegistryProducts.Add(this);
-						this._GiftRegistryID = value.GiftRegistryID;
-					}
-					else
-					{
-						this._GiftRegistryID = default(int);
-					}
-					this.SendPropertyChanged("GiftRegistry");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_GiftRegistryProduct", Storage="_Product", ThisKey="ProductID", OtherKey="ProductID", IsForeignKey=true)]
-		public Product Product
-		{
-			get
-			{
-				return this._Product.Entity;
-			}
-			set
-			{
-				Product previousValue = this._Product.Entity;
-				if (((previousValue != value) 
-							|| (this._Product.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Product.Entity = null;
-						previousValue.GiftRegistryProducts.Remove(this);
-					}
-					this._Product.Entity = value;
-					if ((value != null))
-					{
-						value.GiftRegistryProducts.Add(this);
-						this._ProductID = value.ProductID;
-					}
-					else
-					{
-						this._ProductID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Product");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 }

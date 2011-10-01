@@ -15,5 +15,19 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
         public bool Active { get; set; }
         [CrudField(UsedFor = CrudFieldType.Read)]
         public string ProductName { get; set; }
+        private string thumbnail = "default.jpg";
+        [CrudField(UsedFor = CrudFieldType.Read)]
+        public string Thumbnail
+        {
+            get
+            {
+                return thumbnail;
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    thumbnail = value;
+            }
+        }
     }
 }

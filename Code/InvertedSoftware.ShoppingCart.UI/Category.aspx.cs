@@ -6,10 +6,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using InvertedSoftware.ShoppingCart.Common;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
 using InvertedSoftware.ShoppingCart.DataLayer.Database;
 using InvertedSoftware.ShoppingCart.BusinessLayer.Controls;
-
 
 public partial class Category : BasePage
 {
@@ -18,7 +18,7 @@ public partial class Category : BasePage
         if (!Page.IsPostBack)
         {
             BindProducts();
-            Page.Title = ConfigurationManager.AppSettings["StoreName"];
+            Page.Title = StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName);
         }
     }
 

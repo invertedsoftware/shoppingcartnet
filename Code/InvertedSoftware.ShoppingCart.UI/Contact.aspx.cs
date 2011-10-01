@@ -33,7 +33,7 @@ public partial class Contact : System.Web.UI.Page
 
             Email.SendSimpleEmail(NameTextBox.Text, 
                 EmailTextBox.Text,
-                new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(ConfigurationManager.AppSettings["ContactEmail"]) },
+                new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(StoreConfiguration.GetConfigurationValue(ConfigurationKey.ContactEmail)) },
                 "Contact Form - " + SubjectDropDownList.SelectedValue, 
                 sb.ToString(), 
                 true);

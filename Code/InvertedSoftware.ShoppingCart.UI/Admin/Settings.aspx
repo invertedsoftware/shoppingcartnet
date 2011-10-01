@@ -103,7 +103,7 @@
                                 <asp:Label ID="PayPalAPIPasswordLabel" runat="server" AssociatedControlID="PayPalAPIPassword">PayPal API Password:</asp:Label>
                             </td>
                             <td>
-                                <asp:TextBox ID="PayPalAPIPassword" TextMode="Password" runat="server"></asp:TextBox></td>
+                                <asp:TextBox ID="PayPalAPIPassword" runat="server"></asp:TextBox></td>
                         </tr>
                         <tr>
                             <td align="right">

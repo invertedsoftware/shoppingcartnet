@@ -6,6 +6,7 @@ using System.Text;
 
 using AuthorizeNet;
 
+using InvertedSoftware.ShoppingCart.Common;
 
 namespace InvertedSoftware.ShoppingCart.Intergration
 {
@@ -17,7 +18,7 @@ namespace InvertedSoftware.ShoppingCart.Intergration
             request.AddCardCode(CVV2);
             request.AddCustomer(orderNumber, buyerFirstName, buyerLastName, buyerAddress, buyerStateOrProvince, buyerZipCode);
             request.AddInvoice(orderNumber);
-            var gate = new Gateway(ConfigurationManager.AppSettings["AuthorizeNetAPILoginID"], ConfigurationManager.AppSettings["AuthorizeNetTransactionKey"], bool.Parse(ConfigurationManager.AppSettings["AuthorizeNetTestMode"]));
+            var gate = new Gateway(StoreConfiguration.GetConfigurationValue(ConfigurationKey.AuthorizeNetAPILoginID), StoreConfiguration.GetConfigurationValue(ConfigurationKey.AuthorizeNetTransactionKey), bool.Parse(StoreConfiguration.GetConfigurationValue(ConfigurationKey.AuthorizeNetTestMode)));
             var response = gate.Send(request);
 
             if (response.Approved)

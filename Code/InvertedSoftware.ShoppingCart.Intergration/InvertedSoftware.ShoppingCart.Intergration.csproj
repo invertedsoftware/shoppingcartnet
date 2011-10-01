@@ -99,6 +99,12 @@
     <Content Include="lib\AuthorizeNet.dll" />
     <Content Include="lib\AuthorizeNet.Helpers.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InvertedSoftware.ShoppingCart.Common\InvertedSoftware.ShoppingCart.Common.csproj">
+      <Project>{9945724C-5050-4CC2-9DCF-E26FF493F3B1}</Project>
+      <Name>InvertedSoftware.ShoppingCart.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

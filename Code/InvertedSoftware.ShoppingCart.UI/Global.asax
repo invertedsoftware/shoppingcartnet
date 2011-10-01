@@ -2,6 +2,8 @@
 <%@ Import Namespace="System.Web.Routing" %>
 <%@ Import Namespace="System.Web.DynamicData" %>
 
+<%@ Import Namespace="InvertedSoftware.ShoppingCart.DataLayer.Database" %>
+
 <script RunAt="server">
     public static void RegisterRoutes(RouteCollection routes) {
         MetaModel model = new MetaModel();
@@ -43,6 +45,7 @@
     }
 
     void Application_Start(object sender, EventArgs e) {
+        StoreConfigurations.LoadStoreConfiguration();
         RegisterRoutes(RouteTable.Routes);
     }
 

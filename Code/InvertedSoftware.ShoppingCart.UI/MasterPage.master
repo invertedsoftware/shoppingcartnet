@@ -1,5 +1,7 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
 
+<%@ Import Namespace="InvertedSoftware.ShoppingCart.Common" %>
+
 <%@ Register src="UserControls/MenuControl.ascx" tagname="MenuControl" tagprefix="uc1" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -57,7 +59,7 @@
 			</asp:ScriptManager>
    <table cellpadding="3" cellspacing="3" border="0" width="100%">
    <tr>
-	<td colspan="2" align="center"><h1><span class="allcaps"><%= ConfigurationManager.AppSettings["StoreName"] %></span></h1></td>
+	<td colspan="2" align="center"><h1><span class="allcaps"><%= StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName) %></span></h1></td>
    </tr>
    <tr>
 	<td colspan="2" align="right">

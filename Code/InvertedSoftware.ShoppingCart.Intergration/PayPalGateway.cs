@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 
 using InvertedSoftware.ShoppingCart.Intergration.PaypalAPIServiceReference;
+using InvertedSoftware.ShoppingCart.Common;
 
 
 
@@ -63,9 +64,9 @@ namespace InvertedSoftware.ShoppingCart.Intergration
             //Headers
             PaypalAPIServiceReference.CustomSecurityHeaderType headers = new CustomSecurityHeaderType();
             headers.Credentials = new UserIdPasswordType();
-            headers.Credentials.Username = ConfigurationManager.AppSettings["PayPalAPIUsername"];
-            headers.Credentials.Password = ConfigurationManager.AppSettings["PayPalAPIPassword"];
-            headers.Credentials.Signature = ConfigurationManager.AppSettings["PayPalAPISignature"];
+            headers.Credentials.Username = StoreConfiguration.GetConfigurationValue(ConfigurationKey.PayPalAPIUsername);
+            headers.Credentials.Password = StoreConfiguration.GetConfigurationValue(ConfigurationKey.PayPalAPIPassword);
+            headers.Credentials.Signature = StoreConfiguration.GetConfigurationValue(ConfigurationKey.PayPalAPISignature);
             
             PaypalAPIServiceReference.PayPalAPIAAInterfaceClient client = new PayPalAPIAAInterfaceClient();
             client.Open();

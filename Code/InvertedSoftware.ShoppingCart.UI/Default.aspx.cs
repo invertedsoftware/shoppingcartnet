@@ -14,11 +14,11 @@ public partial class _Default : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //If store is not configurated, show configuration screen
-        if (!Utils.IS_CONFIGURED && ConfigurationManager.AppSettings["SetupRan"] == "true")
+        if (!Utils.IS_CONFIGURED && StoreConfiguration.GetConfigurationValue(ConfigurationKey.SetupRan) == "true")
             Utils.IS_CONFIGURED = true;
         else if (!Utils.IS_CONFIGURED)
             Response.Redirect("Setup/Default.aspx");
         if (!Page.IsPostBack)
-            Page.Title = ConfigurationManager.AppSettings["StoreName"];
+            Page.Title = StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName);
     }
 }

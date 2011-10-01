@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="GiftRegistry.aspx.cs" Inherits="MyAccount_GiftRegistry" %>
 
+<%@ Import Namespace="InvertedSoftware.ShoppingCart.Common" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -53,7 +55,7 @@
     </td>
 </tr>
 <tr>
-    <td><b>Gift Registry Public Link: <a href='<%= ConfigurationManager.AppSettings["StoreURL"]%>/SearchGiftRegistries.aspx?Registry=<%: GetLoggedCustomer().Email %>'><%= ConfigurationManager.AppSettings["StoreURL"]%>/SearchGiftRegistries.aspx?Registry=<%: GetLoggedCustomer().Email %></a></b><br />
+    <td><b>Gift Registry Public Link: <a href='<%= StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreURL) %>/SearchGiftRegistries.aspx?Registry=<%: GetLoggedCustomer().Email %>'><%= ConfigurationManager.AppSettings["StoreURL"]%>/SearchGiftRegistries.aspx?Registry=<%: GetLoggedCustomer().Email %></a></b><br />
     Gift Registry visibility: <asp:RadioButtonList ID="VisibilityRadioButtonList" runat="server" 
             AutoPostBack="True" RepeatDirection="Horizontal" 
             onselectedindexchanged="VisibilityRadioButtonList_SelectedIndexChanged">

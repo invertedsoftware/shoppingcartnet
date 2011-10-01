@@ -304,12 +304,12 @@ public partial class Checkout : BasePage
         Dictionary<string, string> replacmentValues = new Dictionary<string, string>();
         replacmentValues.Add("FirstName", FirstNameTextBox.Text);
         replacmentValues.Add("OrderNumber", orderNo);
-        replacmentValues.Add("StoreName", ConfigurationManager.AppSettings["StoreName"]);
-        replacmentValues.Add("StoreURL", ConfigurationManager.AppSettings["StoreURL"]);
+        replacmentValues.Add("StoreName", StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName));
+        replacmentValues.Add("StoreURL", StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreURL));
 
         string emailBody = EmailManager.GetEmailString(replacmentValues, EmailType.NewSaleCustomerEmail);
-        Email.SendSimpleEmail(ConfigurationManager.AppSettings["StoreName"] + " Sales",
-            ConfigurationManager.AppSettings["SalesTeamEmail"], new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(EmailTextBox.Text) },
+        Email.SendSimpleEmail(StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName) + " Sales",
+            StoreConfiguration.GetConfigurationValue(ConfigurationKey.SalesTeamEmail), new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(EmailTextBox.Text) },
             "New Order Confirmation",
             emailBody,
             true);

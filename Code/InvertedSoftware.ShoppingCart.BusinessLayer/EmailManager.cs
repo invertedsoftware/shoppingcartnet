@@ -126,8 +126,8 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
             //Items
             replacmentValues.Add("Cart", GetOrderItemsString(order));
             string emailBody = EmailManager.GetEmailString(replacmentValues, EmailType.NewSaleStoreEmail);
-            Email.SendSimpleEmail(ConfigurationManager.AppSettings["StoreName"] + " Sales",
-                ConfigurationManager.AppSettings["SalesTeamEmail"], new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(ConfigurationManager.AppSettings["NewOrdersEmail"]) },
+            Email.SendSimpleEmail(StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName) + " Sales",
+                StoreConfiguration.GetConfigurationValue(ConfigurationKey.SalesTeamEmail), new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(ConfigurationManager.AppSettings["NewOrdersEmail"]) },
                 "New Order",
                 emailBody,
                 true);
@@ -138,8 +138,8 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
             List<System.Net.Mail.MailAddress> toEmails = new List<System.Net.Mail.MailAddress>();
             toEmails = emails.Split(',').Select(a => new System.Net.Mail.MailAddress(a.Trim())).ToList();
 
-            Email.SendSimpleEmail(ConfigurationManager.AppSettings["StoreName"],
-                ConfigurationManager.AppSettings["SalesTeamEmail"],
+            Email.SendSimpleEmail(StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName),
+                StoreConfiguration.GetConfigurationValue(ConfigurationKey.SalesTeamEmail),
                 toEmails,
                 "Your shopping cart",
                 "Your shopping cart has been emailed to you. to view it please click the link <a href='" + cartLink + "'>" + cartLink + "</a> or copy and past it into your browser",

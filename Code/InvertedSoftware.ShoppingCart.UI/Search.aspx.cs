@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
 using InvertedSoftware.ShoppingCart.DataLayer.Database;
 using InvertedSoftware.ShoppingCart.BusinessLayer.Controls;
+using InvertedSoftware.ShoppingCart.Common;
 
 
 public partial class Search : BasePage
@@ -18,7 +19,7 @@ public partial class Search : BasePage
         if (!Page.IsPostBack)
         {
             BindProducts();
-            Page.Title = ConfigurationManager.AppSettings["StoreName"];
+            Page.Title = StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName);
         }
     }
 

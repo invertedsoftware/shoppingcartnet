@@ -22,7 +22,7 @@ public partial class UserControls_GoogleCheckoutControl : System.Web.UI.UserCont
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
-            GoogleImageButton.ImageUrl = String.Format(ConfigurationManager.AppSettings["GoogleImageButtonURL"], ConfigurationManager.AppSettings["GoogleMerchantID"]);
+            GoogleImageButton.ImageUrl = String.Format(StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleImageButtonURL), StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleMerchantID));
     }
 
     public string GetGoogleCartCode()
@@ -88,7 +88,7 @@ public partial class UserControls_GoogleCheckoutControl : System.Web.UI.UserCont
         try
         {
             string orderXML = GetGoogleCartCode();
-            string googleResponse = Utils.PostToURL(String.Format(ConfigurationManager.AppSettings["GoogleCheckoutURL"], ConfigurationManager.AppSettings["GoogleMerchantID"]), orderXML, ConfigurationManager.AppSettings["GoogleMerchantID"], ConfigurationManager.AppSettings["GoogleMerchantkey"]);
+            string googleResponse = Utils.PostToURL(String.Format(StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleCheckoutURL), StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleMerchantID)), orderXML, StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleMerchantID), StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleMerchantkey));
             TextReader reader = new StringReader(googleResponse);
             XmlSerializer serializer = new XmlSerializer(typeof(CheckoutRedirect));
             CheckoutRedirect redirect = (CheckoutRedirect)serializer.Deserialize(reader);

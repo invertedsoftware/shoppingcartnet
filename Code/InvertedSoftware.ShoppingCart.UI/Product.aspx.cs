@@ -6,12 +6,12 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using InvertedSoftware.ShoppingCart.Common;
+using InvertedSoftware.ShoppingCart.DataLayer.Cache;
 using InvertedSoftware.ShoppingCart.BusinessLayer;
 using InvertedSoftware.ShoppingCart.BusinessLayer.Controls;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
 using InvertedSoftware.ShoppingCart.DataLayer.Database;
-
-using InvertedSoftware.ShoppingCart.DataLayer.Cache;
 
 public partial class Product : BasePage
 {
@@ -24,7 +24,7 @@ public partial class Product : BasePage
             ProductBreadcrumbControl1.ProductID = CartProduct.ProductID;
         if (!Page.IsPostBack)
         {
-            Page.Title = CartProduct.ProductName + " - " + ConfigurationManager.AppSettings["StoreName"];
+            Page.Title = CartProduct.ProductName + " - " + StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName);
             CheckProductInventory();
         }
     }

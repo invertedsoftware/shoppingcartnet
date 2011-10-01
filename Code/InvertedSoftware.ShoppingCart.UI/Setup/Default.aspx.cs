@@ -9,12 +9,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using InvertedSoftware.ShoppingCart.Common;
+using InvertedSoftware.ShoppingCart.DataLayer.Database;
 
 public partial class Setup_Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (ConfigurationManager.AppSettings["SetupRan"] == "true")
+        if (StoreConfiguration.GetConfigurationValue(ConfigurationKey.SetupRan) == "true")
         {
             Utils.IS_CONFIGURED = true;
             Response.Redirect("../Default.aspx");
@@ -36,14 +37,8 @@ public partial class Setup_Default : System.Web.UI.Page
 
     protected void ContinueButton_Click(object sender, EventArgs e)
     {
-        Configuration configuration = WebConfigurationManager.OpenWebConfiguration("~");
-        AppSettingsSection appSettings = (AppSettingsSection)configuration.GetSection("appSettings");
-
-        if (appSettings != null)
-        {
-            appSettings.Settings["SetupRan"].Value = "true";
-            configuration.Save();
-        }
+        StoreConfiguration.UpdateValue(ConfigurationKey.SetupRan, "true");
+        StoreConfiguration.GetConfigurationValue(ConfigurationKey.SetupRan);
         Response.Redirect("../admin");
     }
     protected void CreateUserWizard1_NextButtonClick(object sender, WizardNavigationEventArgs e)
@@ -60,39 +55,28 @@ public partial class Setup_Default : System.Web.UI.Page
 
     public void SetBasicConfiguration()
     {
-        Configuration configuration = WebConfigurationManager.OpenWebConfiguration("~");
-        AppSettingsSection appSettings = (AppSettingsSection)configuration.GetSection("appSettings");
+        StoreConfiguration.UpdateValue(ConfigurationKey.StoreName, ((TextBox)CreateUserWizard1.WizardSteps[1].Controls[0].FindControl("StoreName")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.StoreURL, ((TextBox)CreateUserWizard1.WizardSteps[1].Controls[0].FindControl("StoreURL")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.SalesTeamEmail, ((TextBox)CreateUserWizard1.WizardSteps[1].Controls[0].FindControl("SalesTeamEmail")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.NewOrdersEmail, ((TextBox)CreateUserWizard1.WizardSteps[1].Controls[0].FindControl("NewOrdersEmail")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.ContactEmail, ((TextBox)CreateUserWizard1.WizardSteps[1].Controls[0].FindControl("ContactEmail")).Text);
 
-        if (appSettings != null)
-        {
-            appSettings.Settings["StoreName"].Value = ((TextBox)CreateUserWizard1.WizardSteps[1].Controls[0].FindControl("StoreName")).Text;
-            appSettings.Settings["StoreURL"].Value = ((TextBox)CreateUserWizard1.WizardSteps[1].Controls[0].FindControl("StoreURL")).Text;
-            appSettings.Settings["SalesTeamEmail"].Value = ((TextBox)CreateUserWizard1.WizardSteps[1].Controls[0].FindControl("SalesTeamEmail")).Text;
-            appSettings.Settings["NewOrdersEmail"].Value = ((TextBox)CreateUserWizard1.WizardSteps[1].Controls[0].FindControl("NewOrdersEmail")).Text;
-            appSettings.Settings["ContactEmail"].Value = ((TextBox)CreateUserWizard1.WizardSteps[1].Controls[0].FindControl("ContactEmail")).Text;
-            configuration.Save();
-        }
+        StoreConfigurations.SaveAll();
     }
 
     public void SetPaymentConfiguration()
     {
-        Configuration configuration = WebConfigurationManager.OpenWebConfiguration("~");
-        AppSettingsSection appSettings = (AppSettingsSection)configuration.GetSection("appSettings");
-
-        if (appSettings != null)
-        {
-            appSettings.Settings["PayPalAPIUsername"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("PayPalAPIUsername")).Text;
-            appSettings.Settings["PayPalAPIPassword"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("PayPalAPIPassword")).Text;
-            appSettings.Settings["PayPalAPISignature"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("PayPalAPISignature")).Text;
-            appSettings.Settings["GoogleCheckoutEnabled"].Value = ((CheckBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleCheckoutEnabled")).Checked.ToString().ToLower();
-            appSettings.Settings["GoogleMerchantID"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleMerchantID")).Text;
-            appSettings.Settings["GoogleMerchantkey"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleMerchantkey")).Text;
-            appSettings.Settings["GoogleImageButtonURL"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleImageButtonURL")).Text;
-            appSettings.Settings["GoogleCheckoutURL"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleCheckoutURL")).Text;
-            appSettings.Settings["AuthorizeNetTestMode"].Value = ((CheckBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("AuthorizeNetTestMode")).Checked.ToString().ToLower();
-            appSettings.Settings["AuthorizeNetAPILoginID"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("AuthorizeNetAPILoginID")).Text;
-            appSettings.Settings["AuthorizeNetTransactionKey"].Value = ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("AuthorizeNetTransactionKey")).Text;
-            configuration.Save();
-        }
+        StoreConfiguration.UpdateValue(ConfigurationKey.PayPalAPIUsername, ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("PayPalAPIUsername")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.PayPalAPIPassword, ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("PayPalAPIPassword")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.PayPalAPISignature, ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("PayPalAPISignature")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.GoogleCheckoutEnabled, ((CheckBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleCheckoutEnabled")).Checked.ToString().ToLower());
+        StoreConfiguration.UpdateValue(ConfigurationKey.GoogleMerchantID, ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleMerchantID")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.GoogleMerchantkey, ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleMerchantkey")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.GoogleImageButtonURL, ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("GoogleImageButtonURL")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.AuthorizeNetTestMode, ((CheckBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("AuthorizeNetTestMode")).Checked.ToString().ToLower());
+        StoreConfiguration.UpdateValue(ConfigurationKey.AuthorizeNetAPILoginID, ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("AuthorizeNetAPILoginID")).Text);
+        StoreConfiguration.UpdateValue(ConfigurationKey.AuthorizeNetTransactionKey, ((TextBox)CreateUserWizard1.WizardSteps[2].Controls[0].FindControl("AuthorizeNetTransactionKey")).Text);
+       
+        StoreConfigurations.SaveAll();
     }
 }

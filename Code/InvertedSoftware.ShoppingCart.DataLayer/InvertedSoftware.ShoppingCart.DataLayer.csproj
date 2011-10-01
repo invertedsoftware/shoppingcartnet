@@ -95,6 +95,7 @@
     <Compile Include="Database\Payment.cs" />
     <Compile Include="Database\Products.cs" />
     <Compile Include="Database\Reviews.cs" />
+    <Compile Include="Database\StoreConfigurations.cs" />
     <Compile Include="DataObjects\Cart.cs" />
     <Compile Include="DataObjects\CartItem.cs" />
     <Compile Include="DataObjects\Category.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Dynamic\CustomFieldType.cs" />
     <Compile Include="Dynamic\InventoryAction.cs" />
     <Compile Include="Dynamic\OrderStatus.cs" />
+    <Compile Include="Dynamic\StoreConfiguration.cs" />
     <Compile Include="Entities\CartModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -186,6 +188,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InvertedSoftware.ShoppingCart.Common\InvertedSoftware.ShoppingCart.Common.csproj">
+      <Project>{9945724C-5050-4CC2-9DCF-E26FF493F3B1}</Project>
+      <Name>InvertedSoftware.ShoppingCart.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

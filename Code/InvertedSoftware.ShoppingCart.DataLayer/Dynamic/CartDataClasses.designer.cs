@@ -132,6 +132,9 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
     partial void InsertGiftRegistry(GiftRegistry instance);
     partial void UpdateGiftRegistry(GiftRegistry instance);
     partial void DeleteGiftRegistry(GiftRegistry instance);
+    partial void InsertStoreConfiguration(StoreConfiguration instance);
+    partial void UpdateStoreConfiguration(StoreConfiguration instance);
+    partial void DeleteStoreConfiguration(StoreConfiguration instance);
     #endregion
 		
 		public CartDataClassesDataContext(string connection) : 
@@ -427,6 +430,14 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 			get
 			{
 				return this.GetTable<GiftRegistry>();
+			}
+		}
+		
+		public System.Data.Linq.Table<StoreConfiguration> StoreConfigurations
+		{
+			get
+			{
+				return this.GetTable<StoreConfiguration>();
 			}
 		}
 	}
@@ -10168,6 +10179,92 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Dynamic
 		{
 			this.SendPropertyChanging();
 			entity.GiftRegistry = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.StoreConfiguration")]
+	public partial class StoreConfiguration : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _ConfigKey;
+		
+		private string _ConfigValue;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnConfigKeyChanging(string value);
+    partial void OnConfigKeyChanged();
+    partial void OnConfigValueChanging(string value);
+    partial void OnConfigValueChanged();
+    #endregion
+		
+		public StoreConfiguration()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConfigKey", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string ConfigKey
+		{
+			get
+			{
+				return this._ConfigKey;
+			}
+			set
+			{
+				if ((this._ConfigKey != value))
+				{
+					this.OnConfigKeyChanging(value);
+					this.SendPropertyChanging();
+					this._ConfigKey = value;
+					this.SendPropertyChanged("ConfigKey");
+					this.OnConfigKeyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConfigValue", DbType="VarChar(800)")]
+		public string ConfigValue
+		{
+			get
+			{
+				return this._ConfigValue;
+			}
+			set
+			{
+				if ((this._ConfigValue != value))
+				{
+					this.OnConfigValueChanging(value);
+					this.SendPropertyChanging();
+					this._ConfigValue = value;
+					this.SendPropertyChanged("ConfigValue");
+					this.OnConfigValueChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

@@ -8,6 +8,7 @@ using System.Web.Profile;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using InvertedSoftware.ShoppingCart.Common;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
 using InvertedSoftware.ShoppingCart.BusinessLayer;
 using InvertedSoftware.ShoppingCart.BusinessLayer.Controls;
@@ -23,8 +24,8 @@ public partial class ShoppingCart : BasePage
                 LoadCart(Request.QueryString["CartID"]);
 
             BindCart();
-            GoogleCheckoutControl1.Visible = Convert.ToBoolean(ConfigurationManager.AppSettings["GoogleCheckoutEnabled"]);
-            Page.Title = "My Cart - " + ConfigurationManager.AppSettings["StoreName"];
+            GoogleCheckoutControl1.Visible = Convert.ToBoolean(StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleCheckoutEnabled));
+            Page.Title = "My Cart - " + StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName);
         }
     }
 
@@ -158,8 +159,8 @@ public partial class ShoppingCart : BasePage
         string cartID = GetLoggedUserName();
         if (string.IsNullOrEmpty(cartID))
             cartID = Request.AnonymousID;
-        
-        string cartLink = ConfigurationManager.AppSettings["StoreURL"] + "/ShoppingCart.aspx?CartID=" + cartID;
+
+        string cartLink = StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreURL) + "/ShoppingCart.aspx?CartID=" + cartID;
 
         try
         {

@@ -31,14 +31,14 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
         {
             Dictionary<string, string> replacmentValues = new Dictionary<string, string>();
             replacmentValues.Add("FirstName", firstName);
-            replacmentValues.Add("StoreName", ConfigurationManager.AppSettings["StoreName"]);
-            replacmentValues.Add("StoreURL", ConfigurationManager.AppSettings["StoreURL"]);
+            replacmentValues.Add("StoreName", StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName));
+            replacmentValues.Add("StoreURL", StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreURL));
             replacmentValues.Add("Email", email);
             replacmentValues.Add("Password", password);
 
             string emailBody = EmailManager.GetEmailString(replacmentValues, EmailType.NewCustomerEmail);
-            Email.SendSimpleEmail(ConfigurationManager.AppSettings["StoreName"] + " Sales",
-                ConfigurationManager.AppSettings["SalesTeamEmail"], new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(email) },
+            Email.SendSimpleEmail(StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName) + " Sales",
+                StoreConfiguration.GetConfigurationValue(ConfigurationKey.SalesTeamEmail), new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(email) },
                 "Welcome new customer",
                 emailBody,
                 true);

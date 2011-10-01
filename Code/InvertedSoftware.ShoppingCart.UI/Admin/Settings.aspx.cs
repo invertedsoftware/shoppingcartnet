@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using InvertedSoftware.ShoppingCart.Common;
+using InvertedSoftware.ShoppingCart.DataLayer.Database;
 
 public partial class Admin_Settings : System.Web.UI.Page
 {
@@ -21,55 +23,49 @@ public partial class Admin_Settings : System.Web.UI.Page
 
         try
         {
-            Configuration configuration = WebConfigurationManager.OpenWebConfiguration("~");
-            AppSettingsSection appSettings = (AppSettingsSection)configuration.GetSection("appSettings");
+            StoreConfiguration.UpdateValue(ConfigurationKey.StoreName, StoreName.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.StoreURL, StoreURL.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.SalesTeamEmail, SalesTeamEmail.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.NewOrdersEmail, NewOrdersEmail.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.ContactEmail, ContactEmail.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.PayPalAPIUsername, PayPalAPIUsername.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.PayPalAPIPassword, PayPalAPIPassword.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.PayPalAPISignature, PayPalAPISignature.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.GoogleCheckoutEnabled, GoogleCheckoutEnabled.Checked.ToString().ToLower());
+            StoreConfiguration.UpdateValue(ConfigurationKey.GoogleMerchantID, GoogleMerchantID.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.GoogleMerchantkey, GoogleMerchantkey.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.GoogleImageButtonURL, GoogleImageButtonURL.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.GoogleCheckoutURL, GoogleCheckoutURL.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.AuthorizeNetTestMode, AuthorizeNetTestMode.Checked.ToString().ToLower());
+            StoreConfiguration.UpdateValue(ConfigurationKey.AuthorizeNetAPILoginID, AuthorizeNetAPILoginID.Text);
+            StoreConfiguration.UpdateValue(ConfigurationKey.AuthorizeNetTransactionKey, AuthorizeNetTransactionKey.Text);
 
-            if (appSettings == null)
-                return;
-
-            appSettings.Settings["StoreName"].Value = StoreName.Text;
-            appSettings.Settings["StoreURL"].Value = StoreURL.Text;
-            appSettings.Settings["SalesTeamEmail"].Value = SalesTeamEmail.Text;
-            appSettings.Settings["NewOrdersEmail"].Value = NewOrdersEmail.Text;
-            appSettings.Settings["ContactEmail"].Value = ContactEmail.Text;
-            appSettings.Settings["PayPalAPIUsername"].Value = PayPalAPIUsername.Text;
-            appSettings.Settings["PayPalAPIPassword"].Value = PayPalAPIPassword.Text;
-            appSettings.Settings["PayPalAPISignature"].Value = PayPalAPISignature.Text;
-            appSettings.Settings["GoogleCheckoutEnabled"].Value = GoogleCheckoutEnabled.Checked.ToString().ToLower();
-            appSettings.Settings["GoogleMerchantID"].Value = GoogleMerchantID.Text;
-            appSettings.Settings["GoogleMerchantkey"].Value = GoogleMerchantkey.Text;
-            appSettings.Settings["GoogleImageButtonURL"].Value = GoogleImageButtonURL.Text;
-            appSettings.Settings["GoogleCheckoutURL"].Value = GoogleCheckoutURL.Text;
-            appSettings.Settings["AuthorizeNetTestMode"].Value = AuthorizeNetTestMode.Checked.ToString().ToLower();
-            appSettings.Settings["AuthorizeNetAPILoginID"].Value = AuthorizeNetAPILoginID.Text;
-            appSettings.Settings["AuthorizeNetTransactionKey"].Value = AuthorizeNetTransactionKey.Text;
-            configuration.Save();
+            StoreConfigurations.SaveAll();
             ErrorLiteral.Text = "Configuration Saved";
         }
         catch (Exception ex)
         {
             ErrorLiteral.Text = "ERROR Saving configuration: " + ex.Message;
         }
-
     }
 
     private void LoadForm()
     {
-        StoreName.Text = ConfigurationManager.AppSettings["StoreName"];
-        StoreURL.Text = ConfigurationManager.AppSettings["StoreURL"];
-        SalesTeamEmail.Text = ConfigurationManager.AppSettings["SalesTeamEmail"];
-        NewOrdersEmail.Text = ConfigurationManager.AppSettings["NewOrdersEmail"];
-        ContactEmail.Text = ConfigurationManager.AppSettings["ContactEmail"];
-        PayPalAPIUsername.Text = ConfigurationManager.AppSettings["PayPalAPIUsername"];
-        PayPalAPIPassword.Text = ConfigurationManager.AppSettings["PayPalAPIPassword"];
-        PayPalAPISignature.Text = ConfigurationManager.AppSettings["PayPalAPISignature"];
-        GoogleCheckoutEnabled.Checked = Convert.ToBoolean(ConfigurationManager.AppSettings["GoogleCheckoutEnabled"]);
-        GoogleMerchantID.Text = ConfigurationManager.AppSettings["GoogleMerchantID"];
-        GoogleMerchantkey.Text = ConfigurationManager.AppSettings["GoogleMerchantkey"];
-        GoogleImageButtonURL.Text = ConfigurationManager.AppSettings["GoogleImageButtonURL"];
-        GoogleCheckoutURL.Text = ConfigurationManager.AppSettings["GoogleCheckoutURL"];
-        AuthorizeNetTestMode.Checked = Convert.ToBoolean(ConfigurationManager.AppSettings["AuthorizeNetTestMode"]);
-        AuthorizeNetAPILoginID.Text = ConfigurationManager.AppSettings["AuthorizeNetAPILoginID"];
-        AuthorizeNetTransactionKey.Text = ConfigurationManager.AppSettings["AuthorizeNetTransactionKey"];
+        StoreName.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName);
+        StoreURL.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreURL);
+        SalesTeamEmail.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.SalesTeamEmail);
+        NewOrdersEmail.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.NewOrdersEmail);
+        ContactEmail.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.ContactEmail);
+        PayPalAPIUsername.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.PayPalAPIUsername);
+        PayPalAPIPassword.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.PayPalAPIPassword);
+        PayPalAPISignature.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.PayPalAPISignature);
+        GoogleCheckoutEnabled.Checked = Convert.ToBoolean(StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleCheckoutEnabled));
+        GoogleMerchantID.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleMerchantID);
+        GoogleMerchantkey.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleMerchantkey);
+        GoogleImageButtonURL.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleImageButtonURL);
+        GoogleCheckoutURL.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.GoogleCheckoutURL);
+        AuthorizeNetTestMode.Checked = Convert.ToBoolean(StoreConfiguration.GetConfigurationValue(ConfigurationKey.AuthorizeNetTestMode));
+        AuthorizeNetAPILoginID.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.AuthorizeNetAPILoginID);
+        AuthorizeNetTransactionKey.Text = StoreConfiguration.GetConfigurationValue(ConfigurationKey.AuthorizeNetTransactionKey);
     }
 }

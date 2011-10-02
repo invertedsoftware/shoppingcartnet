@@ -38,7 +38,7 @@ public partial class Setup_Default : System.Web.UI.Page
     protected void ContinueButton_Click(object sender, EventArgs e)
     {
         StoreConfiguration.UpdateValue(ConfigurationKey.SetupRan, "true");
-        StoreConfiguration.GetConfigurationValue(ConfigurationKey.SetupRan);
+        StoreConfigurations.UpdateConfigurationValue(ConfigurationKey.SetupRan, "true");
         Response.Redirect("../admin");
     }
     protected void CreateUserWizard1_NextButtonClick(object sender, WizardNavigationEventArgs e)

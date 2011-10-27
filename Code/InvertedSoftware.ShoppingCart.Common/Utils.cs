@@ -69,12 +69,16 @@ namespace InvertedSoftware.ShoppingCart.Common
             return decodedText;
         }
 
-        public static int GetDecodedInt(string textToDecode)
+        public static int GetDecodedInt(string stringValue)
         {
-            int decodedInt = -1;
-            string decodedText = GetDecodedString(textToDecode);
-            int.TryParse(decodedText, out decodedInt);
-            return decodedInt;
+            int intStringValue = -1;
+            if (!string.IsNullOrWhiteSpace(stringValue))
+            {
+                string decodedString = GetDecodedString(stringValue);
+                if (!string.IsNullOrWhiteSpace(decodedString))
+                    int.TryParse(GetDecodedString(stringValue), out intStringValue);
+            }
+            return intStringValue;
         }
 
         public static string PostToURL(string url, string postData, string userName, string password)

@@ -14,8 +14,9 @@
     </HeaderTemplate>
     <ItemTemplate>
         <td>
-        <asp:HiddenField ID='ProductIDHiddenField' Value='<%# Eval("ProductID") %>' runat='server' />
-        <table cellpadding="2" cellspacing="3" border="0" bgcolor=aqua width="100%">
+        <asp:HiddenField ID='ProductIDHiddenField' Value='<%# WebUtility.EncodeParamForQueryString(Eval("ProductID").ToString()) %>' runat='server' />
+        <asp:HiddenField ID='ProductLinkHiddenField' Value='<%# Eval("ProductLink") %>' runat='server' />
+        <table cellpadding="2" cellspacing="3" border="0" bgcolor="aqua" width="100%">
         <tr>
             <td><a href='Product.aspx?Product=<%# HttpUtility.UrlEncode(Eval("ProductName").ToString()) %>&ProductID=<%# WebUtility.EncodeParamForQueryString(Eval("ProductID").ToString()) %>'><img src='ProductImages/<%# Eval("Thumbnail") %>' alt='<%# Eval("ProductName") %>' border="0" width="75" height="75" /></a></td>
             <td><asp:Label ID="ProductNameLabel" runat="server" Text='<%# Eval("ProductName") %>'></asp:Label></td>

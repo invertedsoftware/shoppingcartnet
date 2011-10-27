@@ -53,6 +53,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.DataObjects
         public decimal ShippingLength { get; set; }
         public decimal Width { get; set; }
         public decimal ShippingWidth { get; set; }
+        public string ProductLink { get; set; }
         public bool IsDownloadable { get; set; }
         public bool IsDownloadKeyRequired { get; set; }
         public bool IsDownloadKeyUnique { get; set; }

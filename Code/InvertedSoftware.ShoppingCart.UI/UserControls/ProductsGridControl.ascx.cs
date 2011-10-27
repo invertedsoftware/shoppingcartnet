@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using InvertedSoftware.ShoppingCart.Common;
 using InvertedSoftware.ShoppingCart.DataLayer.DataObjects;
 using InvertedSoftware.ShoppingCart.DataLayer.Database;
 using InvertedSoftware.ShoppingCart.BusinessLayer;
@@ -52,9 +53,14 @@ public partial class UserControls_ProductsGridControl : System.Web.UI.UserContro
     #region Events
     protected void ProductsRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
+        HiddenField ProductLinkHiddenField = (HiddenField)((RepeaterItem)e.Item).FindControl("ProductLinkHiddenField");
+        if(!string.IsNullOrWhiteSpace(ProductLinkHiddenField.Value)){
+            Response.Redirect(ProductLinkHiddenField.Value);
+            return;
+        }
         HiddenField ProductIDHiddenField = (HiddenField)((RepeaterItem)e.Item).FindControl("ProductIDHiddenField");
-        int productID = 0;
-        if (!int.TryParse(ProductIDHiddenField.Value, out productID))
+        int productID = Utils.GetDecodedInt(HttpUtility.UrlDecode(ProductIDHiddenField.Value));
+        if (productID == -1)
             return;
         if (e.CommandName == "AddToCart")
         {
@@ -82,7 +88,7 @@ public partial class UserControls_ProductsGridControl : System.Web.UI.UserContro
         HiddenField ProductIDHiddenField = e.Item.FindControl("ProductIDHiddenField") as HiddenField;
         if (AddButton == null || ProductIDHiddenField == null)
             return;
-        if (Products.IsProductOptionsExist(Convert.ToInt32(ProductIDHiddenField.Value)))
+        if (Products.IsProductOptionsExist(Utils.GetDecodedInt(HttpUtility.UrlDecode(ProductIDHiddenField.Value))))
         {
             AddButton.Text = "Customize";
             AddButton.CommandName = "Customize";
@@ -91,7 +97,7 @@ public partial class UserControls_ProductsGridControl : System.Web.UI.UserContro
         {
             //Check Inventory
             InventoryAction inventoryAction;
-            InvertedSoftware.ShoppingCart.DataLayer.DataObjects.Inventory inventory = InvertedSoftware.ShoppingCart.DataLayer.Database.Inventory.GetProductInventory(Convert.ToInt32(ProductIDHiddenField.Value), new List<int>());
+            InvertedSoftware.ShoppingCart.DataLayer.DataObjects.Inventory inventory = InvertedSoftware.ShoppingCart.DataLayer.Database.Inventory.GetProductInventory(Utils.GetDecodedInt(HttpUtility.UrlDecode(ProductIDHiddenField.Value)), new List<int>());
             Enum.TryParse(inventory.InventoryActionID.ToString(), out inventoryAction);
 
             if (inventoryAction == InventoryAction.StopSellingProduct && inventory.ProductAmountInStock == 0)

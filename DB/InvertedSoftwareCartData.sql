@@ -368,3 +368,23 @@ INSERT [State] ([StateID], [StateName], [StateCode], [Active]) VALUES (60, N'Arm
 INSERT [State] ([StateID], [StateName], [StateCode], [Active]) VALUES (61, N'Armed Forces', N'AE', 1)
 INSERT [State] ([StateID], [StateName], [StateCode], [Active]) VALUES (62, N'Armed Forces Pacific', N'AP', 1)
 SET IDENTITY_INSERT [State] OFF
+/****** Object:  Table [dbo].[Tax]    Script Date: 10/27/2011 09:24:20 ******/
+SET IDENTITY_INSERT [dbo].[Tax] ON
+INSERT [dbo].[Tax] ([TaxID], [TaxName], [Fixed], [Amount], [IsAfterShipping], [CountryID], [StateID], [ProvinceID], [Active]) VALUES (1, N'CA Sales Tax', 0, CAST(9.000 AS Decimal(18, 3)), 0, 230, 6, NULL, 1)
+SET IDENTITY_INSERT [dbo].[Tax] OFF
+/****** Object:  Table [dbo].[Product]    Script Date: 10/27/2011 09:33:34 ******/
+INSERT [dbo].[Product] ([ProductID], [ProductName], [CatalogNumber], [Description], [Price], [SalePrice], [Weight], [ShippingWeight], [Height], [ShippingHeight], [Length], [ShippingLength], [Width], [ShippingWidth], [ProductLink], [IsDownloadable], [IsDownloadKeyRequired], [IsDownloadKeyUnique], [DownloadURL], [IsReviewEnabled], [TotalReviewCount], [RatingScore], [Active]) VALUES (1, N'My First Product', N'KGH8765', N'This is my first product', 19.9500, 0.0000, CAST(1 AS Decimal(18, 0)), NULL, CAST(20 AS Decimal(18, 0)), NULL, CAST(40 AS Decimal(18, 0)), NULL, CAST(1 AS Decimal(18, 0)), NULL, NULL, 0, 0, 0, NULL, 1, 0, NULL, 1)
+SET IDENTITY_INSERT [dbo].[Product] OFF
+/****** Object:  Table [dbo].[Category]    Script Date: 10/27/2011 09:33:34 ******/
+SET IDENTITY_INSERT [dbo].[Category] ON
+INSERT [dbo].[Category] ([CategoryID], [ParentCategoryID], [CategoryName], [Active]) VALUES (1, NULL, N'My First Category', 1)
+SET IDENTITY_INSERT [dbo].[Category] OFF
+/****** Object:  Table [dbo].[ProductCategory]    Script Date: 10/27/2011 09:33:34 ******/
+SET IDENTITY_INSERT [dbo].[ProductCategory] ON
+INSERT [dbo].[ProductCategory] ([ProductCategoryID], [ProductID], [CategoryID], [Active]) VALUES (1, 1, 1, 1)
+SET IDENTITY_INSERT [dbo].[ProductCategory] OFF
+/****** Object:  Table [dbo].[ShippingProvider]    Script Date: 10/27/2011 09:33:34 ******/
+SET IDENTITY_INSERT [dbo].[ShippingProvider] ON
+INSERT [dbo].[ShippingProvider] ([ShippingProviderID], [ShippingProviderName], [ShippingCost], [Active]) VALUES (1, N'UPS', 19.9500, 1)
+INSERT [dbo].[ShippingProvider] ([ShippingProviderID], [ShippingProviderName], [ShippingCost], [Active]) VALUES (2, N'USPS Ground', 12.9500, 1)
+SET IDENTITY_INSERT [dbo].[ShippingProvider] OFF

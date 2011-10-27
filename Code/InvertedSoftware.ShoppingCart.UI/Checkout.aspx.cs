@@ -295,7 +295,7 @@ public partial class Checkout : BasePage
 
     private void AddTaxes()
     {
-        Cart.Tax = OrderManager.GetTaxes(BillingAddressControl.CountryID, BillingAddressControl.StateID, BillingAddressControl.ProvinceID, Cart.Subtotal);
+        Cart.Tax = OrderManager.GetTaxes(BillingAddressControl.CountryID, BillingAddressControl.StateID, BillingAddressControl.ProvinceID, Cart.Subtotal, Cart.Shipping);
         Cart.Total = Cart.Subtotal + Cart.Shipping + Cart.Tax;
     }
 

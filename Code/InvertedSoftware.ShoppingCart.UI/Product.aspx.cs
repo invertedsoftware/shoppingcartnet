@@ -85,6 +85,11 @@ public partial class Product : BasePage
 
     protected void AddButton_Click(object sender, EventArgs e)
     {
+        if (!string.IsNullOrWhiteSpace(CartProduct.ProductLink))
+        {
+            Response.Redirect(CartProduct.ProductLink);
+            return;
+        }
         if (!Page.IsValid)
             return;
         DeleteSavedCart();

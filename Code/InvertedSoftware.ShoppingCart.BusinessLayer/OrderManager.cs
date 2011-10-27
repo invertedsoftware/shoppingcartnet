@@ -13,13 +13,14 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
 {
     public class OrderManager
     {
-        public static decimal GetTaxes(int countryID, int? stateID, int? provinceID, decimal cartSubtotal)
+        public static decimal GetTaxes(int countryID, int? stateID, int? provinceID, decimal cartSubtotal, decimal cartShipping)
         {
             decimal taxes = 0;
             List<Tax> taxesList = Orders.GetTaxes(countryID, stateID, provinceID);
-            decimal fixedAmount = taxesList.Where(a=> a.Fixed).Sum(a => a.Amount);
-            decimal percentAmount = taxesList.Where(a => !a.Fixed).Sum(a => a.Amount) * cartSubtotal/100;
-            taxes = fixedAmount + percentAmount;
+            decimal fixedAmount = taxesList.Where(t => t.Fixed).Sum(t => t.Amount);
+            decimal percentBeforeShippingAmount = taxesList.Where(t => !t.Fixed && !t.IsAfterShipping).Sum(t => t.Amount) * cartSubtotal / 100;
+            decimal percentAfterShippingAmount = taxesList.Where(t => !t.Fixed && t.IsAfterShipping).Sum(t => t.Amount) * (cartSubtotal + cartShipping) / 100;
+            taxes = fixedAmount + percentBeforeShippingAmount + percentAfterShippingAmount;
             return taxes;
         }
 

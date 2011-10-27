@@ -70,14 +70,6 @@ public class WebUtility
 
     public static int GetDecodedIntFromQueryString(string queryStringKey)
     {
-        int queryStringValue = -1;
-        if (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString[queryStringKey]))
-        {
-            if (!int.TryParse(Utils.GetDecodedString(HttpContext.Current.Request.QueryString[queryStringKey]), out queryStringValue))
-            {
-                queryStringValue = -1;
-            }
-        }
-        return queryStringValue;
+        return Utils.GetDecodedInt(HttpContext.Current.Request.QueryString[queryStringKey]);
     }
 }

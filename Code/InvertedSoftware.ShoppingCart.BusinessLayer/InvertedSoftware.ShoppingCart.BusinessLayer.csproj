@@ -67,6 +67,7 @@
     <Compile Include="CustomerManager.cs" />
     <Compile Include="CustomFieldComparer.cs" />
     <Compile Include="EmailManager.cs" />
+    <Compile Include="ExperienceManager.cs" />
     <Compile Include="FeedItems.cs" />
     <Compile Include="ImageProcessor.cs" />
     <Compile Include="OrderManager.cs" />

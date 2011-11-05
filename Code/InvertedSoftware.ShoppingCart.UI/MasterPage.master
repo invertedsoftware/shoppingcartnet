@@ -54,6 +54,7 @@
 	<asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="True">
 		<Services>
 			<asp:ServiceReference Path="Services/InventoryService.svc" />
+			<asp:ServiceReference Path="Services/HistoryService.svc" />
 		</Services>
 
 			</asp:ScriptManager>

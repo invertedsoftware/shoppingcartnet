@@ -394,6 +394,34 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Database
             return products;
         }
 
+        public static List<ProductDisplay> GetProductViewHistory(string viewdProducts)
+        {
+            List<ProductDisplay> products = new List<ProductDisplay>();
+
+            SqlParameter ProductIDSqlParameter = new SqlParameter("@ViewdProducts", SqlDbType.VarChar, 2000) { Value = viewdProducts };
+            
+            try
+            {
+                using (SqlDataReader reader = SqlHelper.ExecuteReader(SqlHelper.mainConnectionString, CommandType.StoredProcedure, "GetProductViewHistory", ProductIDSqlParameter))
+                {
+                    PropertyInfo[] props = ObjectHelper.GetCachedProperties<ProductDisplay>();
+                    List<string> columnList = ObjectHelper.GetColumnList(reader);
+                    ProductDisplay product;
+                    while (reader.Read())
+                    {
+                        product = new ProductDisplay();
+                        ObjectHelper.LoadAs<ProductDisplay>(reader, product, props, columnList);
+                        products.Add(product);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error view history", e);
+            }
+            return products;
+        }
+
         public static string GetNextProductKey(int productID, bool isExpireKey)
         {
             string productKey = string.Empty;

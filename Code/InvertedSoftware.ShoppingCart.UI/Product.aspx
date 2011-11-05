@@ -1,4 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Product.aspx.cs" Inherits="Product" %>
+<%@ Import Namespace="InvertedSoftware.ShoppingCart.Common" %>
+<%@ Import Namespace="InvertedSoftware.ShoppingCart.BusinessLayer" %>
 
 <%@ Register src="UserControls/RelatedProductsControl.ascx" tagname="RelatedProductsControl" tagprefix="uc1" %>
 
@@ -19,6 +21,7 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/element/element-min.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/carousel/carousel-min.js"></script>
 <script src="JS/InventoryService.js" type="text/javascript"></script>
+<script src="JS/HistoryService.js" type="text/javascript"></script>
 <script type="text/javascript">
 	function checkInventory() {
 		if(inventoryChecked)
@@ -32,6 +35,25 @@
 
 	function resetInventoryChecked(){
 		inventoryChecked = false;
+	}
+
+	var viewHistory = <%: ExperienceManager.GetHistoryCookie().Values[Utils.HISTORY_COOKIE_ENABLED].ToLower() %>;
+
+	function changeViewHistory(){
+   
+		if(viewHistory){
+			// Turn off history
+			$('#viewHistorySettings').html("On")
+			$('#viewHistory').hide('slow');
+			ChangeHistorySettings(false);
+			// Signal the service
+		}else{
+			// Turn on history
+			$('#viewHistorySettings').html("Off")
+			$('#viewHistory').show('slow');
+			ChangeHistorySettings(true);
+		}
+		viewHistory = !viewHistory;
 	}
 </script>
 
@@ -202,6 +224,12 @@
 		<uc5:ProductBreadcrumbControl ID="ProductBreadcrumbControl1" runat="server" />
 	 </td>
  </tr>
+ <tr>
+	<td>Previously Viewed (Turn <div id="viewHistorySettings" style="display:inline" onclick="javascript:changeViewHistory();">Off</div>)</td>
+ </tr>
+ <tr>
+	<td><div id="viewHistory"></div></td>
+ </tr>
 </table></td>
 	<td>
 		<uc1:RelatedProductsControl ID="RelatedProductsControl1" runat="server" /><br />
@@ -209,7 +237,17 @@
 	</td>
 </tr>
 </table>
-
+<script language="javascript" type="text/javascript">
+$(document).ready(function() {
+	AddProductToViewHistory(<%: CartProduct.ProductID %>);
+	if(viewHistory){
+		GetProductHistory();
+		$('#viewHistorySettings').html("Off");
+	}else{
+		$('#viewHistorySettings').html("On");
+	}
+});
+</script>
 
 
 

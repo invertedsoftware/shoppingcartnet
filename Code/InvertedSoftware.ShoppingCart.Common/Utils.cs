@@ -30,6 +30,9 @@ namespace InvertedSoftware.ShoppingCart.Common
         public static readonly string ENCODING_SALT = ConfigurationManager.AppSettings["ENCODING_SALT"];
         public static readonly string ENCODING_VECTOR = ConfigurationManager.AppSettings["ENCODING_VECTOR"];
         public static bool IS_CONFIGURED = false;
+        public static readonly string HISTORY_COOKIE_NAME = "ViewHistory";
+        public static readonly string HISTORY_COOKIE_ENABLED = "HistoryOn";
+        public static readonly string HISTORY_COOKIE_DATA = "History";
 
         public static string GetEncodedString(string textToEncode)
         {

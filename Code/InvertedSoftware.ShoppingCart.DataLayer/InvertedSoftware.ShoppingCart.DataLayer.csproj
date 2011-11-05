@@ -113,6 +113,7 @@
     <Compile Include="DataObjects\OrderProductCustomField.cs" />
     <Compile Include="DataObjects\OrderProductOption.cs" />
     <Compile Include="DataObjects\Product.cs" />
+    <Compile Include="DataObjects\ProductDisplay.cs" />
     <Compile Include="DataObjects\ProductOption.cs" />
     <Compile Include="DataObjects\ProductReview.cs" />
     <Compile Include="DataObjects\RelatedProduct.cs" />

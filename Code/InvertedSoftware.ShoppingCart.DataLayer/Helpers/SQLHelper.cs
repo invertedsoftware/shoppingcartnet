@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
+using InvertedSoftware.ShoppingCart.Common;
 
 namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
 {
@@ -23,6 +24,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
 
         //Database connection strings
         public static readonly string mainConnectionString = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
+        public static ObjectPool<SqlCommand> commandPool = new ObjectPool<SqlCommand>(() => new SqlCommand());
 
         /// <summary>
         /// Execute a SqlCommand (that returns no resultset) against the database specified in the connection string 
@@ -40,15 +42,20 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         public static int ExecuteNonQuery(string connectionString, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
         {
             int val;
-            using (SqlCommand cmd = new SqlCommand())
+            SqlCommand cmd = commandPool.GetObject();
+            try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     PrepareCommand(cmd, conn, null, cmdType, cmdText, commandParameters);
                     val = cmd.ExecuteNonQuery();
-                    cmd.Parameters.Clear();
                 }
             }
+            finally
+            {
+                commandPool.PutObject(cmd);
+            }
+
             return val;
         }
 
@@ -67,7 +74,7 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         /// <returns>A SqlDataReader containing the results</returns>
         public static SqlDataReader ExecuteReader(string connectionString, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
         {
-            SqlCommand cmd = new SqlCommand();
+            SqlCommand cmd = commandPool.GetObject();
             SqlConnection conn = new SqlConnection(connectionString);
 
             // we use a try/catch here because if the method throws an exception we want to 
@@ -77,15 +84,17 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
             {
                 PrepareCommand(cmd, conn, null, cmdType, cmdText, commandParameters);
                 SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                cmd.Parameters.Clear();
                 return rdr;
             }
             catch
             {
                 conn.Close();
                 conn.Dispose();
-                cmd.Dispose();
                 throw;
+            }
+            finally
+            {
+                commandPool.PutObject(cmd);
             }
         }
 
@@ -105,16 +114,20 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         public static object ExecuteScalar(string connectionString, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
         {
             object val;
-            using (SqlCommand cmd = new SqlCommand())
+            SqlCommand cmd = commandPool.GetObject();
+            try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
                     val = cmd.ExecuteScalar();
-                    cmd.Parameters.Clear();
-
                 }
             }
+            finally
+            {
+                commandPool.PutObject(cmd);
+            }
+
             return val;
         }
 
@@ -134,11 +147,15 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         public static object ExecuteScalar(SqlConnection connection, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
         {
             object val;
-            using (SqlCommand cmd = new SqlCommand())
+            SqlCommand cmd = commandPool.GetObject();
+            try
             {
                 PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
                 val = cmd.ExecuteScalar();
-                cmd.Parameters.Clear();
+            }
+            finally
+            {
+                commandPool.PutObject(cmd);
             }
             return val;
         }
@@ -154,17 +171,17 @@ namespace InvertedSoftware.ShoppingCart.DataLayer.Helpers
         /// <param name="cmdParms">SqlParameters to use in the command</param>
         public static void PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, CommandType cmdType, string cmdText, SqlParameter[] cmdParms)
         {
+            cmd.Parameters.Clear();
 
             if (conn.State != ConnectionState.Open)
                 conn.Open();
 
             cmd.Connection = conn;
             cmd.CommandText = cmdText;
+            cmd.CommandType = cmdType;
 
             if (trans != null)
                 cmd.Transaction = trans;
-
-            cmd.CommandType = cmdType;
 
             if (cmdParms != null)
             {

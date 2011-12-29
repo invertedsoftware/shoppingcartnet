@@ -127,7 +127,7 @@ namespace InvertedSoftware.ShoppingCart.BusinessLayer
             replacmentValues.Add("Cart", GetOrderItemsString(order));
             string emailBody = EmailManager.GetEmailString(replacmentValues, EmailType.NewSaleStoreEmail);
             Email.SendSimpleEmail(StoreConfiguration.GetConfigurationValue(ConfigurationKey.StoreName) + " Sales",
-                StoreConfiguration.GetConfigurationValue(ConfigurationKey.SalesTeamEmail), new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(ConfigurationManager.AppSettings["NewOrdersEmail"]) },
+                StoreConfiguration.GetConfigurationValue(ConfigurationKey.SalesTeamEmail), new List<System.Net.Mail.MailAddress>() { new System.Net.Mail.MailAddress(StoreConfiguration.GetConfigurationValue(ConfigurationKey.NewOrdersEmail)) },
                 "New Order",
                 emailBody,
                 true);

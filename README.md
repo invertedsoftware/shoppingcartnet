@@ -32,5 +32,5 @@ Included is also Authorize.Net Advanced Integration Method (AIM), Paypal Pro API
 Visit an example store <a href="http://example.shoppingcartnet.com">http://example.shoppingcartnet.com</a><br>
 Facebook Page <a href="http://www.facebook.com/shoppingcartnet">Like us on Facebook</a><br>
 <a href="/wikipage?title=Success%20Stories&referringTitle=Home">Success Stories</a></p>
-<p><a href="http://www.NDepend.com" target="_blank"><img src="http://invertedsoftware.com/images/shoppingcartnet/PoweredByNDepend.png" alt="" width="190" height="57"></a></p>
+
 </div><div class="ClearBoth"></div>
